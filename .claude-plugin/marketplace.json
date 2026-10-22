@@ -1,0 +1,23 @@
+{
+  "name": "clapova",
+  "owner": {
+    "name": "ILLITH",
+    "email": "contact@illith.com"
+  },
+  "metadata": {
+    "description": "Plugins Claude Code de Clapova (ILLITH).",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "clapova",
+      "source": "./plugins/clapova",
+      "description": "Clapova dans Claude : génération, montage, publication, statistiques et veille, avec votre compte et vos crédits.",
+      "version": "1.0.0",
+      "author": { "name": "ILLITH" },
+      "homepage": "https://clapova.com/app/connecteurs/mcp",
+      "category": "productivity",
+      "keywords": ["video", "ia", "montage", "reseaux-sociaux"]
+    }
+  ]
+}

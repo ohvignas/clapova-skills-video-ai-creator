@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "clapova": {
+      "type": "http",
+      "url": "${CLAPOVA_MCP_URL:-https://clapova.com/api/mcp}"
+    }
+  }
+}
