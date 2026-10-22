@@ -5,6 +5,8 @@ description: Use when Claude animates or styles a Clapova video like a motion de
 
 # Clapova : motion design
 
+Première ligne de toute tâche motion : `get_guide('motion')` lu en entier (export_video, create_motion_scene, add_motion_block, create_storyboard et build_from_storyboard le refusent sinon).
+
 Même boîte à outils pour l'Agent intégré et le serveur MCP. Commence par `get_motion_catalog` (blocs prêts) ; `get_motion_toolkit` liste tous les réglages bruts (effets, transitions, looks, polices, fusions, easings, limites). Boucle, pistes et vérification : `clapova:monteur`. Rythme, son et styles : `clapova:montage-recipes`.
 
 Ce skill est la source unique pour : méthode en 5 blocs, règles de cadre, point attaché, timings et easings, blocs motion.
@@ -20,12 +22,12 @@ Ce skill est la source unique pour : méthode en 5 blocs, règles de cadre, poin
 
 ## Règles de cadre
 
-- Remplir le cadre : en 1080 de large, titres 140 à 180 px, sous-textes ≥ 34 px, élément principal sur au moins 60 % de la largeur.
+- Remplir le cadre : en 1080 de large, titres 140 à 180 px (120 px est le plancher absolu), sous-textes ≥ 34 px, élément principal sur au moins 60 % de la largeur.
 - Composition centrée verticalement dans la zone sûre, jamais collée en haut. Rien dans les coins ni dans les 20 % du bas en 9:16.
 - Un élément fort visible dès la première image ; le cadre est rempli, pas de vide.
 - Style créateurs / réseaux : jeune, « à la Apple », vertical 9:16.
 - Contraste : texte secondaire au moins `#B8B8C4` sur fond sombre ; éléments inactifs à 60 % d'opacité minimum.
-- Un message fort par plan. Aucun plan statique de plus de 0,5 s : quelque chose bouge toujours.
+- Un message fort par plan. Une scène motion bouge toujours (jamais d'image identique à la précédente) ; pour un plan filmé, la règle de `clapova:montage-recipes` : pas de plan fixe de plus de 3 s sans effet caméra.
 
 ## Point attaché (fil conducteur)
 
@@ -42,7 +44,11 @@ Un élément qui suit un autre (point d'accent sur une barre, flèche sur un bou
 
 ## Blocs motion premium (premier choix)
 
-`get_motion_catalog({query?, category?})` (gratuit) renvoie 30 blocs avec `useWhen`/`avoidWhen`, durées et variables typées. Pose-en un avec `add_motion_block({projectId, block, start, duration?, variables?})`, plusieurs avec l'op `add_block{block, start, duration?, variables?}`.
+`get_motion_catalog({query?, category?})` (gratuit) renvoie les blocs (une trentaine) avec `useWhen`/`avoidWhen`, durées et variables typées. Pose-en un avec `add_motion_block({projectId, block, start, duration?, variables?})`, plusieurs avec l'op `add_block{block, start, duration?, variables?}`.
+
+Exemple de variables réelles (vérifié dans le catalogue) : `add_motion_block({projectId, block:"title-kinetic-words", start:0.2, variables:{text:"3 ERREURS À ÉVITER", color:"#FFFFFF", font:"Anton"}})` ; seule `text` est obligatoire, les autres blocs ont leurs propres variables (`get_motion_catalog` les liste avec leur type).
+
+Coûts : `create_motion_scene` et `edit_motion_scene` incluent une note visuelle de 1 crédit ; `track_motion` ≈ 3 crédits / 10 s ; `cutout_subject` ≈ 3 crédits / 10 s. Annonce le total en une ligne et attends l'accord avant de lancer l'un d'eux, même pour un seul appel.
 
 Pour une scène sur mesure (interface animée, mockup iPhone, feed, notifications, compteur, carte de fin) : `create_motion_scene({projectId, brief, ...})` puis `edit_motion_scene({projectId, sceneId, patch})` (note visuelle 1 crédit). Les évènements de la scène servent ensuite à `place_sfx_from_events({projectId})` pour caler les bruitages.
 
@@ -93,7 +99,7 @@ Un sujet par suivi ou détourage, plans de 3 min au plus. 3D : textes extrudés 
 
 ## Qualité motion : grille de contrôle
 
-Une scène ou un bloc n'est livrable qu'à 8/10 ou plus sur : cadre, lisibilité, point attaché, rythme, rien de coupé, contraste, hiérarchie (un seul élément dominant, titres 120 px et plus), remplissage (70 % de la hauteur utile), mouvement continu (jamais d'image identique à la précédente), cohérence de style (une police, 3 couleurs, mêmes rayons) et aucun texte superposé. Une scène minimale (« Bonjour » seul) ne dépasse pas 4.
+La note vient de `create_motion_scene` / `edit_motion_scene` : champ `score` (et `review.issues`, la liste des défauts à corriger) ; pour un montage entier c'est `review_montage`. Une scène ou un bloc n'est livrable qu'à 8/10 ou plus sur : cadre, lisibilité, point attaché, rythme, rien de coupé, contraste, hiérarchie (un seul élément dominant, titres 140 à 180 px, 120 px au minimum), remplissage (70 % de la hauteur utile), mouvement continu (jamais d'image identique à la précédente), cohérence de style (une police, 3 couleurs, mêmes rayons) et aucun texte superposé. Une scène minimale (« Bonjour » seul) ne dépasse pas 4.
 
 ## Contrôle image par image (obligatoire)
 
@@ -101,13 +107,13 @@ Après create_motion_scene, edit_motion_scene, add_motion_block, apply_edit_plan
 
 ## Son léger
 
-Au plus un bruitage par 2 s, seulement sur les temps forts (poids 0,6 et plus), whoosh réservé aux coupes de poids 0,85 et plus, jamais un whoosh à chaque coupe. Volume des bruitages autour de -20 dB (gain 0,12 à 0,24), -6 dB de plus sous la voix ; musique en ducking (0,35) sous la voix ; compteurs : 3 ticks par compteur. Hauteur 0,95-1,08.
+Au plus un bruitage par 2 s, seulement sur les temps forts (poids 0,6 et plus), whoosh réservé aux coupes de poids 0,85 et plus, jamais un whoosh à chaque coupe. Volume des bruitages autour de -20 dB (gain 0,18 par défaut, plage 0,12 à 0,25), -6 dB de plus sous la voix ; musique posée à 0,5 avec `set_duck` niveau 0,5 sous la voix (valeur unique, comme `clapova:monteur`) ; compteurs : 3 ticks par compteur. Hauteur 0,95-1,08.
 
 ## Pièges
 
 - Titre posé en coordonnées absolues sur un sujet qui bouge : utilise `track_motion` ou des keyframes de groupe.
 - Bloc utilisé sans lire ses variables : `get_motion_catalog` d'abord, une variable inconnue est refusée.
-- Texte secondaire gris sur sombre sous `#B8B8C4`, ou titre de moins de 120 px en 1080 de large.
+- Texte secondaire gris sur sombre sous `#B8B8C4`, ou titre de moins de 120 px en 1080 de large (visé : 140 à 180 px).
 - Deux familles de transitions, ou un glitch plus d'une fois par vidéo.
 - Sons : un bruitage par événement, pas un tapis ; voir « Son léger ».
 
@@ -117,4 +123,4 @@ Note de contrôle d'au moins 8/10 sur chaque scène, planche regardée image par
 
 ## Autres guides à lire
 
-Avant de monter ou de planifier : get_guide('montage') (boucle, pistes, rythme) et get_guide('storyboard') (brief, accord avant génération). Ce guide-ci se lit en entier : il conditionne create_motion_scene, edit_motion_scene, add_motion_block, apply_edit_plan (blocs motion), create_storyboard, build_from_storyboard et export_video.
+Avant de monter ou de planifier : `get_guide('montage')` (boucle, pistes, rythme) et `get_guide('storyboard')` (brief, accord avant génération).

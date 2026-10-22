@@ -1,20 +1,22 @@
 ---
 name: prompts-video
-description: Use when writing, fixing or tuning the prompt of a Clapova generated clip, image, voice or music per model ("mon clip est flou", "le mouvement est raté", "écris le prompt pour Kling / Veo / Seedance / Flux", "pourquoi mon image a du texte bizarre") — image-to-video motion prompts, camera verbs and presets, one action per shot, positive phrasing, native audio, TTS and music prompt rules, with list_models, list_model_params, generate_video, generate_broll, generate_image and render_preview_frames.
+description: Use when writing, fixing or tuning the prompt of ONE Clapova generated clip, image, voice or music per model ("mon clip est flou", "le mouvement est raté", "écris le prompt pour Kling / Veo / Seedance / Flux", "pourquoi mon image a du texte bizarre") — image-to-video motion prompts, camera verbs, one action per shot, positive phrasing, native audio, TTS and music prompt rules. Not for choosing what to generate (clapova:generate) nor for copying a reference video (clapova:recreer-depuis-reference).
 ---
 
 # Clapova : prompts par modèle (vidéo, image, voix, musique)
 
 Les outils `generate_*` réécrivent déjà ton texte en anglais pour le modèle choisi. Ton rôle : donner un brief net. Ce guide dit quoi mettre dans le brief, et comment corriger un défaut.
 
+Relis `get_guide('generation')` quand l'utilisateur change de type de média ou de modèle : il porte les règles de routage et de coût que ce guide suppose connues.
+
 ## Méthode
 
-1. **Modèle visé** : `list_models` / `pick_best_model`, ou laisse l'outil choisir. Réglages (durée, format, début de plan) : `list_model_params({endpointId})`.
+1. **Modèle visé** : appelle `list_models` AVANT de choisir une famille du tableau (un nom absent du catalogue ne se prompte pas), puis `pick_best_model`, ou laisse l'outil choisir. Réglages (durée, format, début de plan) : `list_model_params({endpointId})`.
 2. **Type de génération** :
    - texte vers vidéo : sujet + action + décor + lumière + cadrage ;
    - image vers vidéo (`imageUrl`) : **le mouvement seulement** (qui bouge, comment, la caméra). Ne redécris pas l'image de départ.
 3. **Un plan = une action = un mouvement de caméra.** La caméra passe par un preset (`list_video_presets`, `clapova:presets`), pas par la phrase.
-4. **Formulation positive** : dis ce qui est là, pas ce qui ne doit pas l'être. Exception : « no text, no logo » en négatif final pour un clip destiné à recevoir un titre en montage.
+4. **Formulation positive** : dis ce qui est là, pas ce qui ne doit pas l'être. Exception unique : `generate_video` et `continue_video` n'ont pas de champ de prompt négatif ; pour un clip destiné à recevoir un titre en montage, termine le prompt par la phrase « no text, no logo ». C'est la seule option, et elle est réécrite en anglais comme le reste.
 5. **Court et concret** : 25 à 60 mots pour un plan, 60 à 110 pour un plan de storyboard riche. Verbes de mouvement précis (lent, rapide, vers la gauche).
 6. **Contrôle** : `extract_frames` (gratuit) ou `render_preview_frames` ; compare à l'intention. Défaut : corrige UNE chose et régénère (ne multiplie pas les essais, chaque essai est facturé ; un lot de plus de 3 passe par `estimate_plan`).
 
@@ -32,7 +34,7 @@ Les outils `generate_*` réécrivent déjà ton texte en anglais pour le modèle
 | Ideogram | typographie d'abord : contenu clé en premier, texte court entre guillemets, nom du style de police | longues descriptions de scène |
 | Nano Banana / GPT Image | brief créatif complet : usage (affiche, packshot, UI), texte exact entre guillemets avec sa place | consignes contradictoires |
 
-Les noms de modèles évoluent : la liste vivante est `list_models`.
+Les noms de modèles évoluent : la liste vivante est `list_models`. Rappel : l'outil réécrit ton prompt en anglais, donc les astuces de syntaxe (« cut to », « then », dialogue en minuscules) peuvent être normalisées ; vérifie sur l'image extraite, pas sur le texte envoyé.
 
 ## Audio
 
@@ -47,7 +49,9 @@ Les noms de modèles évoluent : la liste vivante est `list_models`.
 - Écran d'appareil : « écran éteint ou flou », la vraie capture s'incruste ensuite.
 - Mains qui tapent, foule, combat : plans courts ou évités.
 - Personne récurrente : `clapova:personnages`, pas une description différente à chaque plan.
+- Plans illustratifs d'un script entier : `generate_broll` (`dryRun:true` d'abord) plutôt qu'un `generate_video` par phrase.
+- « Recopie cette vidéo en prompt » : décrire une vidéo source plan par plan passe par `clapova:recreer-depuis-reference` (`extract_frames` mode `sceneChanges`, puis un prompt de mouvement par plan) ; ne devine pas une vidéo que tu n'as pas vue.
 
 ## Critères de fin
 
-Prompt de moins de 110 mots, un mouvement, formulation positive, image de contrôle regardée, coût de chaque essai annoncé, au plus 2 régénérations par plan avant de proposer une autre approche (image fixe animée, stock, motion).
+Prompt de moins de 110 mots, un mouvement, formulation positive, image de contrôle regardée, coût de chaque essai annoncé en une ligne (lu dans le retour de l'outil), au plus 2 régénérations par plan avant de proposer une autre approche (image fixe animée, stock, motion).

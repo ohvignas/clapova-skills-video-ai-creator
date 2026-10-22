@@ -34,11 +34,13 @@ Ces presets agissent sur la génération. Les mouvements caméra et transitions 
 | `listicle-top` | 9:16 | promesse chiffrée, un plan par point numéroté, CTA | push-in, whip-pan |
 
 - `list_templates`, puis `get_template_recipe({id})` : structure, champs, format, crédits estimés.
-- Médias déjà dans la bibliothèque : `apply_template({projectId, templateId, mediaIds, voiceoverMediaId?, musicMediaId?, texts?, brand?})` dans un projet vide.
-- Médias par URL : `create_from_template({templateId, aspect?, media:[{url, kind}], voiceover?, music?, brand:{name, primary, background, text, logoUrl?}, texts?})` crée le projet.
+- Médias déjà dans la bibliothèque : `apply_template({projectId, templateId, mediaIds, voiceoverMediaId?, musicMediaId?, texts?, brand?, captions?, style?, targetDuration?, brandLock?})` dans un projet vide. `captions` est vrai par défaut et la transcription est facturée (≈ 1 crédit/min) : annonce-le ou mets `false`. `style` (voir `clapova:montage-recipes`) et `targetDuration` (5 à 180 s) se choisissent selon la plateforme ; `texts` porte hook, cta, features, handle. Le kit de marque est appliqué automatiquement (`brandLock`, vrai par défaut) ; `apply_template` n'a pas de `logoUrl`.
+- Médias par URL : `create_from_template({templateId, aspect?, media:[{url, kind}], voiceover?, music?, brand:{name, primary, background, text, logoUrl?}, texts?})` crée le projet (seul endroit où `logoUrl` passe).
 - Ensuite : contrôle et relecture selon `clapova:monteur`.
 
-Déroulé « fais-moi une pub UGC » : `list_presets` → générer 2 à 4 plans avec les presets de `byTemplate["ugc-ad"]` → voix off → `apply_template`. Générez seulement ce qui est demandé.
+Déroulé « fais-moi une pub UGC » : `list_presets` → générer 2 à 4 plans avec les presets de `byTemplate["ugc-ad"]` → voix off → `apply_template`. Générez seulement ce qui est demandé, et annonce le coût avant (2 à 4 plans de 10 s + voix off : `get_credits`, `estimate_plan`). Avant le montage, lis `get_guide('montage')`.
+
+« Inspire-toi de cette vidéo » : `clapova:recreer-depuis-reference` choisit le modèle le plus proche et les presets correspondants à partir de la recette de la référence.
 
 ## Pièges
 
@@ -46,7 +48,8 @@ Déroulé « fais-moi une pub UGC » : `list_presets` → générer 2 à 4 plans
 - Preset décrit aussi dans le prompt : redondance, mouvement confus.
 - `before-after` demande exactement 2 clips ; `crash-zoom-teaser` demande une musique.
 - Modèle de montage appliqué à un projet non vide : crée un projet vide.
+- Preset (ex. `bullet-time`, `fpv-drone`) sur un modèle qui ne le tient pas : le mouvement peut être ignoré. Regarde une image extraite (`extract_frames`) ; si le mouvement n'y est pas, change de preset ou de modèle plutôt que de régénérer à l'identique.
 
 ## Critères de fin
 
-Les plans générés portent chacun un seul mouvement de caméra, le modèle de montage est appliqué avec la marque (`brand`), `check_composition` est propre, la planche `render_preview_frames` est regardée, musique sur toute la durée. Lien et félicitations à l'export : voir `clapova:monteur`.
+Les plans générés portent chacun un seul mouvement de caméra, le modèle de montage est appliqué avec la marque (`brand`), `check_composition` est propre, la planche `render_preview_frames` est regardée, musique sur toute la durée. Musique : `generate_music` à la durée totale si le modèle n'en pose pas. Lien et félicitations à l'export : voir `clapova:monteur` (Livraison finale) ; sans export, termine par le lien du projet.

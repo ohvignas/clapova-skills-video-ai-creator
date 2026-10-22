@@ -9,15 +9,18 @@ Une vidéo de plus d'un plan commence par un storyboard. Il est gratuit, son co�
 
 Format par défaut : 9:16 ; 16:9 pour YouTube long, 1:1 ou 4:5 pour le fil.
 
+Lecture rapide (si tu ne lis que ça) : brief court, `create_storyboard`, relecture PASS/FAIL, `estimate_storyboard`, accord explicite, `approve_storyboard`, `build_from_storyboard`, planche vue, lien. Le reste du fichier donne les chiffres de chaque étape.
+
 ## Boucle obligatoire
 
+0. **Référence à imiter** : si l'utilisateur donne une vidéo d'inspiration (lien YouTube, fichier ou URL https), passe d'abord par `clapova:recreer-depuis-reference` (`analyze_reference_video`) : sa recette (accroche, nombre de plans, rythme, texte, CTA, durée) et son `storyboardDraft` nourrissent l'arc, le rythme et le thème des étapes 1 et 2. Lien TikTok ou Instagram : demande l'envoi du fichier (`create_upload_link`) ou travaille sur sa description.
 1. **Brief** (§1), via `ask_storyboard_questions` si des infos manquent.
 2. **Architecture** : arc, rythme, beats, grille de plans, thème, personnage (§2 à §5). Tout se prépare dans le plan en 5 blocs, rien n'est généré.
 3. **Créer** : `create_storyboard` avec les champs pro (voir « Outils »). Si le retour contient `qualityIssues`, corrige-les avec `update_storyboard` avant de présenter.
 4. **Relire** avec la grille PASS/FAIL (§9).
-5. **Présenter** en quelques lignes : arc, scènes, durée, coût estimé (`estimate_storyboard`). Pour un explainer, présente aussi les 3 faits à vérifier (§6) : le même « oui » vaut accord et exactitude. ATTENDS l'accord explicite. Les retours passent par `update_storyboard`.
+5. **Présenter** en quelques lignes : arc, scènes, durée, coût estimé (`estimate_storyboard`). Si le total dépasse 50 crédits ou le double d'un chiffre déjà accepté (après un `update_storyboard`), redemande l'accord avec le nouveau total. Pour un explainer, présente aussi les 3 faits à vérifier (§6) : le même « oui » vaut accord et exactitude. ATTENDS l'accord explicite. Les retours passent par `update_storyboard`.
 6. **Valider** : `approve_storyboard` seulement après un oui explicite dans son message (recopie ses mots).
-7. **Construire** : `build_from_storyboard`, puis ses `followUps`, puis `review_montage`. Si l'appel expire côté client, relance-le : le montage déjà posé (même version) renvoie `built` sans rien refaire ; `rebuild:true` retire le montage précédent avant de le reposer. Une scène sans média reçoit un fond du Brand Kit ou du thème visuel, texte centré en grand. (Limite connue : le build attend encore toutes les générations vidéo avant de répondre.)
+7. **Construire** : `build_from_storyboard`, puis ses `followUps`, puis `review_montage`. Si l'appel expire côté client, relance-le : le montage déjà posé (même version) renvoie `built` sans rien refaire ; `rebuild:true` retire le montage précédent avant de le reposer. Une scène sans média reçoit un fond du Brand Kit ou du thème visuel, texte centré en grand. Limite connue : le build attend toutes les générations vidéo avant de répondre. Dis alors à l'utilisateur que ça peut prendre plusieurs minutes ; si l'appel expire, relance-le tel quel (il reprend sans rien refaire) au lieu de relancer des générations.
 8. **Vérifier** : `render_preview_frames`, regarde la planche avant de livrer (voir `clapova:monteur`). Vérifie aussi que la musique couvre toute la durée et que le son reste léger.
 9. **Livrer** : après accord sur l'export, lien direct et félicitations (`clapova:monteur`, Livraison finale).
 
@@ -64,7 +67,7 @@ Règles dures (vérifiées par `qualityIssues`) :
 - Aucun plan fixe au-delà de 5 s : ajoute un mouvement ou coupe.
 - La promesse (premier texte ou première voix off) tombe avant 3 s. Contenu non commercial : la question ou le fait étonnant du hook vaut promesse.
 - Le logo ne s'affiche jamais dans les 3 premières secondes : il arrive après l'accroche, pleinement en signature. Pour un logiciel, seul le logotype compte, pas l'interface. Sans marque, la règle ne s'applique pas ; un CTA sans marque (« abonne-toi ») est valide.
-- Durée moyenne d'un plan en format court : 3,5 s au plus.
+- Durée moyenne d'un plan en format court (moins de 60 s) : 3,5 s au plus. Exception : l'histoire de marque longue (45 à 90 s) et le plan de 3 à 5 s des tableaux ci-dessus sont autorisés ; le plafond de 5 s par plan reste valable partout.
 - Accroche de 5 s au plus, un élément fort dès la première image.
 
 ## 4. Thème visuel figé (visualTheme)
@@ -88,7 +91,7 @@ Pour chaque plan renseigne :
 - **angle** (`angle`, valeurs en anglais) : hauteur d'yeux = eye_level, plongée = high, contre-plongée = low, vue du dessus = birds_eye, vue du sol = worms_eye, penché = dutch, par-dessus l'épaule = ots.
 - **mouvement** (`cameraMove`) : static, pan, tilt, push_in, pull_out, tracking, handheld, orbit. **lumière** (`lighting`) : celle du thème.
 - **sujet et action concrets** (`shotDescription`) : qui, fait quoi, où, avec quel objet. Jamais « une femme » : « une barista d'environ 28 ans, cheveux auburn ondulés, tablier en jean ».
-- **texte à l'écran** (`onScreenText`) : 6 mots au plus, lisible en 1 s. Zone sûre : TikTok et Reels, bas 20 % et droite 12 % ; Shorts, bas 25 % et droite 12 % ; haut 8 à 10 % sur toutes. `textZone` : top ou center seulement ; bottom = au-dessus du bas 20 %. Sous-titres : entre 55 et 70 % de hauteur, jamais dans les marges. Texte ou captions portent l'idée de chaque plan parlé.
+- **texte à l'écran** (`onScreenText`) : 6 mots au plus, lisible en 1 s. Zone sûre : TikTok et Reels, bas 20 % et droite 12 % ; Shorts, bas 20 % et droite 12 % (même valeur que `clapova:montage-recipes`) ; haut 8 à 10 % sur toutes. `textZone` : top ou center seulement ; bottom = au-dessus du bas 20 %. Sous-titres : entre 55 et 70 % de hauteur, jamais dans les marges. Texte ou captions portent l'idée de chaque plan parlé.
 - **voix off** (`voiceoverLine`) : mots max = 2,3 x durée du plan en s, arrondi à l'inférieur (3 s = 6 mots). Chiffres et unités comptent comme des mots (« 3 h » = 2). Le texte à l'écran n'est jamais la voix mot pour mot.
 - **asset voiceover** : `text` = le texte lu à voix haute (sinon les `voiceoverLine` de toutes les scènes, dans l'ordre) ; `voiceStyle` = la description de la voix (âge, ton, langue), qui choisit la voix et n'est JAMAIS lue. Ne mets jamais « Voix jeune… : » dans `prompt`.
 - **scène sans média** : chaque scène a au moins un asset image ou vidéo (ou un `motion`). Sinon le build prolonge le plan précédent ou pose un fond de marque (jamais de noir) et `qualityIssues` signale la scène sans visuel.
@@ -111,7 +114,7 @@ Règle public mineur : ton sans peur ni pression, vocabulaire scolaire, pas de m
 
 ## 7. Fiche son (obligatoire)
 
-Avant de présenter, écris dans `audioNote` ou `direction` : genre et BPM ; plan du temps fort ; voix (âge, ton, débit, langue) ; 1 sfx au plus par coupe ; musique à 0,5 avec `set_duck` niveau 0,5 (≈ 0,25 sous la voix). Voix off obligatoire pour explainer et histoire, facultative pour une pub courte. Musique libre de droits générée, posée sur toute la durée (début à fin, fondu final), jamais un son tendance sous licence. Champs `sfx` et `audioNote` de chaque plan : seulement le bruitage et la note du plan.
+Avant de présenter, écris dans `audioNote` ou `direction` : genre et BPM ; plan du temps fort ; voix (âge, ton, débit, langue) ; 1 sfx au plus par coupe ; musique à 0,5 avec `set_duck` niveau 0,5 (≈ 0,25 sous la voix). Qui la pose : `build_from_storyboard` pose la musique et la voix déjà générées ; si une piste manque ou est trop courte, `clapova:monteur` (étape 3b) la pose de 0 à la fin. Voix off obligatoire pour explainer et histoire, facultative pour une pub courte. Musique libre de droits générée, posée sur toute la durée (début à fin, fondu final), jamais un son tendance sous licence. Champs `sfx` et `audioNote` de chaque plan : seulement le bruitage et la note du plan.
 
 ## 8. Continuité
 

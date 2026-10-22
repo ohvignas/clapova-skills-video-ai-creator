@@ -13,15 +13,17 @@ Ce skill est la source unique pour : le routage d'une génération, le choix aut
 
 - Français, « vous », court. Pas d'identifiant ni de JSON dans le chat : l'aperçu et une ligne (modèle, durée, format).
 - Une question à la fois, seulement si l'information manque vraiment (sujet absent, format inconnu pour une vidéo de plateforme).
-- Pas de confirmation de coût pour une génération unique, pas de question sur le modèle : les outils `generate_*` prennent le meilleur modèle permis par le plan et le solde (`intent:"value"` par défaut). `intent:"quality"` seulement si l'utilisateur veut du premium ; `"cheap"` ou `"speed"` s'il le demande.
+- Génération unique : pas d'attente d'accord, mais annonce le coût en une ligne (lis-le dans le retour de l'outil ; avant une vidéo de 10 s, `get_credits` si le solde est incertain). Pas de question sur le modèle : les outils `generate_*` prennent le meilleur modèle permis par le plan et le solde (`intent:"value"` par défaut). `intent:"quality"` seulement si l'utilisateur veut du premium ; `"cheap"` ou `"speed"` s'il le demande.
 
 ## Routage
 
-1. Skill dédié d'abord : photo produit, pub statique, bannière → `clapova:product-photoshoot` ; fiche marketplace → `clapova:marketplace-cards` ; miniature → `clapova:youtube-thumbnail` ; vidéo explicative → `clapova:video-explainer` ; logo, charte → `clapova:brandkit` ; personne récurrente → `clapova:personnages` ; retouche d'une partie d'image → `clapova:image-edit` ; montage → `clapova:monteur`.
+1. Skill dédié d'abord : photo produit, pub statique, bannière → `clapova:product-photoshoot` ; fiche marketplace → `clapova:marketplace-cards` ; miniature → `clapova:youtube-thumbnail` ; vidéo explicative → `clapova:video-explainer` ; logo, charte → `clapova:brandkit` ; personne récurrente → `clapova:personnages` ; retouche d'une partie d'image → `clapova:image-edit` ; montage → `clapova:monteur` (et lis d'abord `get_guide('montage')`) ; « fais-moi une pub / une vidéo de 30 s » en plusieurs plans → `clapova:storyboard` puis `clapova:monteur` ; « fais comme cette vidéo YouTube / TikTok » → `clapova:recreer-depuis-reference` ; talking head → `clapova:talking-head`.
 2. Sinon :
    - **Image** : `generate_image({prompt, aspectRatio?, imageUrl?, name, projectId?})`. Avec `imageUrl`, un modèle d'édition est choisi (restyle global).
-   - **Vidéo** : `generate_video({prompt, aspectRatio?, imageUrl?, preset?, presets?, intensity?, name, projectId?})`. 10 s par défaut (8 s pour Veo). `imageUrl` = première image. Mouvements et VFX : `clapova:presets`.
-   - **Suite d'une vidéo** : `continue_video({mediaId, prompt, clipId?, projectId?})` (dernière image réelle, placée après le clip source).
+   - **Vidéo** : `generate_video({prompt, aspectRatio?, imageUrl?, preset?, presets?, intensity?, name, projectId?})`. 10 s par défaut (8 s pour Veo). `imageUrl` = première image. Mouvements et VFX : `clapova:presets` (appelle `list_video_presets` pour les ids valides avant de citer un preset).
+   - **Suite d'une vidéo** : `continue_video({mediaId, prompt, clipId?, name?, intent?, projectId?})` (dernière image réelle ; placée après le clip source seulement si celui-ci est sur la timeline). Pas de `preset`, `imageUrl` ni `aspectRatio` : le mouvement de caméra se dit dans la phrase du prompt.
+   - **3D** : `generate_3d` (objet depuis une image ou un texte) et `turntable_3d` (rotation) ; coût dans la description de l'outil.
+   - **B-roll d'un script** : `generate_broll` (`dryRun:true` d'abord), via `clapova:monteur`.
    - **Voix off** : `generate_voiceover({text})`, texte lu mot pour mot.
    - **Musique** : `generate_music({prompt})` : style, tempo, instruments, « sans paroles » si besoin.
 3. Comparer ou chiffrer : `list_models`, `pick_best_model`, `estimate_plan` (lot de plus de 3 générations : annoncer le total, puis lancer). Détail des modèles et des plans : `clapova:model-catalog`.
@@ -30,7 +32,7 @@ Ce skill est la source unique pour : le routage d'une génération, le choix aut
 ## Prompt (voir aussi `clapova:prompts-video`)
 
 - Sujet, action, lieu, lumière, cadrage, style, en une ou deux phrases concrètes. Texte à afficher entre guillemets, court.
-- Gardez le texte de l'utilisateur en français : Clapova le réécrit en anglais pour le modèle.
+- Gardez le texte de l'utilisateur en français : Clapova le réécrit en anglais pour le modèle. Détails modèle par modèle : `get_guide('generation')`.
 - Vidéo : une action par plan ; le mouvement de caméra passe par un preset, pas par la phrase.
 - Jamais de personne réelle identifiable ni de marque tierce sans demande explicite.
 - `name` : titre court en français, toujours renseigné.
@@ -54,13 +56,13 @@ Chaque description d'outil donne son coût ; les échecs sont remboursés. `get_
 
 ## Critères de fin
 
-Le média existe dans la Bibliothèque (ou le projet), l'aperçu est montré, le coût est donné en une ligne, une seule suite est proposée. Pour une vidéo : regarde une image extraite (`extract_frames`, gratuit) avant de la présenter, pour vérifier cadre rempli et absence de déformation.
+Le média existe dans la Bibliothèque (ou le projet), l'aperçu est montré, le coût est donné en une ligne, une seule suite est proposée. Pour une vidéo : regarde une image extraite (`extract_frames`, gratuit) avant de la présenter, pour vérifier cadre rempli et absence de déformation. Pour une image : ouvre-la (URL du média) et vérifie sujet, texte et mains avant de la présenter ; une seule régénération en cas de défaut. Voix off : durée comparée au plan visé (`get_media_info`).
 
 ## Limites
 
-Pas de 3D (GLB), pas plus de 10 s en un appel (enchaîner avec `continue_video` ou au montage). La 4K est une option d'export (`export_video`), pas de génération.
+Pas plus de 10 s en un appel (enchaîner avec `continue_video` ou au montage). La 4K est une option d'export (`export_video`), pas de génération.
 
 ## Exemples de demandes
 
-- « Anime cette photo avec un crash zoom » → `generate_video({imageUrl, prompt, preset:"crash-zoom"})`.
+- « Anime cette photo avec un crash zoom » → `generate_video({imageUrl, prompt, preset:"crash-zoom"})` (id présent dans `list_video_presets`).
 - « Une musique lo-fi de 30 s sans paroles » → `generate_music`.

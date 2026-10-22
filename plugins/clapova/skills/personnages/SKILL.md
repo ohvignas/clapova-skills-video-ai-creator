@@ -15,26 +15,26 @@ Adapté du workflow `higgsfield-soul-id` (github.com/higgsfield-ai/skills, MIT, 
 ## Règles
 
 - Français, « vous ». Pas d'identifiant brut dans le chat : « Personnage « Léa » prêt ».
-- Jamais de célébrité, de personnalité publique, de mineur, ni de personne réelle autre que l'utilisateur.
+- Jamais de célébrité, de personnalité publique, de mineur, ni de personne réelle autre que l'utilisateur. Refus type : « Je ne peux pas créer un personnage à partir d'une personne réelle autre que toi, ni d'un mineur. Je peux créer un personnage original, ou utiliser tes propres photos. »
 - Rien n'est silencieux : `create_character`, `train_character` et `swap_character_in_video` renvoient un lien que l'utilisateur ouvre pour confirmer (consentement, contrôle de sécurité).
 
 ## Déroulé
 
 1. `list_characters` : réutilisez un personnage existant s'il convient.
 2. Sinon demandez le nom (un mot) et le type : `self` (l'utilisateur) ou `fictional`.
-3. Photos pour `self` : 5 à 12 photos nettes, une seule personne, yeux visibles, sans lunettes de soleil ni filtre ; angles variés (face, trois-quarts), lumières et expressions variées, du buste au plein pied.
-4. `create_character({name, kind, style?, description?})`, donnez le lien de confirmation, attendez.
+3. Photos pour `self` (elles s'ajoutent APRÈS `create_character`, via le lien de confirmation ; `create_character` n'a aucun paramètre d'envoi : fais préparer les photos, ne les demande pas dans le chat. Des photos déjà en bibliothèque se retrouvent avec `list_references` ; `create_upload_link` sert si l'utilisateur doit en envoyer d'autres) : 5 à 12 photos nettes, une seule personne, yeux visibles, sans lunettes de soleil ni filtre ; angles variés (face, trois-quarts), lumières et expressions variées, du buste au plein pied.
+4. Annonce le coût (`get_credits` ; une vidéo test coûte bien plus qu'une image : teste d'abord en image), puis `create_character({name, kind, style?, description?})`, donnez le lien de confirmation, attendez.
 5. Utilisation :
    - image : `generate_with_character({characterId, prompt, type:"image"})` ;
    - vidéo : `type:"video"` (la référence principale sert de première image) ;
    - voix : `generate_voice_with_character({characterId, text})` ;
-   - remplacer une personne dans une vidéo existante : `swap_character_in_video` (devis + lien, attestation de l'utilisateur).
+   - remplacer une personne dans une vidéo existante : `swap_character_in_video({characterId, videoUrl, durationSec, mode?})` (`videoUrl` https, durée en secondes via `get_media_info` ; devis en crédits + lien de confirmation, attestation de l'utilisateur). La voix de `generate_voice_with_character` est synthétique, pas un clone de la voix de l'utilisateur : dis-le si on te demande « avec ma voix ».
 
 ## Série cohérente (test avant le lot)
 
-1. Génère **un seul plan test** (`generate_with_character`), extrais une image (`extract_frames`) et compare au visage de référence.
+1. Génère **un seul plan test** (`generate_with_character`), extrais une image (`extract_frames`) et compare au visage de référence (affiche les deux : l'URL de l'image extraite et celle de la référence, `list_references`).
 2. Fidèle : lance la série, en gardant la fiche personnage figée du storyboard et la même référence principale à chaque plan.
-3. Un plan dérive : régénère ce seul plan et remplace-le (`replace_media` dans `apply_edit_plan`), pas toute la série.
+3. Un plan dérive : régénère ce seul plan et remplace-le (`get_timeline` d'abord, puis `replace_media` dans `apply_edit_plan`), pas toute la série. Une fois la série montée, `review_montage` vérifie la cohérence entre plans ; livre ensuite avec le lien du projet (`clapova:monteur`).
 4. Choisis la finalité avant d'entraîner : photos fixes ou vidéo (un `train_character` pour l'usage dominant).
 
 ## Coûts et pièges

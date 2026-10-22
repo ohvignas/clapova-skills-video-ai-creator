@@ -15,7 +15,9 @@ description: Use when a Clapova user wants a YouTube thumbnail, Shorts cover or 
 
 ## 1. Entretien
 
-Sujet et promesse honnête · qui apparaît (0–3 personnes ; visage de l'utilisateur → son Personnage) · logo · titre de 2–4 mots (par défaut : image sans texte) · format : 16:9 YouTube, 9:16 Shorts, 4:5 Instagram · une miniature ou une série (~4).
+Sujet et promesse honnête · qui apparaît (0–3 personnes ; visage de l'utilisateur → son Personnage) · logo · titre de 2–4 mots (par défaut : image sans texte) · format : 16:9 YouTube, 9:16 Shorts ; 4:5 Instagram n'est pas un format de génération (`generate_image` accepte 16:9, 9:16, 1:1) : génère en 1:1 ou 9:16 puis recadre · une miniature ou une série (~4).
+
+Coût : `get_credits`, puis annonce en une ligne le coût de la série (4 variantes dépassent 3 générations : `estimate_plan` et accord avant de lancer, plafond de 16 générations).
 
 ## 2. Concept
 
@@ -32,23 +34,24 @@ Sujet et promesse honnête · qui apparaît (0–3 personnes ; visage de l'utili
 7. Lieu, 8. composition (un héros sur un tiers, profondeur), 9. fond vif contrasté avec vignettage.
 10. Lumière : key forte, fill doux, contre-jour. 11. Étalonnage : vif, brillant, noirs profonds.
 
-Personne : `generate_with_character({type:"image"})` ; sinon `generate_image`. Une génération par concept/émotion (pas de lot identique).
+Personne : `generate_with_character({type:"image"})` ; sinon `generate_image` (photoréel : `pick_best_model`). `generate_image` n'accepte qu'UNE image de référence (`imageUrl`) : visage via le Personnage, puis pose le logo en second temps avec `edit_image_precise` (références multiples, jusqu'à 9 avec `flux`). Une génération par concept/émotion (pas de lot identique). Garde l'URL de chaque image générée pour la livraison.
 
 ## 4. Contrôle
 
-Identité fidèle, aucun texte parasite, émotion et héros lisibles à 120 px de large, fidèle à la vidéo. Échec net → relancer au plus 2 fois.
+Identité fidèle, aucun texte parasite, émotion et héros lisibles à 120 px de large (juge-le en regardant l'image réduite, p. ex. à l'ouverture dans la vue miniature ; aucun outil ne la redimensionne), fidèle à la vidéo. Échec net → relancer au plus 2 fois.
 
 ## 5. Retouches et titre
 
-Retouche ciblée : `generate_image` avec `imageUrl` = la miniature choisie et « change ONLY <expression | background | rim light color>, keep everything else identical ». Titre exact : `edit_image_precise` avec le modèle `ideogram` (texte net, voir `clapova:image-edit`), ou surimpression déterministe (police grasse, contour épais) plutôt que texte généré dans l'image.
+Retouche ciblée : `generate_image` avec `imageUrl` = la miniature choisie et « change ONLY <expression | background | rim light color>, keep everything else identical ». Titre exact : `edit_image_precise` avec le modèle `ideogram` (texte net, voir `clapova:image-edit` ; réservé aux plans Créateur et Studio après 2 essais offerts : sinon `model:"economique"`), ou surimpression déterministe (police grasse, contour épais) plutôt que texte généré dans l'image.
 
 ## Pièges
 
 - Texte cuit dans l'image par le modèle : déformé, surimpose-le.
+- « Refais cette miniature YouTube » avec une URL de vidéo : les outils ne téléchargent pas YouTube. Demande l'image de la miniature en fichier (`create_upload_link`) ou sa description, et n'en tire que l'analyse visuelle (composition, émotion, couleurs) ; jamais en `imageUrl`.
 - Plus de trois visages ou deux idées : un seul sujet focal.
 - Promesse que la vidéo ne tient pas : exagérer oui, mentir non.
 - Couverture de Reel : image de la vidéo elle-même d'abord (`extract_thumbnail`, gratuit), génération seulement si rien ne convient.
 
 ## Livraison
 
-Images + étiquette (« choc / gros plan »), format et présence de texte.
+Images (liens) + étiquette (« choc / gros plan »), format, présence de texte, coût total en une ligne, puis un court message de félicitations original avec un emoji.

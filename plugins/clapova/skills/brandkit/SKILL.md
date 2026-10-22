@@ -14,8 +14,10 @@ description: Use when a Clapova user wants a brand applied consistently to video
 
 ## 1. Classer la demande
 
-Commencez par `get_brand_kit` (kit existant). Marque à importer depuis un site : `import_brand_from_website({url})` puis `apply_brand_import` après accord explicite (skill `marque-depuis-site` du plugin).
+Commencez par `get_guide({topic:'marque'})` (méthode officielle du serveur) puis `get_brand_kit` (kit existant). Kit vide alors que l'utilisateur dit « mets mes couleurs » : demande-les (hex) ou propose `import_brand_from_website` ; ne devine rien. Kit existant avec un autre logo ou d'autres couleurs que la demande : montre l'écart en deux lignes et laisse choisir (garder le kit, ou le remplacer après accord explicite) ; n'écrase jamais en silence. Marque à importer depuis un site : `import_brand_from_website({url})` puis `apply_brand_import` après accord explicite (skill `marque-depuis-site` du plugin).
 
+
+**Inventaire des fichiers fournis** : donne un rôle à chacun : logo officiel, variante de logo, police, palette, charte existante, référence de style (inspiration seulement), contenu. Une inspiration n'est jamais traitée comme un actif officiel sans confirmation. Pour s'inspirer d'une vidéo ou d'une chaîne (palette, ton, rythme), passe par `clapova:recreer-depuis-reference` : tu en tires des idées, jamais la marque de quelqu'un d'autre.
 
 - `appliquer` : l'utilisateur a déjà logo/couleurs → ne rien redessiner.
 - `compléter` : créer seulement les éléments manquants requis par le livrable.
@@ -23,7 +25,9 @@ Commencez par `get_brand_kit` (kit existant). Marque à importer depuis un site 
 
 ## 2. Brand Lock (la fiche qui fait foi)
 
-Notez : nom exact, logo officiel (URL), couleurs hex (`primary`, `background`, `text`), polices (titre / texte), formes, interdits. Cette fiche alimente **telle quelle** le champ `brand` de `apply_template` / `create_from_template` (`name`, `primary`, `background`, `text`, `logoUrl`) et chaque prompt d'image (« exact hex #… », polices nommées). C'est la source unique des couleurs et polices pour les autres skills.
+Notez : nom exact, logo officiel (URL), couleurs hex (`primary`, `background`, `text`), polices (titre / texte), formes, interdits. Cette fiche est la source unique des couleurs et polices pour les autres skills. Marque chaque champ : `fixé` (fourni ou approuvé, on n'y touche pas sans permission), `proposé` (comble un manque, révisable), `inconnu` (ne rien inventer, demander). Dis aussi d'où vient la valeur : déclarée par l'utilisateur, mesurée sur un fichier, observée à l'œil, ou déduite.
+
+Application dans les outils : le kit de marque est appliqué automatiquement par `apply_template` (paramètre `brandLock`, vrai par défaut ; `false` l'ignore) ; ne le repasse pas à la main. `apply_template` n'a que `brand:{name, primary, background, text}` : le logo (`logoUrl`) ne passe que par `create_from_template`. Dans les prompts d'image : « exact hex #… », polices nommées.
 
 ## 3. Éléments requis selon le livrable
 
@@ -33,13 +37,15 @@ Notez : nom exact, logo officiel (URL), couleurs hex (`primary`, `background`, `
 
 ## 4. Créer ce qui manque
 
-1. **Palette** : proposer 2–3 palettes de 4–5 hex, rendues en HTML (pastilles + exemple de titre) ; contraste texte/fond ≥ 4,5:1.
-2. **Logo** : proposer 3 concepts de symbole distincts via `generate_image` (fond uni, couleurs de la palette validée, « flat vector style, no text unless the brand name is requested »). Changer la palette invalide le logo généré avec elle.
-3. **Typographie** : 2–3 paires Google Fonts (titre / texte) rendues avec le vrai nom de marque.
+Avant tout appel payant : liste ce que tu vas générer (nombre de logos, de visuels), annonce le coût en une ligne (`get_credits`, `estimate_plan` au-delà de 3 images) et attends l'accord. Aucune génération « en plus » : chaque sortie sert un livrable précis.
+
+1. **Palette** : proposer 3 palettes vraiment différentes de 3 à 6 couleurs nommées (hex), chacune avec les rôles (fond, texte, principale, accent) et une phrase de justification, rendues en HTML (pastilles + exemple de titre) ; contraste texte/fond ≥ 4,5:1. Ne choisis pas à la place de l'utilisateur ; une fois choisie, la palette est fixée dans le Brand Lock tout de suite.
+2. **Logo** : par défaut `generate_vector_logo` (Recraft, vectoriel propre) avec 3 concepts de symbole distincts (couleurs de la palette validée, texte seulement si le nom de marque est demandé, orthographe vérifiée) ; `generate_image` seulement pour une illustration ou une mascotte. Un logo fourni en PNG/JPG : `vectorize_logo`, jamais redessiné. Changer la palette invalide le logo généré avec elle.
+3. **Typographie** : 2–3 paires Google Fonts (titre / texte), chaque paire unique, rendues avec le vrai nom de marque. Si la marque utilise une police propriétaire sans fichier fourni, garde son nom comme règle observée et propose un substitut Google en le disant clairement ; ne redistribue jamais un fichier de police.
 
 ## 5. Produire
 
-Réutiliser partout la même source de logo (jamais redessiné). Visuels photo : `generate_image` avec le Brand Lock copié dans le prompt. Vidéos : modèles de montage avec `brand` (`clapova:presets`). Contrôler chaque rendu ; ne réparer que ce qui échoue.
+Réutiliser partout la même source de logo (jamais redessiné). Visuels photo : `generate_image` avec le Brand Lock copié dans le prompt. Vidéos : modèles de montage avec `brand` (`clapova:presets`). Contrôler chaque rendu en l'ouvrant (URL du média, `get_media_info` pour le format) puis, sur l'ensemble produit, un tableau de cohérence : orthographe du nom, logo identique, rôles de couleur, paire de polices, texte exact. Un écart inexpliqué est une dérive à corriger ; ne réparer que ce qui échoue. Livrer : liens des fichiers, `/app/marque` pour voir le kit, et un court message de félicitations original avec un emoji.
 
 ## Pièges
 
@@ -47,6 +53,7 @@ Réutiliser partout la même source de logo (jamais redessiné). Visuels photo :
 - Palette changée après un logo généré : le logo est à refaire.
 - Texte du logo faux : vérifie l'orthographe du nom avant de livrer.
 - Marque qui change : ne régénère que les sorties qui en dépendent.
+- Pas de coût annoncé avant les logos : interdit.
 
 ## Critères de fin
 
@@ -54,4 +61,4 @@ Brand Lock écrit (nom, hex, polices, logo, interdits), choix validés par l'uti
 
 ## Écarts
 
-Logo vectoriel SVG : `generate_vector_logo` (Recraft V3, style vectoriel) ou `vectorize_logo` (PNG/JPG vers SVG), SVG nettoyé. Charte PDF : `export_brand_guidelines` (lien de téléchargement) ou bouton « Télécharger la charte (PDF) » sur /app/marque. Pas de PPTX. Les scripts Python de Higgsfield ne sont pas repris.
+Logo vectoriel SVG : `generate_vector_logo` (Recraft V3) ou `vectorize_logo` (PNG/JPG vers SVG), SVG nettoyé. Charte PDF : `export_brand_guidelines` (lien de téléchargement) ou bouton « Télécharger la charte (PDF) » sur /app/marque. Pas de PPTX. Les scripts Python de Higgsfield ne sont pas repris.

@@ -17,7 +17,7 @@ Outil : `edit_image_precise` (agent et MCP). Page : `/editeur`.
 
 Ideogram 4.5 et FLUX 3 : plans Créateur et Studio. Gratuit / Découverte : **2 essais à vie**
 (crédits débités quand même). Refus `model_requires_plan` → proposer `economique`
-ou le passage au plan supérieur, jamais insister.
+ou le passage au plan supérieur, jamais insister. Après les 2 essais offerts, prévenir avant la 3e passe que le plan est requis.
 
 ## Bonnes pratiques (doc Ideogram / BFL)
 
@@ -34,14 +34,18 @@ ou le passage au plan supérieur, jamais insister.
    pour plusieurs références (produit, matière, logo), Ideogram pour le texte et les masques fins.
 6. **Haute résolution** (> 2 MP, zone locale) : passer par `/editeur`, qui découpe la zone
    avec 35 % de marge, l'édite puis la réinsère au pixel près. L'outil agent, sans canevas,
-   envoie l'image entière avec la position des zones dans la consigne.
+   envoie l'image entière avec la position des zones dans la consigne. Si l'image dépasse 2 MP et que `/editeur` n'est pas disponible (contexte MCP seul), dis-le : la qualité hors zone peut baisser ; propose de réduire l'image source ou de continuer en connaissance de cause.
+
+**« Agrandis l'image »** : aucun outil d'agrandissement (upscale) n'est exposé ici. Ne promets pas ; propose `/editeur`, ou de régénérer l'image au format voulu (`clapova:generate`).
+
+**Texte sur un objet** : modèle `ideogram`, texte court entre guillemets (3 mots), puis vérifie la lisibilité en ouvrant le résultat.
 7. **Couleurs** : nommer la couleur cible et la matière (« pull en laine vert sapin »),
    pas seulement « vert ».
 8. **Retirer un objet** : « retirer l'objet et reconstruire l'arrière-plan à l'identique ».
 
 ## Zones dans l'outil agent
 
-`edit_image_precise({imageUrl, instruction?, zones?, referenceUrls?, model?, projectId?})`.
+`edit_image_precise({imageUrl, instruction?, zones?, referenceUrls?, model?, projectId?})`. `imageUrl` doit être un lien https public : une image jointe sans URL passe d'abord par `import_media` ou `create_upload_link` (`clapova:utiliser-clapova`). Avant la 1re passe : `get_credits` si le solde est incertain, et annonce le coût de la série (1 ou 2 crédits par passe).
 `zones: [{ x, y, width, height, instruction }]` (8 au plus) en **% de l'image** (0–100, origine en haut
 à gauche). `referenceUrls` : 4 au plus pour `ideogram`, 9 pour `flux`. Estimer la boîte à partir de la description de l'utilisateur ; en cas de doute,
 la prendre plus large.
@@ -55,4 +59,4 @@ la prendre plus large.
 
 ## Critères de fin
 
-La zone est modifiée, le reste est identique (compare à l'original), pas de texte parasite, résolution conservée. Montre l'avant/après avec une étiquette courte et le coût (1 ou 2 crédits par passe) ; propose une seule suite.
+La zone est modifiée, le reste est identique (affiche l'URL de l'original et celle du résultat, ou retrouve l'original avec `list_media`, et compare-les), pas de texte parasite, résolution conservée. Montre l'avant/après avec une étiquette courte et le coût (1 ou 2 crédits par passe) ; propose une seule suite.

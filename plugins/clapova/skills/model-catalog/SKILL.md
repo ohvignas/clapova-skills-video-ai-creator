@@ -1,6 +1,6 @@
 ---
 name: model-catalog
-description: Use when a Clapova user asks which AI model to use, what a generation costs in credits, which models their plan allows, or to compare image, video, voice and music models before generating ("quel modèle", "combien ça coûte", "le moins cher", "le meilleur pour…") with get_credits, list_models, list_model_params, pick_best_model, estimate_plan. Not to generate (clapova-generate).
+description: Use when a Clapova user asks which AI model to use, what a generation costs in credits, which models their plan allows, or to compare image, video, voice and music models before generating ("quel modèle", "combien ça coûte", "le moins cher", "le meilleur pour…") with get_credits, list_models, list_model_params, pick_best_model, estimate_plan. Not to generate (clapova:generate).
 ---
 
 # Clapova : catalogue de modèles et coûts
@@ -11,20 +11,21 @@ Outils MCP : `get_credits`, `list_models`, `list_model_params`, `pick_best_model
 
 1. `get_credits` : solde (gratuit du jour, mensuel, acheté) et plan (`free`, `decouverte`, `createur`, `studio`).
 2. `list_models` avec le type (image, vidéo, voix, musique) : modèles permis par le plan, prix en crédits, points forts.
-3. `pick_best_model` pour un brief précis ; `list_model_params` pour les réglages d'un modèle (durées, formats, bornes) ; `estimate_plan` pour un lot (plus de 3 générations) avant de lancer.
+3. `pick_best_model` pour un brief précis ; `list_model_params` pour les réglages d'un modèle (durées, formats, bornes) ; `estimate_plan({steps:[{mediaType:"image"|"video"|"music"|"voiceover", count?, intent?, needsImageInput?, aspectRatio?}]})` (12 étapes au plus) pour un lot de plus de 3 générations avant de lancer. Pour un lot mixte, ajoute une étape par type : 3 clips vidéo, 1 voix, 1 musique = 3 étapes. Il ne chiffre que la génération.
 4. Les outils `generate_*` choisissent déjà le meilleur modèle abordable : ne force un modèle que si l'utilisateur le demande.
 5. `intent` : `value` (défaut), `quality` seulement si l'utilisateur veut du premium, `cheap`, `speed`.
 6. Prompt adapté au modèle retenu : `clapova:prompts-video`.
 
 ## Réponse
 
-Un tableau court (modèle, crédits, durée ou format, pour quoi), puis une recommandation en une phrase. Un modèle hors plan : dis quel plan le débloque, sans insister, et propose l'alternative la plus proche.
+Un tableau court (modèle, crédits, durée ou format, pour quoi), puis une recommandation en une phrase. Un modèle hors plan : lis `requiredPlan` dans la réponse de `list_models` pour dire quel plan le débloque (n'en devine pas), sans insister, et propose l'alternative la plus proche.
 
 ## Pièges
 
 - Les prix sont ceux de l'outil, jamais ceux de ta mémoire : relis `list_models` à chaque demande.
 - Une vidéo de 10 s coûte bien plus qu'une image : propose de valider l'idée en image d'abord.
-- Résolution 1440p, 4K et 60 fps : options d'export de plans payants, pas de génération.
+- Un montage entier coûte plus que ses clips : sous-titres (transcription ≈ 1 crédit/min), modèles de montage (`captions` vrai par défaut), analyse des rushes et export (durée, résolution, fps) se facturent en plus ; vérifie la description de chaque outil et annonce un total honnête (`estimate_plan` ne couvre que la génération).
+- Résolution 1440p, 4K et 60 fps : options d'export (voir la description de `export_video`), pas de génération.
 
 ## Critères de fin
 

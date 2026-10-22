@@ -5,15 +5,15 @@ description: Use when a Clapova user wants to know if a short video will perform
 
 # Clapova : analyse de viralité
 
-Outil MCP : `analyze_virality({videoUrl, platform?})` avec `platform` parmi `tiktok`, `reels`, `shorts` (facturé en crédits). Il faut un lien https de la vidéo exportée (`videoUrl` de `get_render_status`).
+Outil MCP : `analyze_virality({videoUrl, platform?})` avec `platform` parmi `tiktok`, `reels`, `shorts` (facturé en crédits). Il faut un lien https de la vidéo exportée (`videoUrl` de `get_render_status`). Vidéo externe (fichier envoyé, pas un lien YouTube/TikTok qui ne s'importe pas) : `create_upload_link` ou `import_media_from_url` (fichier https direct), puis le lien du média. Lis `get_guide('viralite')` avant d'agir.
 
 ## Méthode
 
-1. Vidéo exportée ? Sinon `clapova:monteur` d'abord. `get_credits`, puis `analyze_virality`.
-2. Restitue le score, les 2 points forts et les 3 corrections prioritaires, chacune avec l'instant (en secondes) et l'action concrète.
-3. Corrige dans le projet (`clapova:monteur`) : une seule passe `apply_edit_plan` ; l'accroche (0 à 1,5 s) d'abord (`clapova:montage-recipes`), puis rythme, sous-titres, son.
-4. Contrôle gratuit avant de ré-analyser : `check_composition` et `render_preview_frames`. Réexporte, relance `analyze_virality` une seule fois pour confirmer le gain.
-5. Sous 70/100 après correction : dis-le franchement et propose des variantes d'accroche (`clapova:test-accroches`).
+1. Vidéo exportée ? Sinon `clapova:monteur` d'abord. `get_credits`, puis annonce le total en une ligne (première analyse + réexport + seconde analyse, trois postes facturés) et attends l'accord, surtout au premier export. Puis `analyze_virality`.
+2. Restitue le score, les 2 points forts et les 3 corrections prioritaires, chacune avec l'instant (en secondes) et l'action concrète. La réponse peut être plus pauvre (score et peu de corrections) : rapporte ce qui est renvoyé, n'invente ni sous-score ni seconde.
+3. Corrige dans le projet (`clapova:monteur`) : une seule passe `apply_edit_plan` (`get_timeline` avant ; musique sur toute la durée, son léger et contrôle image par image restent obligatoires : règles de `clapova:monteur`) ; l'accroche (0 à 1,5 s) d'abord (`clapova:montage-recipes`), puis rythme, sous-titres, son.
+4. Contrôle gratuit avant de ré-analyser : `check_composition`, `render_preview_frames` et `review_montage`. Réexporte, relance `analyze_virality` une seule fois pour confirmer le gain.
+5. Seuil 70/100 (le même que celui des automatisations de Clapova) : sous ce seuil après correction, dis-le franchement et propose des variantes d'accroche (`clapova:test-accroches`). Si le score baisse après correction, reviens à la version précédente (`snapshotId`) et dis-le.
 
 ## Pièges
 

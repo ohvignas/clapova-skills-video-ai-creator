@@ -1,6 +1,6 @@
 ---
 name: monteur
-description: Use when Claude must assemble, edit or finish a video IN Clapova (MCP server or in-app Agent) — "fais-moi le montage", "monte mes rushes", "assemble ces clips", "ajoute voix off, musique, titres, sous-titres", "dérushe", "vérifie et exporte" — with the full tool loop (get_timeline, apply_edit_plan, analyze_rushes, check_composition, render_preview_frames, review_montage, export_video). Owns tracks, budget, verification, music over the whole duration, light sound and the final link. Craft rules live in clapova-montage-recipes, motion in clapova-motion-design. Not for a single generated media (clapova-generate) or a multi-shot plan not yet approved (clapova-storyboard).
+description: Use when Claude must assemble, edit or finish a video IN Clapova (MCP server or in-app Agent) — "monte mes rushes", "assemble ces clips", "ajoute voix off, musique, titres, sous-titres", "dérushe", "vérifie et exporte" — with the full tool loop (get_timeline, apply_edit_plan, analyze_rushes, check_composition, render_preview_frames, review_montage, export_video). Owns tracks, budget, verification, music over the whole duration and the final link. Arbitration: this skill is loaded FIRST for any montage request; clapova-montage-recipes only supplies craft numbers, clapova-motion-design the animation. Not for one generated media (clapova-generate), an unapproved multi-shot plan (clapova-storyboard) or "refais comme cette vidéo" (clapova-recreer-depuis-reference).
 ---
 
 # Clapova : Claude monteur
@@ -11,10 +11,11 @@ Ce skill est la source unique pour : la boucle d'outils, les pistes, le budget, 
 
 ## Boucle obligatoire
 
+0. **Guides** : `get_guide('montage')` puis `get_guide('motion')`, lus en entier avant la première op (l'export refuse sans le guide motion). Si l'utilisateur donne une vidéo ou un lien « à imiter » : `clapova:recreer-depuis-reference` d'abord, puis reviens ici au montage. Annonce le coût total en une ligne avant de lancer un outil payant (étapes 2, 7, captions, génération), même sous 3 générations.
 1. **Lire** : `list_projects` puis `get_timeline({projectId})` avant toute édition. `list_media({projectId?, mediaType?})` donne les sources et leur `durationSec`.
 2. **Dérusher** (rushes parlés) : `analyze_rushes({projectId, clipIds?, minSilence?, keepSilence?, cutFillers?, cutRepetitions?})` propose des plages (silences, « euh », faux départs). Rien n'est modifié : applique-les avec l'op `cut_ranges{clipId, ranges:[{from,to}], ripple?}`. Transcription ≈ 1 crédit/min, gratuite si déjà faite.
 3. **Planifier** : `plan_shots({voiceoverMediaId?, musicMediaId?, totalSec?, aspectRatio, style?})` donne le nombre de plans et les coupes calées sur les beats. Écris le plan court (structure, durée, médias) avant la timeline.
-3b. **Musique sur toute la durée** : décide la musique dès le plan (`generate_music` ou un média de la Bibliothèque via `list_library`, sauf explicatif sobre sans demande). Elle est posée de 0 à la fin exacte de la vidéo (`add_clip{mediaId, start:0, duration:<durée totale>}`, boucle ou second morceau si elle est plus courte), `set_fades{fadeOut:1}` sur sa dernière seconde, `set_duck{level:0.5}` avec le clip à volume 0,5 (≈ 0,25 sous la voix, jamais sous 0,15). Une musique qui s'arrête avant la fin est un défaut bloquant.
+3b. **Musique sur toute la durée** : décide la musique dès le plan (`generate_music` ou un média de la Bibliothèque via `list_library`, sauf explicatif sobre sans demande). Elle est posée de 0 à la fin exacte de la vidéo (`add_clip{mediaId, start:0, duration:<durée totale>}`). Musique plus courte que la vidéo : un second `add_clip` du même média à la suite (boucle), ou `generate_music` à la durée totale, puis `set_fades{fadeOut:1}` sur sa dernière seconde ; `set_duck{level:0.5}` avec le clip à volume 0,5 (≈ 0,25 sous la voix, jamais sous 0,15 : valeur unique, aussi dans `clapova:montage-recipes`). Une musique qui s'arrête avant la fin est un défaut bloquant.
 4. **Monter en un seul lot** : `apply_edit_plan({projectId, ops, style?})`, 150 ops max. `ref:"x"` sur un élément créé, puis `"ref:x"` pour le viser dans le même lot. Le lot est atomique : si `failedOp` revient, corrige cette op et renvoie tout le lot. Lis les `warning` (rythme, audio, CTA) et corrige-les. `snapshotId` permet à l'utilisateur d'annuler.
 5. **Contrôler sans rendre** : `check_composition({projectId})` (gratuit) renvoie au plus 20 problèmes `{clipId, fix}` triés par gravité. Applique les `fix`. Une erreur restante bloque l'export.
 6. **Voir avant de livrer** : `render_preview_frames({projectId, times})`, 12 instants max par appel (gratuit, limité en fréquence) : accroche, chaque changement de plan, chaque titre, CTA. Regarde vraiment les images. Si l'outil renvoie `available:false`, dis-le à l'utilisateur.
@@ -52,27 +53,27 @@ Scènes motion (UI animée, mockups, compteurs) : `create_motion_scene({projectI
 
 - `generate_*`, `generate_broll`, `add_captions`, `analyze_rushes`, `frame_subject`, `track_motion`, `cutout_subject`, `review_montage` (vision) et `export_video` coûtent des crédits. Chaque description d'outil donne son coût.
 - Réutilise d'abord `list_media` / `list_library`. Génère seulement ce que l'utilisateur a demandé ou accepté, une fois par besoin, jamais en boucle « pour essayer ».
-- Plus de 3 générations : `estimate_plan`, annonce le total en une ligne, puis lance. `generate_broll` : `dryRun:true` d'abord.
+- Avant tout lot payant : annonce le total en une ligne (`estimate_plan` au-delà de 3 générations). `analyze_rushes`, `add_captions` et `review_montage` avec vision sont payants : même règle, même pour un seul appel. `generate_broll` : `dryRun:true` d'abord.
 - Ne demande pas de choisir un modèle : les outils prennent le meilleur permis par le plan et le solde (voir `clapova:generate`).
 
 ## Export
 
-`export_video({projectId, resolution?, fps?, preset?})`, facturé selon durée, résolution et fps. Prérequis : `get_guide('motion')` lu en entier, sinon refus. Une scène motion notée sous 8/10 bloque l'export (sauf `forcer:true` à la demande de l'utilisateur).
+`export_video({projectId, resolution?, fps?, preset?})`, facturé selon durée, résolution et fps. Prérequis : étape 0 faite (`get_guide('motion')` lu), sinon refus. Une scène motion notée sous 8/10 bloque l'export (sauf `forcer:true` à la demande de l'utilisateur).
 - Le format (16:9, 9:16, 1:1, 4:5) est celui du projet, fixé à `create_project`.
 - `resolution` : `720p`, `1080p` (défaut), `1440p`, `2160p` (4K). `fps` : 24, 25, 30 (défaut), 60. 1440p, 4K et 60 fps : plans payants ; 60 fps double le prix.
 - `preset` : `standard`, `tiktok` (1080p max), `reels` (1080p 30 fps max), `shorts`, `youtube`.
 - Contrôle préalable automatique (médias accessibles, pistes son, trims) : un refus renvoie `issues` avec `fix` par clip. Le son est normalisé au rendu à -14 LUFS / -1,5 dBTP.
-- Suivi : `get_render_status({renderId, projectId})` jusqu'à `done` : `videoUrl` (lien direct) et `studioUrl` arrivent avec une consigne. Donne ces liens à l'utilisateur avec un court message de félicitations original et un emoji (🎉, 🎬…). Ne dis jamais seulement que la vidéo est dans l'app. Fichier pro : `export_project_file({projectId, format:"aep_jsx"|"premiere_xml"|"fcpxml"})` (gratuit).
+- Suivi : `get_render_status({renderId, projectId})` jusqu'à `done`, puis suis « Livraison finale ». Fichier pro : `export_project_file({projectId, format:"aep_jsx"|"premiere_xml"|"fcpxml"})` (gratuit).
 
 ## Checklist de fin (critères de fin)
 
 Coche chaque ligne avant de dire « terminé » :
 - [ ] `check_composition` : zéro erreur ; chaque `warning` lu et traité.
 - [ ] Planche `render_preview_frames` regardée : 1re image pleine, chaque coupe, chaque titre entier, CTA lisible (pas de noir, pas de texte coupé, pas de sous-titre sur un visage).
-- [ ] Musique présente de 0 à la dernière image, clip à 0,5, `set_duck` niveau 0,5 (≈ 0,25 sous la voix), fondu final.
-- [ ] Son léger : un bruitage tous les 2 s au plus, gain 0,12 à 0,24 (0,35 maximum), pitch 0,95 à 1,08, jamais un whoosh à chaque coupe.
+- [ ] Musique présente de 0 à la dernière image, clip à 0,5, `set_duck` niveau 0,5, fondu final.
+- [ ] Son léger : un bruitage tous les 2 s au plus, gain 0,18 par défaut (0,12 à 0,25), pitch 0,95 à 1,08, jamais un whoosh à chaque coupe.
 - [ ] `review_montage` à `stop:true` (9/10 ou 3 tours).
-- [ ] Export seulement après accord, puis lien final (voir Livraison finale).
+- [ ] Export seulement après accord, puis « Livraison finale » (une seule fois, en bas).
 
 ## Pièges
 
@@ -88,7 +89,7 @@ Coche chaque ligne avant de dire « terminé » :
 - Exporter sans demande explicite, ou avec une erreur de `check_composition`.
 - Créer une piste ; mettre un effet dans un clip séparé ; écrire du HTML.
 - Ignorer un `warning` ; dépasser le budget ou le solde.
-- Livrer sans planche d'images (`render_preview_frames`) : cadre rempli et élément fort dès la 1re image, voix devant, musique sur TOUTE la durée (bouclée, fondu de sortie 1 s), volume 0,5 et ducking 0,5, bruitages calés sans saturation ni pitch hors 0,95 à 1,08 (détail : `clapova:montage-recipes` § Leçons).
+- Livrer sans planche d'images (`render_preview_frames`) ni respecter les leçons de `clapova:montage-recipes` § 9 (cadre rempli, musique sur toute la durée, bruitages sans saturation).
 - Narrer chaque étape : l'interface montre déjà les créations.
 
 ## Fin de tâche
@@ -98,6 +99,7 @@ En quelques lignes : structure avec les temps (accroche, corps, CTA), ce qui a �
 ## Exemples de demandes
 
 - « Monte mes 4 rushes en un Reel de 30 s avec sous-titres » → `analyze_rushes`, `cut_ranges`, `add_captions`, boucle 5 à 7.
+- « Refais cette vidéo YouTube / ce TikTok » → `clapova:recreer-depuis-reference` (`analyze_reference_video` pour YouTube, fichier envoyé pour TikTok), puis cette boucle.
 - « Fais une pub UGC avec ces vidéos » → `apply_template` `ugc-ad`, puis contrôle.
 - « Exporte en 4K 60 fps pour YouTube » → `export_video({resolution:"2160p", fps:60, preset:"youtube"})` après confirmation du coût.
 

@@ -66,3 +66,16 @@ progressive, critères de fin) et du dépôt github.com/heygen-com/hyperframes
 (Apache-2.0 : principe d'une composition rendue de façon déterministe). Les
 dépôts remotion-dev/skills et travisvn/awesome-claude-skills n'ont pas de
 licence confirmée : idées seulement, rien n'est repris.
+
+## Tour 1 de relecture (1.2.0)
+
+`recreer-depuis-reference`, ainsi que l'enrichissement de `brandkit`,
+`marque-depuis-site` et `video-explainer`, reprennent comme idées de méthode
+uniquement (reformulées, aucun texte recopié) des éléments de
+github.com/higgsfield-ai/skills (MIT, Copyright (c) 2026 Higgsfield AI) :
+fiche de marque aux champs fixés, proposés ou inconnus avec l'origine de
+chaque valeur, rôle donné à chaque fichier fourni (logo officiel, simple
+inspiration), trois palettes réellement différentes avant choix, tableau de
+cohérence de l'ensemble livré, vérification avant toute génération payante, et
+recette d'une vidéo de référence reprise sans copier son contenu. Le texte de
+la licence MIT reproduit plus haut s'applique à ces reprises.
