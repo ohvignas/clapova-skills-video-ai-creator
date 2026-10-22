@@ -13,7 +13,7 @@ Créez, montez et publiez avec Clapova depuis Claude Code : images, vidéos, voi
 ## Installation
 
 ```text
-/plugin marketplace add ohvignas/wideo
+/plugin marketplace add ohvignas/clapova-skills-video-ai-creator
 /plugin install clapova@clapova
 ```
 

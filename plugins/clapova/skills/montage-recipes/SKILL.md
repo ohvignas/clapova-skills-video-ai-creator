@@ -70,7 +70,7 @@ Ce skill est la source unique pour : accroche, rythme, styles, b-roll, transitio
 - **Cadre rempli, élément fort dès la 1re image** : jamais d'ouverture vide ou timide.
 - **Fil conducteur attaché** : un point, une flèche ou un titre qui suit un élément lui est attaché (`track_motion`, mêmes keyframes de groupe), jamais posé par des coordonnées absolues.
 - **Style créateurs / réseaux** : jeune, « à la Apple », vertical 9:16, sobre, net.
-- **Son** : voix devant, musique ≈ 0,35 en ducking sous la voix, bruitages calés sur l'image, -14 LUFS / -1,5 dBTP.
+- **Son** : voix devant, musique sur TOUTE la durée (bouclée, fondu de sortie 1 s), volume 0,5 et ducking 0,5 (≈ 0,25 sous la voix, audible), bruitages calés sur l'image, -14 LUFS / -1,5 dBTP.
 - **Clips IA** : réencodés en GOP 30 avant le rendu (fait par le worker de rendu, ne les remplace pas par des sources brutes).
 - **Voir avant de livrer** : une planche d'images (`render_preview_frames`) de l'accroche, des coupes, des titres et du CTA, regardée pour de bon.
 - **Contraste** : texte secondaire au moins `#B8B8C4` sur fond sombre.

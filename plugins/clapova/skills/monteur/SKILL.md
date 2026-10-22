@@ -69,7 +69,7 @@ Scènes motion (UI animée, mockups, compteurs) : `create_motion_scene({projectI
 - Exporter sans demande explicite, ou avec une erreur de `check_composition`.
 - Créer une piste ; mettre un effet dans un clip séparé ; écrire du HTML.
 - Ignorer un `warning` ; dépasser le budget ou le solde.
-- Livrer sans planche d'images (`render_preview_frames`) : cadre rempli et élément fort dès la 1re image, voix devant, musique ≈ 0,35 en ducking, bruitages calés sans saturation ni pitch hors 0,95 à 1,08 (détail : `clapova:montage-recipes` § Leçons).
+- Livrer sans planche d'images (`render_preview_frames`) : cadre rempli et élément fort dès la 1re image, voix devant, musique sur TOUTE la durée (bouclée, fondu de sortie 1 s), volume 0,5 et ducking 0,5, bruitages calés sans saturation ni pitch hors 0,95 à 1,08 (détail : `clapova:montage-recipes` § Leçons).
 - Narrer chaque étape : l'interface montre déjà les créations.
 
 ## Fin de tâche
