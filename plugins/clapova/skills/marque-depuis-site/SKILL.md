@@ -5,17 +5,17 @@ description: Use when a Clapova user wants to import their brand identity from a
 
 # Clapova : kit de marque depuis un site
 
-Outils MCP : `import_brand_from_website` (1 crédit), `apply_brand_import`, `get_brand_kit`, `export_brand_guidelines`.
+Outils MCP : `import_brand_from_website` (payant, voir sa description), `apply_brand_import`, `get_brand_kit`, `export_brand_guidelines`.
 
 ## Entrées autres qu'un site
 
 - **Chaîne YouTube** : `analyze_competitor({channel})` donne ton, rythme et titres via l'API officielle (indisponible si `status:'not_configured'`) ; ce n'est pas une charte, tu ne récupères ni logo ni couleurs. Demande le site de la marque.
 - **Vidéo envoyée** (fichier via `create_upload_link`) : `extract_frames` puis lis palette et ton à l'œil, comme inspiration seulement. Marque d'un tiers : refuse de l'appliquer.
-- Vidéo YouTube à analyser pour sa palette : `analyze_reference_video` renvoie une palette indicative (inspiration seulement) ; lien TikTok/Instagram : demande le site ou un logo en fichier.
+- Vidéo YouTube à analyser pour sa palette : `analyze_reference_video` renvoie une palette dans sa recette (indicative, vérifie qu'elle est présente dans le retour avant de la citer, inspiration seulement). Pour recopier le style d'une vidéo (rythme, plans, ton), c'est `clapova:recreer-depuis-reference`, pas ce skill. Lien TikTok ou Instagram, ou page de réseau social (profil Instagram, LinkedIn) comme URL : l'import de marque échoue ou reste partiel ; demande le site de la marque ou un logo en fichier. Plusieurs pages ou sous-domaine : importe la page d'accueil du domaine principal.
 
 ## Méthode
 
-0. `get_credits` : l'import coûte 1 crédit, annonce-le avant de lancer.
+0. `get_guide({topic:'marque'})` (méthode du serveur), puis `get_credits` : annonce le coût indiqué par la description de `import_brand_from_website` (aujourd'hui 1 crédit) avant de lancer.
 1. `get_brand_kit` : ce qui existe déjà (à ne pas écraser sans accord).
 2. `import_brand_from_website({url})` : logos, palette avec contrastes, typographies, ton, cible, valeurs, réseaux. N'écrit RIEN dans le kit. Une URL de page d'accueil donne le meilleur résultat. Site vide (application à page unique), domaine inatteignable ou page d'erreur : réessaie avec la page d'accueil, puis demande à l'utilisateur d'envoyer son logo (`create_upload_link`) et ses couleurs en hex ; n'invente rien.
 3. **Résume** en un tableau court : trouvé / absent / ce qui serait remplacé (couleurs, logo, polices, ton). Signale un contraste texte-fond sous 4,5:1.

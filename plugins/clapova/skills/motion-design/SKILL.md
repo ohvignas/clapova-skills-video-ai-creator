@@ -15,14 +15,14 @@ Ce skill est la source unique pour : méthode en 5 blocs, règles de cadre, poin
 
 Écris ce plan, avec une timeline chiffrée, avant la première op :
 1. **Entrées** : durée, format, marque, musique (sinon valeurs par défaut annoncées).
-2. **Direction** : une police sans empattement, un accent, un fond ; trois niveaux de texte.
+2. **Direction** : `get_brand_kit` d'abord (couleurs, police et logo de la marque priment ; sans marque, demande ou annonce une valeur par défaut). Une police sans empattement, un accent, un fond ; trois niveaux de texte.
 3. **Structure** : scènes avec temps de début et de fin, calées sur la musique (1 mesure = 4 temps, la chute = la coupe principale) ; sans musique, grille de 0,25 s.
 4. **Build** : les ops exactes (blocs, keyframes, effets) par scène.
 5. **Pièges** : ce qui peut casser (texte trop long, sujet coupé, contraste) et le contrôle prévu.
 
 ## Règles de cadre
 
-- Remplir le cadre : en 1080 de large, titres 140 à 180 px (120 px est le plancher absolu), sous-textes ≥ 34 px, élément principal sur au moins 60 % de la largeur.
+- Remplir le cadre : en 1080 de large, titres 140 à 180 px (120 px = plancher absolu, valeur unique citée partout ailleurs), sous-textes ≥ 34 px, élément principal sur au moins 60 % de la largeur.
 - Composition centrée verticalement dans la zone sûre, jamais collée en haut. Rien dans les coins ni dans les 20 % du bas en 9:16.
 - Un élément fort visible dès la première image ; le cadre est rempli, pas de vide.
 - Style créateurs / réseaux : jeune, « à la Apple », vertical 9:16.
@@ -33,7 +33,7 @@ Ce skill est la source unique pour : méthode en 5 blocs, règles de cadre, poin
 
 Un élément qui suit un autre (point d'accent sur une barre, flèche sur un bouton, titre sur un visage) doit être **attaché**, jamais placé par des coordonnées absolues calculées à la main :
 - dans une même composition : calques du même `add_motion` animés par les mêmes keyframes de groupe (ou même `motionPath`) ;
-- sur un objet filmé : `track_motion({projectId, clipId, targetClipId|text, prompt|point|box, offsetX?, offsetY?, followScale?})` (≈ 3 crédits / 10 s).
+- sur un objet filmé : `track_motion({projectId, clipId, targetClipId|text, prompt|point|box, offsetX?, offsetY?, followScale?})` (coût : description de l'outil).
 
 ## Timings et easings
 
@@ -41,6 +41,7 @@ Un élément qui suit un autre (point d'accent sur une barre, flèche sur un bou
 - Jamais `linear` ni l'ease par défaut. Entre en décélérant, sors en accélérant.
 - Repères : titre par mots 0,9 s (stagger 0,08) ; titre par lettres 1 s, un seul mot héros ; logo 1,2 s (échelle 0,6 à 1) ; lower third 0,5 + 2,5 + 0,3 s ; compteur 1,4 s puis pulsation 1,06 ; wipe 0,5 s ; push zoom 0,45 s ; zoom caméra 1 à 1,2 sur 1,2 s, jamais continu ; carte finale 1,5 s qui reprend la première image.
 - Interdits par défaut : lueur sur texte, burst de particules, RGB split, secousse, crossfade, dégradé gratuit. Glitch : 0,3 s, une fois par vidéo, ton tech seulement.
+- Dérogation : si l'utilisateur demande explicitement du glow, du néon, des particules ou un look glitch, fais-le (`particules`, `camera-glitch`, `overlay-*`), borne-le (une zone, une fois, intensité modérée), dis que c'est hors du style sobre par défaut, et contrôle la lisibilité sur la planche. Sans demande explicite, jamais.
 
 ## Blocs motion premium (premier choix)
 
@@ -48,7 +49,7 @@ Un élément qui suit un autre (point d'accent sur une barre, flèche sur un bou
 
 Exemple de variables réelles (vérifié dans le catalogue) : `add_motion_block({projectId, block:"title-kinetic-words", start:0.2, variables:{text:"3 ERREURS À ÉVITER", color:"#FFFFFF", font:"Anton"}})` ; seule `text` est obligatoire, les autres blocs ont leurs propres variables (`get_motion_catalog` les liste avec leur type).
 
-Coûts : `create_motion_scene` et `edit_motion_scene` incluent une note visuelle de 1 crédit ; `track_motion` ≈ 3 crédits / 10 s ; `cutout_subject` ≈ 3 crédits / 10 s. Annonce le total en une ligne et attends l'accord avant de lancer l'un d'eux, même pour un seul appel.
+Coûts : lis-les dans la description de chaque outil (ordre de grandeur : note visuelle de `create_motion_scene` / `edit_motion_scene` 1 crédit, `track_motion` et `cutout_subject` quelques crédits par 10 s ; les tarifs peuvent changer). Annonce le total en une ligne et attends l'accord avant de lancer l'un d'eux, même pour un seul appel.
 
 Pour une scène sur mesure (interface animée, mockup iPhone, feed, notifications, compteur, carte de fin) : `create_motion_scene({projectId, brief, ...})` puis `edit_motion_scene({projectId, sceneId, patch})` (note visuelle 1 crédit). Les évènements de la scène servent ensuite à `place_sfx_from_events({projectId})` pour caler les bruitages.
 
@@ -79,7 +80,7 @@ Temps en secondes depuis le début du clip ; `x`, `y` en % du cadre ; boîtes de
 | Transition | `set_transition{clipId\|at, edge, transition:{preset}}` : `transition-fondu`, `transition-fondu-noir`, `transition-zoom`, `transition-glisse`, `transition-whip`, `transition-flou`, `transition-rotation`, `transition-glitch`, `transition-flash`, `transition-volet` |
 | Rampe de vitesse | `speed_ramp{clipId, from, to, segments?}` |
 | Texte prêt à l'emploi | `add_text{..., effect:{preset}}` : `titre-cinetique`, `bandeau-titre`, `compteur`, `glitch`, `machine-a-ecrire`, `zoom-punch` |
-| Texte derrière le sujet | `cutout_subject({projectId, clipId, prompt|point|box})` (≈ 3 crédits / 10 s) |
+| Texte derrière le sujet | `cutout_subject({projectId, clipId, prompt|point|box})` (payant : voir l'outil) |
 | LUT | `create_lut({name, from?, grade?:{contrast, saturation, temperature, shadows, highlights, toning, fade}})` puis `apply_lut({projectId, clipId, preset|lutMediaId|cubeUrl, intensity?})` (gratuits) |
 
 ## Exemple
@@ -87,11 +88,12 @@ Temps en secondes depuis le début du clip ; `x`, `y` en % du cadre ; boîtes de
 Accroche « punch » puis titre par mots :
 
 ```json
+{"op":"add_clip","ref":"hook","mediaId":"<mediaId>","start":0,"duration":3}
 {"op":"set_motion","clipId":"ref:hook","keyframes":[{"t":0,"scale":1.6,"blur":12},{"t":0.35,"scale":1,"blur":0,"ease":"expo.out"}]}
 {"op":"add_block","block":"title-kinetic-words","start":0.2,"variables":{"text":"3 ERREURS À ÉVITER"}}
 ```
 
-Vérifie les variables réelles d'un bloc avec `get_motion_catalog` avant de l'utiliser.
+Les trois ops tiennent dans un seul `apply_edit_plan` (`ref:hook` désigne le clip créé dans le même lot). Vérifie les variables réelles d'un bloc avec `get_motion_catalog` avant de l'utiliser.
 
 ## Limites
 
@@ -99,21 +101,21 @@ Un sujet par suivi ou détourage, plans de 3 min au plus. 3D : textes extrudés 
 
 ## Qualité motion : grille de contrôle
 
-La note vient de `create_motion_scene` / `edit_motion_scene` : champ `score` (et `review.issues`, la liste des défauts à corriger) ; pour un montage entier c'est `review_montage`. Une scène ou un bloc n'est livrable qu'à 8/10 ou plus sur : cadre, lisibilité, point attaché, rythme, rien de coupé, contraste, hiérarchie (un seul élément dominant, titres 140 à 180 px, 120 px au minimum), remplissage (70 % de la hauteur utile), mouvement continu (jamais d'image identique à la précédente), cohérence de style (une police, 3 couleurs, mêmes rayons) et aucun texte superposé. Une scène minimale (« Bonjour » seul) ne dépasse pas 4.
+La note vient de `create_motion_scene` / `edit_motion_scene` : champ `score` (et `review.issues`, la liste des défauts à corriger) ; pour un montage entier c'est `review_montage`. Une scène ou un bloc n'est livrable qu'à 8/10 ou plus sur : cadre, lisibilité, point attaché, rythme, rien de coupé, contraste, hiérarchie (un seul élément dominant, titres selon « Règles de cadre »), remplissage (70 % de la hauteur utile), mouvement continu (jamais d'image identique à la précédente), cohérence de style (une police, 3 couleurs, mêmes rayons) et aucun texte superposé. Une scène minimale (« Bonjour » seul) ne dépasse pas 4.
 
 ## Contrôle image par image (obligatoire)
 
-Après create_motion_scene, edit_motion_scene, add_motion_block, apply_edit_plan avec blocs motion et build_from_storyboard : regarde CHAQUE image de contrôle (une par temps fort), liste les défauts, corrige, re-vérifie sur de nouvelles images. Pas de livraison ni d'export_video tant qu'une note est sous 8 ou qu'une image n'a pas été vue. export_video refuse une scène notée sous 8 (sauf forcer: true à la demande de l'utilisateur).
+Après create_motion_scene, edit_motion_scene, add_motion_block, apply_edit_plan avec blocs motion et build_from_storyboard : regarde CHAQUE image de contrôle (une par temps fort : accroche, chaque coupe, chaque titre, CTA). Planche : `render_preview_frames({projectId, times})`, 12 instants au plus par appel, à demander toi-même même pour un seul `add_motion_block` (aucun outil motion ne la renvoie seul) ; liste les défauts, corrige, re-vérifie sur de nouvelles images. Pas de livraison ni d'export_video tant qu'une note est sous 8 ou qu'une image n'a pas été vue. export_video refuse une scène notée sous 8 (sauf forcer: true à la demande de l'utilisateur).
 
 ## Son léger
 
-Au plus un bruitage par 2 s, seulement sur les temps forts (poids 0,6 et plus), whoosh réservé aux coupes de poids 0,85 et plus, jamais un whoosh à chaque coupe. Volume des bruitages autour de -20 dB (gain 0,18 par défaut, plage 0,12 à 0,25), -6 dB de plus sous la voix ; musique posée à 0,5 avec `set_duck` niveau 0,5 sous la voix (valeur unique, comme `clapova:monteur`) ; compteurs : 3 ticks par compteur. Hauteur 0,95-1,08.
+Au plus un bruitage par 2 s, seulement sur les temps forts (poids 0,6 et plus), whoosh réservé aux coupes de poids 0,85 et plus, jamais un whoosh à chaque coupe. Volume des bruitages autour de -20 dB (`volume` 0,18 par défaut, plage 0,12 à 0,25), -6 dB de plus sous la voix ; musique posée à 0,5 avec `set_duck` niveau 0,5 sous la voix (valeur unique, comme `clapova:monteur`) ; compteurs : 3 ticks par compteur. Hauteur 0,95-1,08.
 
 ## Pièges
 
 - Titre posé en coordonnées absolues sur un sujet qui bouge : utilise `track_motion` ou des keyframes de groupe.
 - Bloc utilisé sans lire ses variables : `get_motion_catalog` d'abord, une variable inconnue est refusée.
-- Texte secondaire gris sur sombre sous `#B8B8C4`, ou titre de moins de 120 px en 1080 de large (visé : 140 à 180 px).
+- Texte secondaire gris sur sombre sous `#B8B8C4`, ou titre sous le plancher de « Règles de cadre ».
 - Deux familles de transitions, ou un glitch plus d'une fois par vidéo.
 - Sons : un bruitage par événement, pas un tapis ; voir « Son léger ».
 

@@ -35,20 +35,22 @@ ou le passage au plan supérieur, jamais insister. Après les 2 essais offerts, 
 6. **Haute résolution** (> 2 MP, zone locale) : passer par `/editeur`, qui découpe la zone
    avec 35 % de marge, l'édite puis la réinsère au pixel près. L'outil agent, sans canevas,
    envoie l'image entière avec la position des zones dans la consigne. Si l'image dépasse 2 MP et que `/editeur` n'est pas disponible (contexte MCP seul), dis-le : la qualité hors zone peut baisser ; propose de réduire l'image source ou de continuer en connaissance de cause.
+7. **Couleurs** : nommer la couleur cible et la matière (« pull en laine vert sapin »), pas seulement « vert ».
+8. **Retirer un objet** : « retirer l'objet et reconstruire l'arrière-plan à l'identique ».
 
 **« Agrandis l'image »** : aucun outil d'agrandissement (upscale) n'est exposé ici. Ne promets pas ; propose `/editeur`, ou de régénérer l'image au format voulu (`clapova:generate`).
 
-**Texte sur un objet** : modèle `ideogram`, texte court entre guillemets (3 mots), puis vérifie la lisibilité en ouvrant le résultat.
-7. **Couleurs** : nommer la couleur cible et la matière (« pull en laine vert sapin »),
-   pas seulement « vert ».
-8. **Retirer un objet** : « retirer l'objet et reconstruire l'arrière-plan à l'identique ».
+**Texte sur un objet** : modèle `ideogram`, texte court entre guillemets (3 mots), puis fais valider la lisibilité (voir « Vérifier le résultat »).
 
 ## Zones dans l'outil agent
 
-`edit_image_precise({imageUrl, instruction?, zones?, referenceUrls?, model?, projectId?})`. `imageUrl` doit être un lien https public : une image jointe sans URL passe d'abord par `import_media` ou `create_upload_link` (`clapova:utiliser-clapova`). Avant la 1re passe : `get_credits` si le solde est incertain, et annonce le coût de la série (1 ou 2 crédits par passe).
+`edit_image_precise({imageUrl, instruction?, zones?, referenceUrls?, model?, projectId?})`. `imageUrl` doit être un lien https public : une image jointe sans URL passe d'abord par `create_upload_link({expectedKind:"image"})`, puis `get_upload_status` jusqu'à `done` (une URL https publique : `import_media_from_url`), et tu récupères l'URL du média (`get_media_info`). Avant la 1re passe : `get_credits` si le solde est incertain, et annonce le coût de la série (1 ou 2 crédits par passe).
 `zones: [{ x, y, width, height, instruction }]` (8 au plus) en **% de l'image** (0–100, origine en haut
-à gauche). `referenceUrls` : 4 au plus pour `ideogram`, 9 pour `flux`. Estimer la boîte à partir de la description de l'utilisateur ; en cas de doute,
-la prendre plus large.
+à gauche). `referenceUrls` : 4 au plus pour `ideogram`, 9 pour `flux`. Ne devine jamais une boîte à l'aveugle : sans vision de l'image, demande à l'utilisateur de situer l'objet (haut gauche, centre, bas droite, environ quelle part de la largeur) ou renvoie-le vers `/editeur` pour un placement précis ; en cas de doute, prends la boîte plus large. Exemple « retire la tasse » posée en bas à droite : `zones:[{x:62, y:60, width:30, height:32, instruction:"retirer la tasse et reconstruire la table à l'identique"}]`.
+
+## Vérifier le résultat
+
+En MCP seul, `edit_image_precise` ne renvoie aucune image inline : tu ne peux pas voir l'avant/après ni juger « texte lisible » ou « reste identique ». Deux preuves possibles : poser original et résultat dans un projet (`add_media_to_project`) et regarder `render_preview_frames`, ou donner les deux URL (original, résultat) et faire valider l'aperçu par l'utilisateur. Sans l'une des deux, dis « non vérifié visuellement ».
 
 ## Pièges
 
@@ -56,7 +58,8 @@ la prendre plus large.
 - Zone collée à l'objet : pas de place pour l'ombre. Élargis-la.
 - Cinq changements en une passe : trois passes valent mieux.
 - Retouche de texte : `ideogram` ; plusieurs références : `flux`.
+- PNG transparent ou logo : ne passe pas par cette retouche. Détourer un sujet : `cutout_subject` ; vectoriser un logo : `vectorize_logo`.
 
 ## Critères de fin
 
-La zone est modifiée, le reste est identique (affiche l'URL de l'original et celle du résultat, ou retrouve l'original avec `list_media`, et compare-les), pas de texte parasite, résolution conservée. Montre l'avant/après avec une étiquette courte et le coût (1 ou 2 crédits par passe) ; propose une seule suite.
+La zone est modifiée, le reste est identique, pas de texte parasite, résolution conservée : tout cela constaté par l'une des deux preuves de « Vérifier le résultat », sinon annoncé non vérifié. Montre l'avant/après avec une étiquette courte et le coût (1 ou 2 crédits par passe) ; propose une seule suite.

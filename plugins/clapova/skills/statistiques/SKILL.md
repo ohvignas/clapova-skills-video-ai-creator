@@ -9,11 +9,11 @@ Outils MCP : `get_statistics`, `get_post_stats`, `get_calendar`, `list_social_ac
 
 ## Méthode
 
-1. `get_statistics({fromDay, toDay, network?})` (défaut 28 jours) : totaux, période précédente, par réseau, par post, vues par jour.
+1. `get_statistics({fromDay, toDay, network?})` (dates au format AAAA-MM-JJ, défaut 28 jours ; `network` : tiktok, instagram, facebook, youtube, linkedin ou x) : totaux, période précédente, par réseau, par post, vues par jour.
 2. `get_post_stats({postId})` pour le détail d'un post (le meilleur et le pire) : prends le `postId` dans la réponse de `get_statistics` ou de `get_calendar`, jamais un identifiant inventé. Statut `pending` : les stats se mettent à jour toutes les 6 h, dis-le. Aucun réseau connecté : `list_social_accounts`.
 3. Restitue : 3 chiffres clés avec l'évolution en %, le top 3 des posts et ce qu'ils ont en commun (accroche, durée, format, heure, sujet), le réseau qui porte la croissance.
-4. Compare le pire post au meilleur : une hypothèse précise (accroche, durée, créneau) plutôt qu'un jugement. « Pourquoi cette vidéo a flop » : pour diagnostiquer le contenu, propose `analyze_virality` ou `review_montage` sur cette vidéo en annonçant le coût ; sinon reste sur la comparaison.
-5. Termine par 2 ou 3 apprentissages actionnables, puis fixe les dates des actions avec `get_calendar`, puis propose d'en faire le prochain contenu (`clapova:publication-calendrier`) ou de tester plusieurs accroches (`clapova:test-accroches`).
+4. Compare le pire post au meilleur : une hypothèse précise (accroche, durée, créneau) plutôt qu'un jugement. « Pourquoi cette vidéo a flop » : pour diagnostiquer le contenu, `analyze_virality` exige l'URL https d'une vidéo exportée, souvent absente pour un post publié : demande le fichier (`create_upload_link`), ou utilise `review_montage` seulement si le projet existe encore, en annonçant le coût ; sinon reste sur la comparaison.
+5. Termine par 2 ou 3 apprentissages actionnables, puis vérifie les créneaux libres avec `get_calendar` et planifie via `clapova:publication-calendrier` ; propose d'en faire le prochain contenu (`clapova:publication-calendrier`) ou de tester plusieurs accroches (`clapova:test-accroches`).
 
 ## Pièges
 

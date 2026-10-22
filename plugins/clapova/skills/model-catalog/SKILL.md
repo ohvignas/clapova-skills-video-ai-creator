@@ -5,6 +5,8 @@ description: Use when a Clapova user asks which AI model to use, what a generati
 
 # Clapova : catalogue de modèles et coûts
 
+Première ligne : `get_guide({topic:'generation'})` (le guide qui porte ce catalogue).
+
 Outils MCP : `get_credits`, `list_models`, `list_model_params`, `pick_best_model`, `estimate_plan`. Ressource : `clapova://models/catalog`.
 
 ## Méthode
@@ -16,9 +18,13 @@ Outils MCP : `get_credits`, `list_models`, `list_model_params`, `pick_best_model
 5. `intent` : `value` (défaut), `quality` seulement si l'utilisateur veut du premium, `cheap`, `speed`.
 6. Prompt adapté au modèle retenu : `clapova:prompts-video`.
 
+## Total d'un montage complet
+
+Somme honnête : clips générés (`estimate_plan`) + voix (`estimate_plan` type voiceover) + musique (`estimate_plan` type music) + sous-titres (≈ 1 crédit/min) + analyse des rushes éventuelle + `review_montage` avec vision (1 crédit) + export (durée, résolution, fps : description de `export_video`). Le moins cher : médias existants de la Bibliothèque, peu de clips, `intent:"cheap"`, 720p, `vision:false`. Avant de monter : `get_guide('montage')`.
+
 ## Réponse
 
-Un tableau court (modèle, crédits, durée ou format, pour quoi), puis une recommandation en une phrase. Un modèle hors plan : lis `requiredPlan` dans la réponse de `list_models` pour dire quel plan le débloque (n'en devine pas), sans insister, et propose l'alternative la plus proche.
+Un tableau court (modèle, crédits, durée ou format, pour quoi), puis une recommandation en une phrase. Les prix sont en crédits Clapova, jamais en euros ; la part « gratuite du jour » de `get_credits` s'ajoute au solde mais ne s'utilise que sur les modèles permis par le plan. Un modèle hors plan : lis `requiredPlan` dans la réponse de `list_models` pour dire quel plan le débloque (n'en devine pas), sans insister, et propose l'alternative la plus proche.
 
 ## Pièges
 

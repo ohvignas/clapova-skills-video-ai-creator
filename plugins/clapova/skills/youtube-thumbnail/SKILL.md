@@ -8,6 +8,7 @@ description: Use when a Clapova user wants a YouTube thumbnail, Shorts cover or 
 
 ## Règles
 
+- Commence par `get_guide({topic:'visuels'})` (méthode du serveur pour les visuels).
 - Français, « vous ». Une question compacte seulement si un choix manquant change le résultat.
 - N'inventez rien sur la vidéo (résultat, chiffre, produit, personne). Exagérer oui, mentir non.
 - Une miniature de référence sert à l'analyse visuelle seulement ; ne jamais la passer en `imageUrl` ni copier son identité.
@@ -15,7 +16,7 @@ description: Use when a Clapova user wants a YouTube thumbnail, Shorts cover or 
 
 ## 1. Entretien
 
-Sujet et promesse honnête · qui apparaît (0–3 personnes ; visage de l'utilisateur → son Personnage) · logo · titre de 2–4 mots (par défaut : image sans texte) · format : 16:9 YouTube, 9:16 Shorts ; 4:5 Instagram n'est pas un format de génération (`generate_image` accepte 16:9, 9:16, 1:1) : génère en 1:1 ou 9:16 puis recadre · une miniature ou une série (~4).
+Sujet et promesse honnête · qui apparaît (0–3 personnes ; visage de l'utilisateur → son Personnage : `list_characters` ; aucun n'existe et il veut « sa tête » : propose `clapova:personnages` (`create_character`, lien de confirmation où il dépose ses photos, puis `train_character` si besoin) ou une miniature sans visage ; jamais le visage d'un tiers ni d'une célébrité) · logo · titre de 2–4 mots (par défaut : image sans texte) · format : 16:9 YouTube, 9:16 Shorts ; 4:5 Instagram n'est pas un format de génération (`generate_image` accepte 16:9, 9:16, 1:1) : génère en 1:1 ou 9:16 puis recadre · une miniature ou une série (~4).
 
 Coût : `get_credits`, puis annonce en une ligne le coût de la série (4 variantes dépassent 3 générations : `estimate_plan` et accord avant de lancer, plafond de 16 générations).
 
@@ -38,7 +39,7 @@ Personne : `generate_with_character({type:"image"})` ; sinon `generate_image` (p
 
 ## 4. Contrôle
 
-Identité fidèle, aucun texte parasite, émotion et héros lisibles à 120 px de large (juge-le en regardant l'image réduite, p. ex. à l'ouverture dans la vue miniature ; aucun outil ne la redimensionne), fidèle à la vidéo. Échec net → relancer au plus 2 fois.
+Identité fidèle, aucun texte parasite, émotion et héros lisibles à 120 px de large : aucun outil ne redimensionne ni ne montre l'image en MCP seul. Pose-la dans un projet 16:9 (`add_media_to_project`) et regarde `render_preview_frames`, ou fais valider par l'utilisateur en lui demandant de l'ouvrir en petit ; sinon dis « non vérifié à 120 px », sans l'affirmer. Fidèle à la vidéo. Échec net → relancer au plus 2 fois.
 
 ## 5. Retouches et titre
 
@@ -47,7 +48,7 @@ Retouche ciblée : `generate_image` avec `imageUrl` = la miniature choisie et «
 ## Pièges
 
 - Texte cuit dans l'image par le modèle : déformé, surimpose-le.
-- « Refais cette miniature YouTube » avec une URL de vidéo : les outils ne téléchargent pas YouTube. Demande l'image de la miniature en fichier (`create_upload_link`) ou sa description, et n'en tire que l'analyse visuelle (composition, émotion, couleurs) ; jamais en `imageUrl`.
+- « Refais cette miniature YouTube » avec une URL de vidéo : les outils ne téléchargent pas YouTube. Demande l'image de la miniature en fichier (`create_upload_link`, puis `get_upload_status`) ou sa description (`analyze_reference_video` lit la vidéo, pas sa miniature), et n'en tire que l'analyse visuelle (composition, émotion, couleurs) ; jamais en `imageUrl`.
 - Plus de trois visages ou deux idées : un seul sujet focal.
 - Promesse que la vidéo ne tient pas : exagérer oui, mentir non.
 - Couverture de Reel : image de la vidéo elle-même d'abord (`extract_thumbnail`, gratuit), génération seulement si rien ne convient.

@@ -9,7 +9,7 @@ Outil principal : `add_captions` (≈ 1 crédit par minute de voix transcrite, r
 
 ## Méthode
 
-1. **Cible** : réseau et format (`clapova:montage-recipes`, formats). Voix présente sur la timeline (voix off ou vidéo avec son), sinon les sous-titres n'ont rien à synchroniser. Vidéo muette : `add_captions` renvoie une erreur ; propose d'abord une voix off (`generate_voiceover` sur un script validé), puis sous-titre.
+1. **Cible** : réseau et format (`clapova:montage-recipes`, formats). Un projet qui contient déjà la voix (voix off ou vidéo avec son) : pas de projet ni de média, passe d'abord par `clapova:monteur` (étape 0b : `create_upload_link`, `create_project`). Sinon les sous-titres n'ont rien à synchroniser. Vidéo muette : `add_captions` renvoie une erreur ; propose d'abord une voix off (`generate_voiceover` sur un script validé), puis sous-titre.
 2. **Look** selon l'usage :
 
 | Look | Pour | Réglage de départ |
@@ -25,7 +25,7 @@ Outil principal : `add_captions` (≈ 1 crédit par minute de voix transcrite, r
 4. **Couleurs** : celles du Brand Lock par défaut (`clapova:brandkit`) ; `brand:false` pour les ignorer ; `highlight` et `keywordColor` en hex. Contraste fort, contour 1 ou plus, jamais de bandeau noir plein.
 5. **Mots-clés** : 3 à 5 mots qui portent l'idée (chiffres, verbes forts, nom du produit), pas tous les mots.
 6. **CTA** : `until` arrête les sous-titres avant le carton final.
-7. **Texte derrière le sujet** (effet premium, un titre seulement) : `cutout_subject` (≈ 3 crédits / 10 s : annonce-le) puis texte `add_text` placé derrière (`clapova:motion-design`).
+7. **Texte derrière le sujet** (effet premium, un titre seulement) : `cutout_subject` (≈ 3 crédits / 10 s : annonce-le) puis `add_text{lane:"overlay", ...}` : `cutout_subject` redessine le sujet détouré au-dessus de la piste Motion design, donc le texte de cette piste passe derrière lui sans que tu touches à l'ordre des pistes (ne crée jamais de piste). Exemple dans un lot : `[{"op":"add_text","text":"MOT","start":2,"duration":3,"lane":"overlay","fontSize":220}]` puis `cutout_subject({projectId, clipId, prompt:"la personne"})` ; ne pose pas ce texte sur la piste Sous-titres. Détail : `clapova:motion-design`.
 8. **Voir** : `render_preview_frames` à 3 instants (début, milieu, fin) et sur un plan avec visage : pas de sous-titre sur un visage, taille lisible (≥ 48 px en 1080p), aucun mot coupé.
 
 ## Règles
@@ -38,8 +38,13 @@ Outil principal : `add_captions` (≈ 1 crédit par minute de voix transcrite, r
 ## Pièges
 
 - Remplacer par erreur des sous-titres retouchés à la main : `replace:false` pour garder.
-- Voix faible ou musique trop forte : transcription fausse ; vérifie le niveau (`clapova:monteur`, son).
+- Voix faible ou bruit : transcription fausse. Relis le texte renvoyé par `add_captions` avant de livrer ; un mot faux se corrige en supprimant la page (`delete_clip{clipId, removeText:true}`) puis `add_text{lane:"captions"}` avec le bon mot (il n'existe pas d'outil d'édition mot à mot), ou en relançant `add_captions` avec `replace:true` et la bonne `language` (efface les retouches manuelles). Musique trop forte : baisse-la (`set_duck`, `clapova:monteur`) avant de relancer.
 - Trop d'emoji : un par phrase au plus, ou aucun en LinkedIn.
+
+## Exemples d'appel
+
+- TikTok, 9:16 : `add_captions({projectId, look:"pop", maxWordsPerPage:3, keywords:["3 erreurs","gratuit","Nova"], highlight:"#FFD400", uppercase:true, until:27.5})`.
+- LinkedIn, 1:1 ou 16:9 : `add_captions({projectId, look:"propre", maxWordsPerPage:5, position:"bas", emoji:false})` (position `bas` reste au-dessus de la zone sûre en 16:9 et 1:1).
 
 ## Critères de fin
 

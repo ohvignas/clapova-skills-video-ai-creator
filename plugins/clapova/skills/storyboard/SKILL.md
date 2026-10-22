@@ -9,20 +9,23 @@ Une vidéo de plus d'un plan commence par un storyboard. Il est gratuit, son co�
 
 Format par défaut : 9:16 ; 16:9 pour YouTube long, 1:1 ou 4:5 pour le fil.
 
+Contraintes dures (récap, détail en §3 et §6) : 60 % au plus de plans générés ; plan moyen 3,5 s au plus en format court ; aucun plan de plus de 5 s ; logo jamais dans les 3 premières secondes ; promesse avant 3 s ; guide `get_guide('storyboard')` lu en entier AVANT `create_storyboard` (refusé sinon).
+
 Lecture rapide (si tu ne lis que ça) : brief court, `create_storyboard`, relecture PASS/FAIL, `estimate_storyboard`, accord explicite, `approve_storyboard`, `build_from_storyboard`, planche vue, lien. Le reste du fichier donne les chiffres de chaque étape.
 
 ## Boucle obligatoire
 
-0. **Référence à imiter** : si l'utilisateur donne une vidéo d'inspiration (lien YouTube, fichier ou URL https), passe d'abord par `clapova:recreer-depuis-reference` (`analyze_reference_video`) : sa recette (accroche, nombre de plans, rythme, texte, CTA, durée) et son `storyboardDraft` nourrissent l'arc, le rythme et le thème des étapes 1 et 2. Lien TikTok ou Instagram : demande l'envoi du fichier (`create_upload_link`) ou travaille sur sa description.
+0. **Guide et solde** : `get_guide('storyboard')` lu en entier (aussi `get_guide('motion')` avant le build), puis `get_credits`.
+0b. **Référence à imiter** : si l'utilisateur donne une vidéo d'inspiration (lien YouTube, fichier ou URL https), passe d'abord par `clapova:recreer-depuis-reference` (`analyze_reference_video`) : sa recette (accroche, nombre de plans, rythme, texte, CTA, durée) et son `storyboardDraft` nourrissent l'arc, le rythme et le thème des étapes 1 et 2. Lien TikTok ou Instagram : demande l'envoi du fichier (`create_upload_link`) ou travaille sur sa description.
 1. **Brief** (§1), via `ask_storyboard_questions` si des infos manquent.
 2. **Architecture** : arc, rythme, beats, grille de plans, thème, personnage (§2 à §5). Tout se prépare dans le plan en 5 blocs, rien n'est généré.
 3. **Créer** : `create_storyboard` avec les champs pro (voir « Outils »). Si le retour contient `qualityIssues`, corrige-les avec `update_storyboard` avant de présenter.
 4. **Relire** avec la grille PASS/FAIL (§9).
-5. **Présenter** en quelques lignes : arc, scènes, durée, coût estimé (`estimate_storyboard`). Si le total dépasse 50 crédits ou le double d'un chiffre déjà accepté (après un `update_storyboard`), redemande l'accord avec le nouveau total. Pour un explainer, présente aussi les 3 faits à vérifier (§6) : le même « oui » vaut accord et exactitude. ATTENDS l'accord explicite. Les retours passent par `update_storyboard`.
+5. **Présenter** en quelques lignes : arc, scènes, durée, coût estimé (`estimate_storyboard`). `estimate_storyboard` renvoie aussi le solde : si le total le dépasse, ne demande pas l'accord tel quel ; propose de réduire (moins de plans générés, plus de motion_design et stock, durée plus courte, ou page Crédits) puis `update_storyboard` et nouvelle estimation. Si le total dépasse 50 crédits ou le double d'un chiffre déjà accepté (après un `update_storyboard`), redemande l'accord avec le nouveau total. Pour un explainer, présente aussi les 3 faits à vérifier (§6) : le même « oui » vaut accord et exactitude. ATTENDS l'accord explicite. Les retours passent par `update_storyboard`.
 6. **Valider** : `approve_storyboard` seulement après un oui explicite dans son message (recopie ses mots).
 7. **Construire** : `build_from_storyboard`, puis ses `followUps`, puis `review_montage`. Si l'appel expire côté client, relance-le : le montage déjà posé (même version) renvoie `built` sans rien refaire ; `rebuild:true` retire le montage précédent avant de le reposer. Une scène sans média reçoit un fond du Brand Kit ou du thème visuel, texte centré en grand. Limite connue : le build attend toutes les générations vidéo avant de répondre. Dis alors à l'utilisateur que ça peut prendre plusieurs minutes ; si l'appel expire, relance-le tel quel (il reprend sans rien refaire) au lieu de relancer des générations.
 8. **Vérifier** : `render_preview_frames`, regarde la planche avant de livrer (voir `clapova:monteur`). Vérifie aussi que la musique couvre toute la durée et que le son reste léger.
-9. **Livrer** : après accord sur l'export, lien direct et félicitations (`clapova:monteur`, Livraison finale).
+9. **Livrer** : après accord sur l'export, `export_video` puis `get_render_status` ; donne `videoUrl` et `studioUrl` avec un court message de félicitations original et un emoji (voir `clapova:monteur`, Livraison finale). Ne dis jamais seulement « c'est dans l'app ».
 
 ## 1. Brief : seulement ce qui manque
 
@@ -64,7 +67,7 @@ Démo produit : les captures d'interface sont réelles, jamais générées. Dema
 Départage : un produit ou un service à vendre = ligne Pub ; sinon contenu social. Promo d'un logiciel ou d'une app = ligne Pub (6 à 12 plans) avec l'arc Démo produit.
 
 Règles dures (vérifiées par `qualityIssues`) :
-- Aucun plan fixe au-delà de 5 s : ajoute un mouvement ou coupe.
+- Aucun plan de génération au-delà de 5 s (durée maximale d'un clip généré) : ajoute un mouvement ou coupe. C'est un plafond de génération ; au montage final la règle est plus stricte (aucun plan fixe de plus de 3 s sans effet caméra, `clapova:montage-recipes`). Un plan de 3 à 5 s n'est permis que dans l'histoire de marque longue, ou isolé s'il garde la moyenne du format sous 3,5 s.
 - La promesse (premier texte ou première voix off) tombe avant 3 s. Contenu non commercial : la question ou le fait étonnant du hook vaut promesse.
 - Le logo ne s'affiche jamais dans les 3 premières secondes : il arrive après l'accroche, pleinement en signature. Pour un logiciel, seul le logotype compte, pas l'interface. Sans marque, la règle ne s'applique pas ; un CTA sans marque (« abonne-toi ») est valide.
 - Durée moyenne d'un plan en format court (moins de 60 s) : 3,5 s au plus. Exception : l'histoire de marque longue (45 à 90 s) et le plan de 3 à 5 s des tableaux ci-dessus sont autorisés ; le plafond de 5 s par plan reste valable partout.
@@ -169,7 +172,36 @@ Plans screen_capture : marque-les « à fournir » dans `shotDescription` (ex. �
 
 Générer avant l'accord explicite ; `approve_storyboard` sans oui clair ; relancer `ask_storyboard_questions` ; vignettes payantes sans demande ni coût annoncé ; un storyboard pour un plan unique ou une retouche ; changer thème ou personnage d'un plan à l'autre.
 
-## Exemple : pub produit, 20 s, 9:16 (3 plans sur 8)
+## Exemple d'appel `create_storyboard` (JSON valide, 3 scènes sur 8)
+
+```json
+{
+  "projectId": "<projectId>",
+  "title": "Nova, la gourde qui garde chaud",
+  "format": "9:16",
+  "style": "creator_vertical",
+  "brief": "Pub gourde isotherme, 20 s, ton direct, CTA nova.fr",
+  "plan": {
+    "inputs": "Gourde Nova, promesse 12 h de chaud, 20 s, 9:16, musique générée 110 BPM",
+    "direction": "Montserrat ExtraBold, accent cuivre, fond bleu nuit, pas de glow",
+    "structure": "Accroche 0-2 s, preuve 2-14 s, résultat 14-17 s, signature 17-20 s",
+    "build": "Coupe 2,5 s en moyenne, grille sur les temps de la musique, logo après 3 s",
+    "pitfalls": "Texte de la gourde jamais généré ; produit dévié de la photo : packshot stock"
+  },
+  "arc": "problem_solution_proof_cta",
+  "visualTheme": "deep navy, copper, off-white; soft side window light; 50mm shallow depth of field; light grain; slow gimbal",
+  "whyItWorks": "Le café froid est reconnaissable en 1 s, la preuve arrive avant l'ennui, le CTA suit la chute de la musique.",
+  "scenes": [
+    {"intent":"hook","durationMs":2500,"shotFunction":"hook","shotDescription":"Gros plan d'une tasse de café qui ne fume plus sur un bureau","source":"video_gen","framing":"close","angle":"eye_level","cameraMove":"push_in","lighting":"soft side window light","onScreenText":"Ton café refroidit ?","voiceoverLine":"Ton café refroidit encore ?","prompt":"Close-up of a cold coffee cup on a desk, no steam, deep navy and copper palette, soft side window light, 50mm shallow depth of field, light grain, slow gimbal push-in, vertical 9:16, no text, no logo","assets":[{"kind":"video","prompt":"Close-up of a cold coffee cup on a desk, no steam, slow push-in, no text, no logo"}]},
+    {"intent":"proof","durationMs":2500,"shotFunction":"reveal","shotDescription":"La gourde Nova posée, la vapeur monte à l'ouverture","source":"image_anime","framing":"close","angle":"low","cameraMove":"orbit","transition":"match_cut","prompt":"Copper insulated bottle opened, steam rising, orbit around it, same navy and copper theme, vertical 9:16, no text, no logo","assets":[{"kind":"video","prompt":"Copper bottle opened, steam rising, slow orbit, no text, no logo"}]},
+    {"intent":"cta","durationMs":3000,"shotFunction":"cta","source":"stock","shotDescription":"Packshot de la gourde sur fond bleu nuit, logo Nova en signature","framing":"close","angle":"eye_level","cameraMove":"static","onScreenText":"nova.fr","prompt":"Packshot of the bottle on a navy background, clean, centered, 15 to 40 words brief"}
+  ]
+}
+```
+
+Les cinq autres scènes suivent le même schéma ; la voix off et la musique sont des `assets` (`kind:"voiceover"` avec `text` et `voiceStyle`, `kind:"music"`) d'une scène.
+
+## Exemple : pub produit, 20 s, 9:16 (grille de 3 plans sur 8)
 
 Gourde « Nova » ; arc problème, solution, preuve, CTA ; thème « deep navy, copper, off-white; soft side window light; 50mm shallow depth of field; light digital grain; slow gimbal ».
 

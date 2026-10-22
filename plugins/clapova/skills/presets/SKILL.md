@@ -7,6 +7,8 @@ description: Use when a Clapova user asks for a camera move or visual effect on 
 
 Ce skill est la source unique pour : les ids de presets vidéo, leur usage dans `generate_video`, les modèles de montage.
 
+Étape 0 : `get_guide('presets')` pour la partie génération ; pour un modèle de montage, `get_guide('montage')` puis `get_guide('motion')` (l'export refuse sinon), et `get_credits`.
+
 ## Presets vidéo (génération)
 
 1. `list_video_presets({kind?:"camera"|"vfx"})` : id, description, durée conseillée, familles de modèles recommandées. (`list_presets` donne la même liste plus les presets conseillés par modèle de montage, `byTemplate`.)
@@ -38,9 +40,9 @@ Ces presets agissent sur la génération. Les mouvements caméra et transitions 
 - Médias par URL : `create_from_template({templateId, aspect?, media:[{url, kind}], voiceover?, music?, brand:{name, primary, background, text, logoUrl?}, texts?})` crée le projet (seul endroit où `logoUrl` passe).
 - Ensuite : contrôle et relecture selon `clapova:monteur`.
 
-Déroulé « fais-moi une pub UGC » : `list_presets` → générer 2 à 4 plans avec les presets de `byTemplate["ugc-ad"]` → voix off → `apply_template`. Générez seulement ce qui est demandé, et annonce le coût avant (2 à 4 plans de 10 s + voix off : `get_credits`, `estimate_plan`). Avant le montage, lis `get_guide('montage')`.
+Déroulé « fais-moi une pub UGC » : `get_credits` → `create_project({title, aspectRatio:"9:16"})` (projet vide, format fixé ici) → `list_presets` → générer 2 à 4 plans avec les presets de `byTemplate["ugc-ad"]` (`generate_video` avec `projectId`) → voix off `generate_voiceover` (voix française : `list_model_params` avec `language:"fr"`) → musique `generate_music` à la durée totale → `apply_template` → son léger (bruitages `volume` 0,18, `set_duck` niveau 0,5, musique à 0,5 sur toute la durée, `set_fades` de sortie 1 s) → `check_composition` → `render_preview_frames` regardée image par image → `review_montage` jusqu'à `stop:true` → export après accord. Détail de chaque étape : `clapova:monteur`. Générez seulement ce qui est demandé et annonce le coût avant (2 à 4 plans de 10 s + voix + musique : `estimate_plan`). Export : `export_video` est facturé selon durée, résolution et fps ; annonce-le avant.
 
-« Inspire-toi de cette vidéo » : `clapova:recreer-depuis-reference` choisit le modèle le plus proche et les presets correspondants à partir de la recette de la référence.
+« Inspire-toi de cette vidéo » (lien YouTube, fichier envoyé) : charge `clapova:recreer-depuis-reference` : `analyze_reference_video` (lien YouTube ou URL https) ou `create_upload_link` (fichier), qui choisit le modèle le plus proche et les presets correspondants à partir de la recette de la référence. On reprend la structure, jamais la musique ni les images.
 
 ## Pièges
 
@@ -48,7 +50,7 @@ Déroulé « fais-moi une pub UGC » : `list_presets` → générer 2 à 4 plans
 - Preset décrit aussi dans le prompt : redondance, mouvement confus.
 - `before-after` demande exactement 2 clips ; `crash-zoom-teaser` demande une musique.
 - Modèle de montage appliqué à un projet non vide : crée un projet vide.
-- Preset (ex. `bullet-time`, `fpv-drone`) sur un modèle qui ne le tient pas : le mouvement peut être ignoré. Regarde une image extraite (`extract_frames`) ; si le mouvement n'y est pas, change de preset ou de modèle plutôt que de régénérer à l'identique.
+- Preset (ex. `bullet-time`, `fpv-drone`) sur un modèle qui ne le tient pas : le mouvement peut être ignoré. Vérifie sur une planche `render_preview_frames` (clip posé dans un projet ; `extract_frames` ne renvoie pas d'images en MCP) ; si le mouvement n'y est pas, change de preset ou de modèle plutôt que de régénérer à l'identique.
 
 ## Critères de fin
 

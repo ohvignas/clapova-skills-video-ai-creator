@@ -1,6 +1,6 @@
 ---
 name: montage-recipes
-description: Use when planning, writing the brief of or judging a Clapova edit and you need the craft — hook formulas (first 1.5 s), cut rhythm, montage styles (creator / Apple-like 9:16, hyper-motion, luxe, UGC), b-roll, transitions, caption looks, sound design and mix (music over the whole duration, ducking, light SFX on the event, -14 LUFS, no voice overlap), ad / UGC / explainer / listicle structures, platform formats and safe zones (TikTok, Reels, Shorts, YouTube, LinkedIn). Rules and numbers only, no tool loop: for the loop use clapova-monteur, for animation clapova-motion-design. Arbitration: any "monte ma vidéo" request loads clapova-monteur FIRST (loop and checks), this skill only supplies the craft numbers; "refais comme cette vidéo" goes to clapova-recreer-depuis-reference.
+description: Use when planning, writing the brief of or judging a Clapova edit and you need the craft — hook formulas (first 1.5 s), cut rhythm, montage styles (creator / Apple-like 9:16, hyper-motion, luxe, UGC), b-roll, transitions, caption looks, sound design and mix (music over the whole duration, ducking, light SFX, -14 LUFS), ad / UGC / explainer / listicle structures, platform formats and safe zones (TikTok, Reels, Shorts, YouTube, LinkedIn). Rules and numbers only, no tool loop.
 ---
 
 # Clapova : recettes de montage
@@ -8,6 +8,8 @@ description: Use when planning, writing the brief of or judging a Clapova edit a
 Règles de métier pour un montage qui retient. La boucle d'outils est dans `clapova:monteur`, l'animation dans `clapova:motion-design`. Les données chiffrées sont servies par `get_creative_recipes({topic})` (`platforms`, `hooks`, `rhythm`) et `list_references({format?})`. Attribution : `../../THIRD_PARTY_NOTICES.md`.
 
 Ce skill est la source unique pour : accroche, rythme, styles, b-roll, transitions, sous-titres, son, structures, plateformes.
+
+Arbitrage : toute demande « monte ma vidéo » charge `clapova:monteur` EN PREMIER (boucle et contrôles) ; ce skill ne fournit que les chiffres. « Refais comme cette vidéo » : `clapova:recreer-depuis-reference`.
 
 ## 1. Avant de monter
 
@@ -27,13 +29,14 @@ Ce skill est la source unique pour : accroche, rythme, styles, b-roll, transitio
 ## 2. Accroche (0 à 1,5 s)
 
 - Une formule (`topic:"hooks"`) : résultat d'abord, manque d'information, interpellation, rupture visuelle, liste numérotée, contre-pied, avant/après.
+- Exemples (FR, ≤ 5 mots à l'écran) : résultat d'abord « -4 kg en 30 jours » ; manque d'information « Personne ne te dit ça » ; interpellation « Toi, créateur, stop » ; liste « 3 erreurs, la 2e coûte cher » ; contre-pied « Arrête de poster tous les jours » ; avant/après « Lundi : 0 vente. Vendredi : 42 ». `get_creative_recipes({topic:"hooks"})` en donne d'autres chiffrés.
 - Élément fort visible dès la première image, déjà en mouvement. Texte de 5 mots au plus. La voix arrive avant 0,5 s.
 - Jamais de logo ni de « Bonjour » en ouverture. Visuel et texte disent la même chose.
 
 ## 3. Rythme et styles
 
 - Plans de 1 à 3 s en 9:16, 2 à 5 s en 16:9. Une image fixe porte toujours un effet caméra.
-- Relance (coupe, zoom de 6 à 10 %, mot-clé, transition) toutes les 3 à 5 s en format énergique, 5 à 8 s au plus sinon. Règle unique de plan fixe : aucun plan de plus de 3 s sans effet caméra ou mouvement (`clapova:motion-design` applique la même).
+- Relance (coupe, zoom de 6 à 10 %, mot-clé, transition) toutes les 3 à 5 s en format énergique, 5 à 8 s au plus sinon. Règle unique de plan fixe au montage : aucun plan de plus de 3 s sans effet caméra ou mouvement (`clapova:motion-design` applique la même). Le « 5 s » de `clapova:storyboard` est autre chose : la durée maximale d'un plan GÉNÉRÉ ; à l'assemblage, ce plan reçoit un effet dès 3 s ou est coupé.
 - Chaque coupe a une raison : fin de phrase, temps fort de la musique (`snap_cuts_to_beats`), nouvelle idée. Jamais au milieu d'un mot.
 - Parole : `analyze_rushes` retire silences et hésitations ; garde environ 0,12 s avant et 0,18 s après chaque phrase.
 - Styles (`style` de `apply_edit_plan`, `plan_shots`, `review_montage`) : `standard`, `hyper-motion` (0,6 à 2 s, whip, zoom, flash), `gen-z-edit` (jump cuts, sous-titres pop), `luxe` (2 à 3,5 s, fondus, Ken Burns), `ugc-telephone` (coupes sèches, tremblé).
@@ -61,9 +64,9 @@ Ce skill est la source unique pour : accroche, rythme, styles, b-roll, transitio
 
 - **Voix devant** : voix off à 1, jamais plus. Une seule voix à la fois : les blocs de voix off se suivent sans se chevaucher (≥ 0,1 s d'air entre deux blocs).
 - **Musique** : sur toute la durée, clip à volume 0,5 avec `set_duck` niveau 0,5 (≈ 0,25 sous la voix, audible, jamais sous 0,15). Le niveau plus fort sans voix vient du seul `set_duck` qui relâche la musique ; ne pose jamais un second volume à la main. Pas de musique en explicatif sobre sans demande.
-- **Bruitages calés sur l'image** : le pic du son tombe sur l'événement (la coupe, l'apparition du titre, le clic), pas sur le début du fichier. Whoosh sur les transitions fortes, impact sur l'accroche ou le logo, riser qui finit sur la révélation, pop ou clic sur les apparitions UI. `add_sfx` à 0,18 par défaut (plage 0,12 à 0,25) ; un bruitage par événement, pas un tapis continu.
+- **Bruitages calés sur l'image** : le pic du son tombe sur l'événement (la coupe, l'apparition du titre, le clic), pas sur le début du fichier. Whoosh sur les transitions fortes, impact sur l'accroche ou le logo, riser qui finit sur la révélation, pop ou clic sur les apparitions UI. `add_sfx` `volume` 0,18 par défaut (plage 0,12 à 0,25) ; un bruitage par événement, pas un tapis continu.
 - **Mix final** : -14 LUFS intégré, -1,5 dBTP (normalisé automatiquement à l'export). Aucune distorsion audible.
-- **Pas de bruitages saturés** : volume de `add_sfx` raisonnable (0,18 par défaut, 0,25 au plus), jamais plusieurs sons forts superposés ; vitesse de lecture (pitch) de `add_sfx` entre 0,95 et 1,08 seulement, au-delà le son se déforme.
+- **Pas de bruitages saturés** : `volume` de `add_sfx` raisonnable (0,18 par défaut, 0,25 au plus), jamais plusieurs sons forts superposés ; vitesse de lecture (pitch) de `add_sfx` entre 0,95 et 1,08 seulement, au-delà le son se déforme.
 
 ## 8. Structures
 
@@ -80,6 +83,7 @@ Quand l'utilisateur donne une vidéo « à la manière de » : ne copie jamais s
 2. Avec le fichier : `extract_frames({mediaId, mode:"sceneChanges"})` pour vérifier le nombre de plans, leur durée moyenne et le texte à l'écran.
 3. Écris la recette : accroche, nombre de plans, durée moyenne, relance, style de sous-titres, CTA, durée.
 4. Refais avec TES contenus et ton style, via `clapova:storyboard` puis `clapova:monteur`.
+Droit d'auteur : on reprend la structure, pas la musique, les images, la voix ni la marque de la vidéo envoyée. Musique : `generate_music` ou la Bibliothèque ; une musique tendance ou sous licence n'est pas reproduite (propose un morceau généré de même énergie et tempo).
 
 ## 9. Leçons du propriétaire (non négociables)
 
@@ -99,14 +103,14 @@ Quand l'utilisateur donne une vidéo « à la manière de » : ne copie jamais s
 | Reels | 9:16 | 10 à 30 s | 20 % | couverture lisible en 4:5 au centre, rendu soigné, boucle propre |
 | Shorts | 9:16 | 20 à 50 s | 20 % | dernière image qui s'enchaîne avec la première, pas de « lien en bio » |
 | YouTube | 16:9 | 3 à 15 min | 10 % | 30 premières secondes = promesse de la miniature, relance toutes les 45 à 60 s |
-| LinkedIn | 1:1 ou 4:5 | 30 à 90 s | 10 % | look `propre`, sous-titres obligatoires (lecture sans son) |
+| LinkedIn | 1:1 (10 %) ou 4:5 (20 %) | 30 à 90 s | 10 % en 1:1 | look `propre`, sous-titres obligatoires (lecture sans son) |
 
-Une seule zone sûre pour tout le vertical : 20 % du bas (sous-titres compris). Chiffres à jour : `get_creative_recipes({topic:"platforms"})` ; en cas d'écart, c'est lui qui fait foi. Haut 8 à 10 % et côté droit 12 % libres de texte en 9:16.
+Une seule zone sûre pour tout le vertical (9:16 et 4:5) : 20 % du bas, sous-titres compris. Les 10 % de la colonne ne valent que pour le 16:9 et le 1:1. Chiffres à jour : `get_creative_recipes({topic:"platforms"})` ; en cas d'écart, c'est lui qui fait foi. Haut 8 à 10 % et côté droit 12 % libres de texte en 9:16.
 
 ## 11. Musique et son léger
 
 - **Musique sur toute la durée** : du premier au dernier instant de la vidéo, fondu final d'une seconde. Un morceau plus court est prolongé (second morceau ou boucle propre), jamais laissé en silence.
-- **Son léger** : au plus un bruitage tous les 2 s, sur les temps forts seulement ; whoosh réservé aux coupes fortes ; gain des bruitages 0,18 par défaut (0,12 à 0,25), moins encore sous la voix. Un silence bref avant la révélation vaut mieux qu'un bruit de plus.
+- **Son léger** : au plus un bruitage tous les 2 s, sur les temps forts seulement ; whoosh réservé aux coupes fortes ; `volume` des bruitages 0,18 par défaut (0,12 à 0,25), moins encore sous la voix. Un silence bref avant la révélation vaut mieux qu'un bruit de plus.
 - Tempo de la musique = rythme de coupe : une coupe sur le temps (`snap_cuts_to_beats`), la chute de la musique = l'élément principal.
 
 ## 12. Pièges
@@ -117,6 +121,7 @@ Une seule zone sûre pour tout le vertical : 20 % du bas (sous-titres compris). 
 - Musique qui s'arrête avant la fin ; bruitage à chaque coupe ; voix qui chevauche la voix.
 - Texte de moins de 48 px en 1080p ou gris sur gris (< `#B8B8C4` sur fond sombre).
 - Plan fixe de plus de 3 s sans effet caméra (règle unique, aussi appliquée par `clapova:motion-design`).
+- Voix de 40 s, musique de 15 s : boucle le morceau (second `add_clip` du même média) ou `generate_music` à la durée totale, fondu final ; jamais de silence en fin.
 
 ## 13. Fini (checklist)
 

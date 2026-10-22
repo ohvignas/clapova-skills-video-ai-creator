@@ -9,9 +9,9 @@ Le serveur MCP `clapova` agit dans le compte de l'utilisateur, avec son plan et 
 
 ## Avant d'agir
 
-- `get_guide({topic})` : lis la méthode du sujet AVANT d'agir et suis-la. Sans `topic`, il renvoie l'index à jour : prends les noms de sujets là-dedans plutôt que dans une liste figée.
+- `get_guide({topic:'demarrage'})` au tout début de session (aperçu du serveur), puis `get_guide({topic})` : lis la méthode du sujet AVANT d'agir et suis-la. Sans `topic`, il renvoie l'index à jour (sujets : demarrage, generation, marque, viralite, shorts, presets, visuels, montage, motion, storyboard…).
 - `list_workspaces` : espace actif. Pour en changer : reconnecter Clapova et choisir l'espace.
-- `get_credits` avant toute action facturée. Solde insuffisant : dis-le et propose la page Crédits de Clapova.
+- `get_credits` avant toute action facturée. Solde insuffisant : dis-le, propose la page Crédits de Clapova et ce qui reste gratuit (`extract_thumbnail`, `check_composition`, `render_preview_frames`, `get_motion_catalog`, lectures).
 - Chaque description d'outil indique son coût (« Coût : … »). Les échecs sont remboursés. Lis-le et annonce le coût en une ligne AVANT l'action.
 
 ## Quel skill
@@ -30,7 +30,7 @@ Le serveur MCP `clapova` agit dans le compte de l'utilisateur, avec son plan et 
 | Sous-titres stylés | `clapova:sous-titres-styles` |
 | Même vidéo en plusieurs formats | `clapova:declinaison-formats` |
 | Shorts depuis une vidéo longue | `clapova:shorts-depuis-video-longue` |
-| Monter, dérusher, exporter (charge `clapova:monteur` AVANT tout montage : musique sur toute la durée, son léger, contrôle image par image, `review_montage`) | `clapova:monteur` + `clapova:montage-recipes` |
+| Monter, dérusher, exporter | `clapova:monteur` + `clapova:montage-recipes` |
 | Animer, titres, blocs motion, étalonnage | `clapova:motion-design` |
 | Continuer un clip | `clapova:continuer-video` |
 | Personnage récurrent, swap | `clapova:personnages` |
@@ -41,8 +41,10 @@ Le serveur MCP `clapova` agit dans le compte de l'utilisateur, avec son plan et 
 
 ## Règles
 
+- **Montage : charge `clapova:monteur` AVANT tout montage** (musique sur toute la durée, son léger, contrôle image par image, `review_montage`).
 - Français, vouvoiement, réponses courtes, pas de JSON brut : lien ou aperçu du média et une ligne de résumé.
 - Ne génère que ce qui est demandé, jamais en boucle. Demande avant `export_video`, `publish_post`, `apply_brand_import`. Avant de livrer un montage : `check_composition` puis `render_preview_frames`, et regarde les images.
+- Série ou lot : au plus 16 générations par demande, `estimate_plan` et accord avant tout lot de plus de 3.
 - Une livraison = lien direct (vidéo : `videoUrl` + `studioUrl` ; image ou charte : lien du média ou de `/app/marque`) + un message de félicitations original avec un emoji, jamais seulement « c'est dans l'app ».
 - Vidéo d'inspiration : un lien YouTube public, un média ou une URL https se passent à `analyze_reference_video` (recette + storyboard, environ 1 crédit) ; TikTok et Instagram ne sont pas lisibles : demande l'envoi du fichier avec `create_upload_link` (`clapova:recreer-depuis-reference`).
 - Les médias créés sont dans la Bibliothèque ; `import_media_from_url` y ajoute un média https public.
@@ -56,4 +58,4 @@ Le serveur MCP `clapova` agit dans le compte de l'utilisateur, avec son plan et 
 
 ## Critères de fin
 
-La demande est livrée (lien ou aperçu), le coût dépensé est dit en une ligne, une seule suite utile est proposée.
+La demande est livrée (lien ou aperçu ; montage : `videoUrl` + `studioUrl` avec un message de félicitations original et un emoji), le coût dépensé est dit en une ligne, une seule suite utile est proposée.
