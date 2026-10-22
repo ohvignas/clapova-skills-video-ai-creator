@@ -1,6 +1,6 @@
 ---
 name: video-explainer
-description: Use when a Clapova user wants a complete narrated explainer from a topic, story or document ("vidéo explicative", "explique en vidéo", "vidéo pédagogique", "raconte cette histoire en vidéo") — style key, script by blocks, voiceover, one generated clip per block, assembled with the faceless-explainer template.
+description: Use when a Clapova user wants a complete narrated explainer video from a topic, story, article or document ("vidéo explicative", "explique en vidéo", "vidéo pédagogique", "raconte cette histoire en vidéo", "fais un explainer") — style key, fact check, script by blocks, voiceover first, one generated clip per block, assembly with the faceless-explainer template, frame check, music over the whole duration, final link. Not for product promos (clapova-storyboard) nor edits of existing footage (clapova-monteur).
 ---
 
 # Clapova : vidéo explicative narrée
@@ -31,6 +31,39 @@ Chaque choix revient à l'utilisateur sauf s'il délègue.
 5. **Clips** : `generate_video({imageUrl: STYLE_KEY ou image du bloc, prompt, presets:["push-in"|"static"]})` par bloc. Au-delà de 3 clips : `estimate_plan` d'abord.
 6. **Assemblage** : dans un projet vide, `apply_template({projectId, templateId:"faceless-explainer", mediaIds, voiceoverMediaId, musicMediaId?, brand?, texts:{title, subtitle, cta}})` (ou `create_from_template` avec des URL et `brand` obligatoire). Puis contrôle et relecture selon `clapova:monteur` (titre, chaque bloc, CTA).
 
+## Barrières (dans l'ordre, aucune ne se saute)
+
+1. Style validé → image de style prête.
+2. Les N voix prêtes (`get_media_info` donne chaque durée) **avant** le premier `generate_video`.
+3. Les N clips prêts **avant** l'assemblage.
+4. `check_composition` propre et planche regardée **avant** `export_video`.
+
+## Calage voix et clip
+
+- Voix plus courte que le bloc : centre-la dans le bloc (`move_clip`).
+- Voix plus longue : raccourcis d'abord le texte ; sinon `speed_ramp` de 5 % au plus. Jamais d'étirement de la vidéo.
+- Audio des clips générés = ambiance seulement. Si le modèle ajoute une voix, `set_volume` du clip à 0 : la voix off de Clapova prime.
+- Mascotte : bloc 1 salue bouche fermée, dernier bloc salue en sortie.
+
+## Son et musique
+
+Musique sur toute la durée (`generate_music`, sans paroles, clip à 0,5 et `set_duck` niveau 0,5 sous la voix, `set_fades` de sortie 1 s) sauf si l'utilisateur veut un explicatif sobre sans musique. Bruitages légers : un par 2 s au plus, `place_sfx_from_events` après calage, gain 0,12 à 0,24.
+
+## Pièges
+
+- Clips qui parlent ou affichent du texte : le texte se pose au montage, jamais en génération.
+- Style qui dérive : même descripteur STYLE mot pour mot et même image jointe dans chaque bloc.
+- Chiffres, dates, citations non vérifiés : `web_search` / `fetch_url`, puis liste des sources dans la livraison.
+- Plus de 3 clips : `estimate_plan` et total annoncé avant.
+
+## Critères de fin
+
+N voix + N clips assemblés dans un projet, titre et CTA en place, planche vue image par image (chaque bloc, titre, CTA), musique de la première à la dernière image, sources citées si sujet réel.
+
 ## Écarts
 
 Clips Clapova de 10 s par défaut (comme Higgsfield) : un bloc de 8–10 s tient en un clip. Pas de catalogue de styles hébergé ni de job d'assemblage serveur : le modèle `faceless-explainer` le remplace.
+
+## Livraison finale (obligatoire)
+
+Après l'export (`get_render_status` à `done`) : `videoUrl` et `studioUrl`, un court message de félicitations original avec un emoji (🎉, 🎬, 🚀), et une ligne durée / format / crédits. Jamais seulement « c'est dans l'app ».

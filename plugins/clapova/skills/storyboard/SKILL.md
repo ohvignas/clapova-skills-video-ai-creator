@@ -18,7 +18,8 @@ Format par défaut : 9:16 ; 16:9 pour YouTube long, 1:1 ou 4:5 pour le fil.
 5. **Présenter** en quelques lignes : arc, scènes, durée, coût estimé (`estimate_storyboard`). Pour un explainer, présente aussi les 3 faits à vérifier (§6) : le même « oui » vaut accord et exactitude. ATTENDS l'accord explicite. Les retours passent par `update_storyboard`.
 6. **Valider** : `approve_storyboard` seulement après un oui explicite dans son message (recopie ses mots).
 7. **Construire** : `build_from_storyboard`, puis ses `followUps`, puis `review_montage`. Si l'appel expire côté client, relance-le : le montage déjà posé (même version) renvoie `built` sans rien refaire ; `rebuild:true` retire le montage précédent avant de le reposer. Une scène sans média reçoit un fond du Brand Kit ou du thème visuel, texte centré en grand. (Limite connue : le build attend encore toutes les générations vidéo avant de répondre.)
-8. **Vérifier** : `render_preview_frames`, regarde la planche avant de livrer (voir `clapova:monteur`).
+8. **Vérifier** : `render_preview_frames`, regarde la planche avant de livrer (voir `clapova:monteur`). Vérifie aussi que la musique couvre toute la durée et que le son reste léger.
+9. **Livrer** : après accord sur l'export, lien direct et félicitations (`clapova:monteur`, Livraison finale).
 
 ## 1. Brief : seulement ce qui manque
 
@@ -110,7 +111,7 @@ Règle public mineur : ton sans peur ni pression, vocabulaire scolaire, pas de m
 
 ## 7. Fiche son (obligatoire)
 
-Avant de présenter, écris dans `audioNote` ou `direction` : genre et BPM ; plan du temps fort ; voix (âge, ton, débit, langue) ; 1 sfx au plus par coupe ; ducking musique 0,35 sous la voix. Voix off obligatoire pour explainer et histoire, facultative pour une pub courte. Musique libre de droits générée, jamais un son tendance sous licence. Champs `sfx` et `audioNote` de chaque plan : seulement le bruitage et la note du plan.
+Avant de présenter, écris dans `audioNote` ou `direction` : genre et BPM ; plan du temps fort ; voix (âge, ton, débit, langue) ; 1 sfx au plus par coupe ; musique à 0,5 avec `set_duck` niveau 0,5 (≈ 0,25 sous la voix). Voix off obligatoire pour explainer et histoire, facultative pour une pub courte. Musique libre de droits générée, posée sur toute la durée (début à fin, fondu final), jamais un son tendance sous licence. Champs `sfx` et `audioNote` de chaque plan : seulement le bruitage et la note du plan.
 
 ## 8. Continuité
 

@@ -1,14 +1,11 @@
 ---
 name: image-edit
-description: Use when a Clapova user wants to change PART of an existing image precisely ("retire la tasse", "remplace le ciel", "change la couleur du pull", "ajoute un texte sur la pancarte", "agrandis l'image") through the Agent / MCP tool `edit_image_precise` or the /editeur page — zones, per-zone instructions, references, model choice, multi-pass, high resolution.
+description: Use when a Clapova user wants to change PART of an existing image precisely ("retire la tasse", "remplace le ciel", "change la couleur du pull", "ajoute un texte sur la pancarte", "supprime l'objet", "agrandis l'image") with edit_image_precise or the /editeur page — zones in percent, per-zone instructions, reference images, model choice and plan limits, multi-pass, high resolution, credit cost. Not for a global restyle (generate_image with imageUrl, clapova-generate).
 ---
 
 # Clapova : retouche d'image précise
 
-Outil : `edit_image_precise` (agent + MCP). Page : `/editeur`. Code :
-`src/lib/image-edit/` (géométrie, moteurs, pipeline), `src/lib/agent/image-edit-tool.ts`,
-plan + essais `convex/lib/imageEditPro.ts` + `credits.charge`. Recherche :
-`.superpowers/image-edit/research.md`.
+Outil : `edit_image_precise` (agent et MCP). Page : `/editeur`.
 
 ## Modèles
 
@@ -48,3 +45,14 @@ ou le passage au plan supérieur, jamais insister.
 `zones: [{ x, y, width, height, instruction }]` (8 au plus) en **% de l'image** (0–100, origine en haut
 à gauche). `referenceUrls` : 4 au plus pour `ideogram`, 9 pour `flux`. Estimer la boîte à partir de la description de l'utilisateur ; en cas de doute,
 la prendre plus large.
+
+## Pièges
+
+- Consigne qui décrit toute la scène : le modèle réécrit tout. Une consigne courte par zone.
+- Zone collée à l'objet : pas de place pour l'ombre. Élargis-la.
+- Cinq changements en une passe : trois passes valent mieux.
+- Retouche de texte : `ideogram` ; plusieurs références : `flux`.
+
+## Critères de fin
+
+La zone est modifiée, le reste est identique (compare à l'original), pas de texte parasite, résolution conservée. Montre l'avant/après avec une étiquette courte et le coût (1 ou 2 crédits par passe) ; propose une seule suite.

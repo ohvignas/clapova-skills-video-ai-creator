@@ -1,6 +1,6 @@
 ---
 name: generate
-description: Use when a Clapova user asks to generate one image, video, voiceover, music or sound ("génère une image", "anime cette photo", "fais une vidéo de…", "stylise cette image", "fais une musique", "continue la vidéo") through the Clapova Agent or MCP — routing to the right tool, automatic model choice, references, presets, delivery. Not for photoshoots, marketplace cards, thumbnails, explainers, brand systems or precise local retouching (use the matching clapova-* skill).
+description: Use when a Clapova user asks to generate ONE image, video clip, voiceover, music track or sound ("génère une image", "anime cette photo", "fais une vidéo de…", "stylise cette image", "fais une voix off", "fais une musique", "continue la vidéo") through the Clapova MCP or Agent — routing to the right generate_* tool, automatic model choice, references, presets, credit cost, delivery with preview. Not for photoshoots, marketplace cards, thumbnails, explainers, brand systems, precise local retouching, multi-shot videos (use the matching clapova-* skill) nor video prompt tuning per model (clapova-prompts-video).
 ---
 
 # Clapova : générer un média
@@ -27,7 +27,7 @@ Ce skill est la source unique pour : le routage d'une génération, le choix aut
 3. Comparer ou chiffrer : `list_models`, `pick_best_model`, `estimate_plan` (lot de plus de 3 générations : annoncer le total, puis lancer). Détail des modèles et des plans : `clapova:model-catalog`.
 4. Réglages fins (seed, prompt négatif, CFG, format audio, etc.) : seulement si l'utilisateur les demande. `list_model_params({endpointId})` donne les réglages d'un modèle (niveau `base` ou `avance`, bornes, défaut) et ses pré-réglages débutants ; passer les valeurs choisies dans `params` de `generate_image`, `generate_video`, `generate_voiceover` ou `generate_music`. Un réglage inconnu ou hors bornes est refusé avant tout débit ; un modèle sans réglage (`supported:false`) tourne avec ses défauts.
 
-## Prompt
+## Prompt (voir aussi `clapova:prompts-video`)
 
 - Sujet, action, lieu, lumière, cadrage, style, en une ou deux phrases concrètes. Texte à afficher entre guillemets, court.
 - Gardez le texte de l'utilisateur en français : Clapova le réécrit en anglais pour le modèle.
@@ -39,6 +39,22 @@ Ce skill est la source unique pour : le routage d'une génération, le choix aut
 
 1. `projectId` connu : passez-le pour ranger le média dans le projet.
 2. Montrez le résultat, puis proposez une seule suite utile (animer l'image, l'ajouter au montage, une variante).
+
+## Coûts
+
+Chaque description d'outil donne son coût ; les échecs sont remboursés. `get_credits` avant un lot, `estimate_plan` au-delà de 3 générations. Une vidéo coûte bien plus qu'une image : essaie l'idée en image d'abord si l'utilisateur hésite. Jamais de génération « pour essayer » en boucle.
+
+## Pièges
+
+- Voix off : texte lu mot pour mot, nombres écrits en lettres, aucune consigne de ton dans le texte (le ton est un réglage, `list_model_params`).
+- Musique : « sans paroles » sauf demande ; la durée voulue passe par `params` si le modèle l'expose (`list_model_params`), sinon note-la dans le prompt et ajuste au montage.
+- Image vers vidéo : le prompt décrit le mouvement, pas l'image de départ.
+- Texte lisible dans une image : guillemets, 3 mots au plus, sinon surimpression au montage.
+- Audio natif d'un clip vidéo : de l'ambiance seulement ; au montage, la voix de Clapova prime (`set_volume` du clip à 0 si le son gêne).
+
+## Critères de fin
+
+Le média existe dans la Bibliothèque (ou le projet), l'aperçu est montré, le coût est donné en une ligne, une seule suite est proposée. Pour une vidéo : regarde une image extraite (`extract_frames`, gratuit) avant de la présenter, pour vérifier cadre rempli et absence de déformation.
 
 ## Limites
 

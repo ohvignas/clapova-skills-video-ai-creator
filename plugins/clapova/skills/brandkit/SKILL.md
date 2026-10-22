@@ -1,6 +1,6 @@
 ---
 name: brandkit
-description: Use when a Clapova user wants a brand applied consistently to videos and visuals — palette, logo, typography, "Brand Lock" for templates (brand colors, logo, fonts), branded social graphics, posters, mockups — or a new identity when explicitly asked ("charte", "kit de marque", "mes couleurs", "crée un logo").
+description: Use when a Clapova user wants a brand applied consistently to videos and visuals — palette, logo, typography, the "Brand Lock" fed to templates (brand colors, logo, fonts), branded social graphics, posters, mockups — or a new identity when explicitly asked ("charte", "kit de marque", "mes couleurs", "crée un logo", "logo vectoriel") with get_brand_kit, generate_vector_logo, vectorize_logo, export_brand_guidelines. To import a brand from a website use clapova-marque-depuis-site.
 ---
 
 # Clapova : kit de marque
@@ -40,6 +40,17 @@ Notez : nom exact, logo officiel (URL), couleurs hex (`primary`, `background`, `
 ## 5. Produire
 
 Réutiliser partout la même source de logo (jamais redessiné). Visuels photo : `generate_image` avec le Brand Lock copié dans le prompt. Vidéos : modèles de montage avec `brand` (`clapova:presets`). Contrôler chaque rendu ; ne réparer que ce qui échoue.
+
+## Pièges
+
+- Redessiner un logo fourni : interdit, la même source partout.
+- Palette changée après un logo généré : le logo est à refaire.
+- Texte du logo faux : vérifie l'orthographe du nom avant de livrer.
+- Marque qui change : ne régénère que les sorties qui en dépendent.
+
+## Critères de fin
+
+Brand Lock écrit (nom, hex, polices, logo, interdits), choix validés par l'utilisateur à chaque étape, chaque sortie contrôlée à l'œil, charte PDF proposée (`export_brand_guidelines`, lien de téléchargement).
 
 ## Écarts
 

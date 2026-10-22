@@ -1,6 +1,6 @@
 ---
 name: monteur
-description: Use when Claude edits a video IN Clapova through the Clapova MCP server or the in-app Agent — "fais-moi le montage", monte ces rushes, assemble des clips, voix off, musique, titres, sous-titres, dérushage, vérification et export (get_timeline, apply_edit_plan, analyze_rushes, check_composition, render_preview_frames, review_montage, export_video). The tool loop and its contract; the craft is in clapova-montage-recipes, the motion in clapova-motion-design.
+description: Use when Claude must assemble, edit or finish a video IN Clapova (MCP server or in-app Agent) — "fais-moi le montage", "monte mes rushes", "assemble ces clips", "ajoute voix off, musique, titres, sous-titres", "dérushe", "vérifie et exporte" — with the full tool loop (get_timeline, apply_edit_plan, analyze_rushes, check_composition, render_preview_frames, review_montage, export_video). Owns tracks, budget, verification, music over the whole duration, light sound and the final link. Craft rules live in clapova-montage-recipes, motion in clapova-motion-design. Not for a single generated media (clapova-generate) or a multi-shot plan not yet approved (clapova-storyboard).
 ---
 
 # Clapova : Claude monteur
@@ -14,6 +14,7 @@ Ce skill est la source unique pour : la boucle d'outils, les pistes, le budget, 
 1. **Lire** : `list_projects` puis `get_timeline({projectId})` avant toute édition. `list_media({projectId?, mediaType?})` donne les sources et leur `durationSec`.
 2. **Dérusher** (rushes parlés) : `analyze_rushes({projectId, clipIds?, minSilence?, keepSilence?, cutFillers?, cutRepetitions?})` propose des plages (silences, « euh », faux départs). Rien n'est modifié : applique-les avec l'op `cut_ranges{clipId, ranges:[{from,to}], ripple?}`. Transcription ≈ 1 crédit/min, gratuite si déjà faite.
 3. **Planifier** : `plan_shots({voiceoverMediaId?, musicMediaId?, totalSec?, aspectRatio, style?})` donne le nombre de plans et les coupes calées sur les beats. Écris le plan court (structure, durée, médias) avant la timeline.
+3b. **Musique sur toute la durée** : décide la musique dès le plan (`generate_music` ou un média de la Bibliothèque via `list_library`, sauf explicatif sobre sans demande). Elle est posée de 0 à la fin exacte de la vidéo (`add_clip{mediaId, start:0, duration:<durée totale>}`, boucle ou second morceau si elle est plus courte), `set_fades{fadeOut:1}` sur sa dernière seconde, `set_duck{level:0.5}` avec le clip à volume 0,5 (≈ 0,25 sous la voix, jamais sous 0,15). Une musique qui s'arrête avant la fin est un défaut bloquant.
 4. **Monter en un seul lot** : `apply_edit_plan({projectId, ops, style?})`, 150 ops max. `ref:"x"` sur un élément créé, puis `"ref:x"` pour le viser dans le même lot. Le lot est atomique : si `failedOp` revient, corrige cette op et renvoie tout le lot. Lis les `warning` (rythme, audio, CTA) et corrige-les. `snapshotId` permet à l'utilisateur d'annuler.
 5. **Contrôler sans rendre** : `check_composition({projectId})` (gratuit) renvoie au plus 20 problèmes `{clipId, fix}` triés par gravité. Applique les `fix`. Une erreur restante bloque l'export.
 6. **Voir avant de livrer** : `render_preview_frames({projectId, times})`, 12 instants max par appel (gratuit, limité en fréquence) : accroche, chaque changement de plan, chaque titre, CTA. Regarde vraiment les images. Si l'outil renvoie `available:false`, dis-le à l'utilisateur.
@@ -37,7 +38,7 @@ Raccourci modèle : `apply_template({projectId, templateId, mediaIds, voiceoverM
 | Coupes sur la musique | `snap_cuts_to_beats{beats, tolerance?}` |
 | Sujet | `set_subject` (rempli par `frame_subject`), `set_cutout` (rempli par `cutout_subject`) |
 
-Autres outils : `add_captions({projectId, look?:"pop"|"karaoke"|"propre", maxWordsPerPage?, keywords?, position?, until?})` (≈ 1 crédit/min), `frame_subject({projectId, clipIds?, prompt?})` (1 crédit/plan), `add_motion_effect`, `add_motion_block`, `get_motion_catalog`, `get_motion_toolkit`, `generate_broll`, `continue_video`, `list_references`.
+Autres outils : `add_captions({projectId, look?:"pop"|"karaoke"|"propre"|"boite"|"rebond"|"halo", maxWordsPerPage?, keywords?, position?:"haut"|"centre"|"bas", highlight?, until?})` (≈ 1 crédit/min ; looks et réglages : `clapova:sous-titres-styles`), `frame_subject({projectId, clipIds?, prompt?})` (1 crédit/plan), `add_motion_effect`, `add_motion_block`, `get_motion_catalog`, `get_motion_toolkit`, `generate_broll`, `continue_video`, `list_references`.
 
 Scènes motion (UI animée, mockups, compteurs) : `create_motion_scene({projectId, brief, ...})` et `edit_motion_scene` (note visuelle 1 crédit). Bruitages calés sur leurs évènements : `place_sfx_from_events({projectId, sceneClipIds?})` (gratuit). Voix off découpée en phrases, un clip par phrase : `generate_voiceover_lines({projectId, script, anchorToSceneEvents?, dryRun?})` (facturé par phrase).
 
@@ -56,12 +57,30 @@ Scènes motion (UI animée, mockups, compteurs) : `create_motion_scene({projectI
 
 ## Export
 
-`export_video({projectId, resolution?, fps?, preset?})`, facturé selon durée, résolution et fps.
+`export_video({projectId, resolution?, fps?, preset?})`, facturé selon durée, résolution et fps. Prérequis : `get_guide('motion')` lu en entier, sinon refus. Une scène motion notée sous 8/10 bloque l'export (sauf `forcer:true` à la demande de l'utilisateur).
 - Le format (16:9, 9:16, 1:1, 4:5) est celui du projet, fixé à `create_project`.
 - `resolution` : `720p`, `1080p` (défaut), `1440p`, `2160p` (4K). `fps` : 24, 25, 30 (défaut), 60. 1440p, 4K et 60 fps : plans payants ; 60 fps double le prix.
 - `preset` : `standard`, `tiktok` (1080p max), `reels` (1080p 30 fps max), `shorts`, `youtube`.
 - Contrôle préalable automatique (médias accessibles, pistes son, trims) : un refus renvoie `issues` avec `fix` par clip. Le son est normalisé au rendu à -14 LUFS / -1,5 dBTP.
 - Suivi : `get_render_status({renderId, projectId})` jusqu'à `done` : `videoUrl` (lien direct) et `studioUrl` arrivent avec une consigne. Donne ces liens à l'utilisateur avec un court message de félicitations original et un emoji (🎉, 🎬…). Ne dis jamais seulement que la vidéo est dans l'app. Fichier pro : `export_project_file({projectId, format:"aep_jsx"|"premiere_xml"|"fcpxml"})` (gratuit).
+
+## Checklist de fin (critères de fin)
+
+Coche chaque ligne avant de dire « terminé » :
+- [ ] `check_composition` : zéro erreur ; chaque `warning` lu et traité.
+- [ ] Planche `render_preview_frames` regardée : 1re image pleine, chaque coupe, chaque titre entier, CTA lisible (pas de noir, pas de texte coupé, pas de sous-titre sur un visage).
+- [ ] Musique présente de 0 à la dernière image, clip à 0,5, `set_duck` niveau 0,5 (≈ 0,25 sous la voix), fondu final.
+- [ ] Son léger : un bruitage tous les 2 s au plus, gain 0,12 à 0,24 (0,35 maximum), pitch 0,95 à 1,08, jamais un whoosh à chaque coupe.
+- [ ] `review_montage` à `stop:true` (9/10 ou 3 tours).
+- [ ] Export seulement après accord, puis lien final (voir Livraison finale).
+
+## Pièges
+
+- Lot refusé : lis `failedOp`, corrige cette seule op, renvoie tout le lot (atomique).
+- `delete_clip` sur un texte sans `removeText:true` : refusé.
+- Médias de durées inconnues : `list_media` avant de poser `duration`.
+- Sous-titres et titre motion au même endroit : `add_captions` avec `until`, ou titre en zone haute.
+- Générer « pour essayer » : jamais. Une génération par besoin, `estimate_plan` au-delà de 3.
 
 ## Interdits
 
@@ -81,3 +100,7 @@ En quelques lignes : structure avec les temps (accroche, corps, CTA), ce qui a �
 - « Monte mes 4 rushes en un Reel de 30 s avec sous-titres » → `analyze_rushes`, `cut_ranges`, `add_captions`, boucle 5 à 7.
 - « Fais une pub UGC avec ces vidéos » → `apply_template` `ugc-ad`, puis contrôle.
 - « Exporte en 4K 60 fps pour YouTube » → `export_video({resolution:"2160p", fps:60, preset:"youtube"})` après confirmation du coût.
+
+## Livraison finale (obligatoire)
+
+Une fois `get_render_status` à `done` : donne `videoUrl` (lien direct) et `studioUrl`, avec un court message de félicitations original et un emoji (🎉, 🎬, 🚀), puis une ligne : durée, format, crédits dépensés. Ne dis jamais seulement « c'est dans l'app ».

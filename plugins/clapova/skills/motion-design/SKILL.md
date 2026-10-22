@@ -103,6 +103,18 @@ Après create_motion_scene, edit_motion_scene, add_motion_block, apply_edit_plan
 
 Au plus un bruitage par 2 s, seulement sur les temps forts (poids 0,6 et plus), whoosh réservé aux coupes de poids 0,85 et plus, jamais un whoosh à chaque coupe. Volume des bruitages autour de -20 dB (gain 0,12 à 0,24), -6 dB de plus sous la voix ; musique en ducking (0,35) sous la voix ; compteurs : 3 ticks par compteur. Hauteur 0,95-1,08.
 
+## Pièges
+
+- Titre posé en coordonnées absolues sur un sujet qui bouge : utilise `track_motion` ou des keyframes de groupe.
+- Bloc utilisé sans lire ses variables : `get_motion_catalog` d'abord, une variable inconnue est refusée.
+- Texte secondaire gris sur sombre sous `#B8B8C4`, ou titre de moins de 120 px en 1080 de large.
+- Deux familles de transitions, ou un glitch plus d'une fois par vidéo.
+- Sons : un bruitage par événement, pas un tapis ; voir « Son léger ».
+
+## Fin de tâche (critères)
+
+Note de contrôle d'au moins 8/10 sur chaque scène, planche regardée image par image, bruitages posés avec `place_sfx_from_events`, musique sur toute la durée (voir `clapova:monteur`). À l'export : lien direct et félicitations (`clapova:monteur`, Livraison finale).
+
 ## Autres guides à lire
 
 Avant de monter ou de planifier : get_guide('montage') (boucle, pistes, rythme) et get_guide('storyboard') (brief, accord avant génération). Ce guide-ci se lit en entier : il conditionne create_motion_scene, edit_motion_scene, add_motion_block, apply_edit_plan (blocs motion), create_storyboard, build_from_storyboard et export_video.

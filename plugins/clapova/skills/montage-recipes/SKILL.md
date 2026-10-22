@@ -1,6 +1,6 @@
 ---
 name: montage-recipes
-description: Use when planning or judging a Clapova edit and you need the craft — hook formulas, cut rhythm, montage styles (creator / Apple-like 9:16, hyper-motion, luxe, UGC), b-roll, transitions, captions, sound design and mix (ducking, SFX on the event, -14 LUFS, voice-over without overlap), ad / UGC / explainer / listicle structures, platform specs (TikTok, Reels, Shorts, YouTube, LinkedIn). Complements clapova-monteur (tool loop) and clapova-motion-design (animation).
+description: Use when planning, writing the brief of or judging a Clapova edit and you need the craft — hook formulas (first 1.5 s), cut rhythm, montage styles (creator / Apple-like 9:16, hyper-motion, luxe, UGC), b-roll, transitions, caption looks, sound design and mix (music over the whole duration, ducking, light SFX on the event, -14 LUFS, no voice overlap), ad / UGC / explainer / listicle structures, platform formats and safe zones (TikTok, Reels, Shorts, YouTube, LinkedIn). Rules and numbers only, no tool loop: for the loop use clapova-monteur, for animation clapova-motion-design.
 ---
 
 # Clapova : recettes de montage
@@ -45,14 +45,14 @@ Ce skill est la source unique pour : accroche, rythme, styles, b-roll, transitio
 
 ## 6. Sous-titres
 
-- `add_captions` : 9:16 look `pop`, 3 mots par page, mot actif surligné, tiers central ; 16:9 / LinkedIn look `propre`, 5 à 6 mots, bas d'écran au-dessus de la zone sûre.
+- `add_captions` (six looks : `pop`, `karaoke`, `propre`, `boite`, `rebond`, `halo` ; détail dans `clapova:sous-titres-styles`) : 9:16 look `pop`, 3 mots par page, mot actif surligné, tiers central ; 16:9 / LinkedIn look `propre`, 5 à 6 mots, bas d'écran au-dessus de la zone sûre.
 - Taille ≥ 48 px en 1080p. Contour ou ombre, jamais de bandeau noir, jamais sur un visage.
 - Texte fidèle à la voix, chiffres en chiffres. `until` arrête les sous-titres avant le carton CTA.
 
 ## 7. Son (le sound design fait la différence)
 
 - **Voix devant** : voix off à 1, jamais plus. Une seule voix à la fois : les blocs de voix off se suivent sans se chevaucher (≥ 0,1 s d'air entre deux blocs).
-- **Musique** : sur toute la durée, `set_duck` (≈ 0,25 à 0,35 sous la voix), 0,6 à 0,8 sans voix. Pas de musique en explicatif sobre sans demande.
+- **Musique** : sur toute la durée, clip à 0,5 avec `set_duck` niveau 0,5 (≈ 0,25 sous la voix, audible, jamais sous 0,15), 0,6 à 0,8 sans voix. Pas de musique en explicatif sobre sans demande.
 - **Bruitages calés sur l'image** : le pic du son tombe sur l'événement (la coupe, l'apparition du titre, le clic), pas sur le début du fichier. Whoosh sur les transitions fortes, impact sur l'accroche ou le logo, riser qui finit sur la révélation, pop ou clic sur les apparitions UI. `add_sfx` à 0,35 par défaut ; un bruitage par événement, pas un tapis continu.
 - **Mix final** : -14 LUFS intégré, -1,5 dBTP (normalisé automatiquement à l'export). Aucune distorsion audible.
 - **Pas de bruitages saturés** : volume de `add_sfx` raisonnable (≈ 0,35), jamais plusieurs sons forts superposés ; vitesse de lecture (pitch) de `add_sfx` entre 0,95 et 1,08 seulement, au-delà le son se déforme.
@@ -75,6 +75,35 @@ Ce skill est la source unique pour : accroche, rythme, styles, b-roll, transitio
 - **Voir avant de livrer** : une planche d'images (`render_preview_frames`) de l'accroche, des coupes, des titres et du CTA, regardée pour de bon.
 - **Contraste** : texte secondaire au moins `#B8B8C4` sur fond sombre.
 
-## 10. Fini
+## 10. Formats réseaux (zones sûres)
+
+| Réseau | Format | Durée idéale | Bas libre | Spécificité |
+|---|---|---|---|---|
+| TikTok | 9:16 | 15 à 35 s | 20 % | accroche et texte avant 1,5 s, sous-titres mot à mot au tiers central |
+| Reels | 9:16 | 10 à 30 s | 22 % | couverture lisible en 4:5 au centre, rendu soigné, boucle propre |
+| Shorts | 9:16 | 20 à 50 s | 18 % | dernière image qui s'enchaîne avec la première, pas de « lien en bio » |
+| YouTube | 16:9 | 3 à 15 min | 10 % | 30 premières secondes = promesse de la miniature, relance toutes les 45 à 60 s |
+| LinkedIn | 1:1 ou 4:5 | 30 à 90 s | 10 % | look `propre`, sous-titres obligatoires (lecture sans son) |
+
+Chiffres à jour : `get_creative_recipes({topic:"platforms"})`. Haut 8 à 10 % et côté droit 12 % libres de texte en 9:16.
+
+## 11. Musique et son léger
+
+- **Musique sur toute la durée** : du premier au dernier instant de la vidéo, fondu final d'une seconde. Un morceau plus court est prolongé (second morceau ou boucle propre), jamais laissé en silence.
+- **Son léger** : au plus un bruitage tous les 2 s, sur les temps forts seulement ; whoosh réservé aux coupes fortes ; gain des bruitages 0,12 à 0,24 (0,35 au plus), moins encore sous la voix. Un silence bref avant la révélation vaut mieux qu'un bruit de plus.
+- Tempo de la musique = rythme de coupe : une coupe sur le temps (`snap_cuts_to_beats`), la chute de la musique = l'élément principal.
+
+## 12. Pièges
+
+- Ouverture sur logo, « Bonjour » ou fond vide.
+- Sous-titres sur un visage ou dans la zone d'interface de la plateforme.
+- Deux transitions de familles différentes dans la même vidéo.
+- Musique qui s'arrête avant la fin ; bruitage à chaque coupe ; voix qui chevauche la voix.
+- Texte de moins de 48 px en 1080p ou gris sur gris (< `#B8B8C4` sur fond sombre).
+- Plan fixe de plus de 3 s sans effet caméra.
+
+## 13. Fini (checklist)
+
+Un montage est fini quand les aperçus (`clapova:monteur`, étapes 5 à 7) montrent : accroche lisible, chaque coupe propre, titres entiers dans la zone sûre, CTA tenu 3 s, musique de la première à la dernière image, et que `review_montage` atteint `stop:true`. Ensuite lien direct et félicitations (`clapova:monteur`, Livraison finale).
 
 Un montage est fini quand les aperçus (`clapova:monteur`, étapes 5 à 7) montrent : accroche lisible, chaque coupe propre, titres entiers dans la zone sûre, CTA, et que `review_montage` atteint `stop:true`.

@@ -1,6 +1,6 @@
 ---
 name: personnages
-description: Use when a Clapova user wants a reusable identity — "crée mon avatar", "mon double numérique", "garde le même personnage dans toutes les vidéos", "mets-moi dans la vidéo", "remplace la personne de cette vidéo" — via Clapova Personnages (create_character, list_characters, generate_with_character, generate_voice_with_character, train_character, swap_character_in_video).
+description: Use when a Clapova user wants a reusable identity or the same person across several images and videos — "crée mon avatar", "mon double numérique", "garde le même personnage dans toutes les vidéos", "mets-moi dans la vidéo", "remplace la personne de cette vidéo", mascot or presenter series — via create_character, list_characters, generate_with_character, generate_voice_with_character, train_character, swap_character_in_video. Covers photo guidance, the one-shot test before a series, consent links and costs.
 ---
 
 # Clapova : Personnages (identité réutilisable)
@@ -29,6 +29,24 @@ Adapté du workflow `higgsfield-soul-id` (github.com/higgsfield-ai/skills, MIT, 
    - vidéo : `type:"video"` (la référence principale sert de première image) ;
    - voix : `generate_voice_with_character({characterId, text})` ;
    - remplacer une personne dans une vidéo existante : `swap_character_in_video` (devis + lien, attestation de l'utilisateur).
+
+## Série cohérente (test avant le lot)
+
+1. Génère **un seul plan test** (`generate_with_character`), extrais une image (`extract_frames`) et compare au visage de référence.
+2. Fidèle : lance la série, en gardant la fiche personnage figée du storyboard et la même référence principale à chaque plan.
+3. Un plan dérive : régénère ce seul plan et remplace-le (`replace_media` dans `apply_edit_plan`), pas toute la série.
+4. Choisis la finalité avant d'entraîner : photos fixes ou vidéo (un `train_character` pour l'usage dominant).
+
+## Coûts et pièges
+
+- `create_character` : le lien de confirmation est obligatoire (consentement). Rien ne démarre sans lui.
+- `train_character` : facturé une fois, remboursé en cas d'échec, 15 à 30 min ; propose-le seulement si la fiche de référence ne suffit pas.
+- `swap_character_in_video` : devis annoncé, l'utilisateur atteste avoir les droits sur la vidéo et la personne.
+- Photos avec lunettes de soleil, filtres ou plusieurs personnes : visage infidèle.
+
+## Critères de fin
+
+Le Personnage est nommé et réutilisable, le plan test est validé à l'œil, l'utilisateur sait comment le réutiliser (« avec Léa, … »).
 
 ## Erreurs
 

@@ -5,7 +5,7 @@ argument-hint: "<quoi publier, où, quand>"
 
 Prépare la publication suivante avec Clapova : $ARGUMENTS
 
-Suis le skill `clapova:publication-calendrier` (agent `community-manager-clapova` pour une campagne).
+Suis le skill `clapova:publication-calendrier` (agent `community-manager-clapova` pour une campagne). Avant de publier une vidéo courte, `analyze_virality`.
 1. `list_social_accounts` et `get_calendar` pour les créneaux libres.
 2. Rédige avec `generate_social_post`, dans le ton de `get_brand_kit`.
 3. Montre-moi le plan (réseau, date, visuel, texte, hashtags) et attends mon accord.

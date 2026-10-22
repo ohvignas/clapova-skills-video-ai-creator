@@ -1,6 +1,6 @@
 ---
 name: presets
-description: Use when a Clapova user asks for a camera move or visual effect on a generated video (crash zoom, drone FPV, orbit, bullet time, dolly zoom, slow motion, explosion, portal, glitch…) or a marketing montage template (UGC ad, cinematic product demo, crash-zoom teaser, before/after, unboxing, event, faceless explainer, listicle) — list_video_presets / generate_video presets, list_templates / apply_template / create_from_template; also when adding a preset or wiring presets into a new video model.
+description: Use when a Clapova user asks for a camera move or visual effect on a generated video clip (crash zoom, drone FPV, orbit, bullet time, dolly zoom, slow motion, explosion, portal, glitch…) or wants a ready-made marketing montage template (UGC ad, cinematic product demo, crash-zoom teaser, before/after, unboxing, event announcement, faceless explainer, listicle) — list_video_presets with generate_video presets, list_templates, get_template_recipe, apply_template, create_from_template.
 ---
 
 # Clapova : presets vidéo et modèles de montage
@@ -40,8 +40,13 @@ Ces presets agissent sur la génération. Les mouvements caméra et transitions 
 
 Déroulé « fais-moi une pub UGC » : `list_presets` → générer 2 à 4 plans avec les presets de `byTemplate["ugc-ad"]` → voix off → `apply_template`. Générez seulement ce qui est demandé.
 
-## Pour les développeurs
+## Pièges
 
-- Presets : `src/lib/presets/video-presets.ts` (`VIDEO_PRESETS` : `label`/`description` en français, `phrase` + `short` en anglais, `cameraControl` Kling optionnel). Formulations positives seulement (test). Puis `npx vitest run src/lib/presets`.
-- Formulation par modèle : `applyVideoPresets` / `presetStyleFor` (`lead` pour le texte vers vidéo riche, `concise` pour l'image vers vidéo, `instruction` pour les endpoints `*edit*`).
-- Modèles : `src/lib/templates/scene-pack.ts` (`buildScenePack`), tests `npx vitest run src/lib/templates`.
+- Deux mouvements de caméra dans un plan : le deuxième annule le premier. Un mouvement, plusieurs effets.
+- Preset décrit aussi dans le prompt : redondance, mouvement confus.
+- `before-after` demande exactement 2 clips ; `crash-zoom-teaser` demande une musique.
+- Modèle de montage appliqué à un projet non vide : crée un projet vide.
+
+## Critères de fin
+
+Les plans générés portent chacun un seul mouvement de caméra, le modèle de montage est appliqué avec la marque (`brand`), `check_composition` est propre, la planche `render_preview_frames` est regardée, musique sur toute la durée. Lien et félicitations à l'export : voir `clapova:monteur`.

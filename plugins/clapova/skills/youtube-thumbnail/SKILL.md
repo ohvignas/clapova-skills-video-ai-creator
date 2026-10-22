@@ -1,6 +1,6 @@
 ---
 name: youtube-thumbnail
-description: Use when a Clapova user wants a YouTube thumbnail, Shorts cover or Instagram video cover ("miniature", "vignette YouTube", "couverture du Reel"), including variant sets, face-referenced thumbnails, logos and headline overlays.
+description: Use when a Clapova user wants a YouTube thumbnail, Shorts cover or Instagram Reel cover ("miniature", "vignette YouTube", "couverture du Reel", "thumbnail"), including variant sets, face-referenced thumbnails with a Personnage, logos and headline overlays, via generate_image, generate_with_character and edit_image_precise. To pick a cover from an existing video use extract_thumbnail.
 ---
 
 # Clapova : miniatures
@@ -41,6 +41,13 @@ Identité fidèle, aucun texte parasite, émotion et héros lisibles à 120 px d
 ## 5. Retouches et titre
 
 Retouche ciblée : `generate_image` avec `imageUrl` = la miniature choisie et « change ONLY <expression | background | rim light color>, keep everything else identical ». Titre exact : `edit_image_precise` avec le modèle `ideogram` (texte net, voir `clapova:image-edit`), ou surimpression déterministe (police grasse, contour épais) plutôt que texte généré dans l'image.
+
+## Pièges
+
+- Texte cuit dans l'image par le modèle : déformé, surimpose-le.
+- Plus de trois visages ou deux idées : un seul sujet focal.
+- Promesse que la vidéo ne tient pas : exagérer oui, mentir non.
+- Couverture de Reel : image de la vidéo elle-même d'abord (`extract_thumbnail`, gratuit), génération seulement si rien ne convient.
 
 ## Livraison
 

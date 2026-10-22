@@ -1,6 +1,6 @@
 ---
 name: product-photoshoot
-description: Use when a Clapova user wants brand-quality product visuals — packshot, lifestyle, hands close-up, Pinterest pin, hero banner, carousel, ad pack, virtual try-on, conceptual/levitating product, restyle of an existing image ("photo produit", "visuels pub", "bannière", "carrousel").
+description: Use when a Clapova user wants brand-quality product visuals from a product photo or description — packshot, lifestyle scene, hands close-up, Pinterest pin, hero banner, carousel, ad pack, virtual try-on, conceptual / levitating product, restyle of an existing image ("photo produit", "visuels pub", "bannière", "carrousel", "shooting produit") with generate_image and the product-shots recipes. Images only; for a product video ad use clapova-pub-produit-ugc.
 ---
 
 # Clapova : shooting produit
@@ -38,6 +38,16 @@ Série (carrousel, pack pub) : même lumière et même palette, varier un seul p
 ## 4. Contrôle
 
 Regardez chaque image : produit identique (forme, étiquette), pas de texte parasite, marque correcte. Défaut net → relancer une fois avec la consigne corrigée.
+
+## Pièges
+
+- Produit déformé (étiquette, forme) : repars de la photo en `imageUrl`, jamais d'un prompt seul.
+- Texte ou logo généré : à poser ensuite avec `edit_image_precise`.
+- Série hétérogène : une seule lumière et une seule palette, un seul paramètre varie.
+
+## Critères de fin
+
+Chaque image montrée avec son étiquette, produit identique à la photo, coût total donné en une ligne. Une seule suite proposée : animer les deux meilleures images en vidéo (`clapova:pub-produit-ugc`) ou décliner en carrousel.
 
 ## Écart
 

@@ -1,6 +1,6 @@
 ---
 name: marketplace-cards
-description: Use when a Clapova user wants marketplace listing visuals — main image on white, secondary images (infographic, angles, detail, lifestyle, what's in the box), A+ content modules, or a full listing set ("fiche Amazon", "visuels marketplace", "images de fiche produit").
+description: Use when a Clapova user wants e-commerce marketplace listing visuals — main image on white, secondary images (infographic, angles, detail, lifestyle, what's in the box), A+ content modules, or a full listing set ("fiche Amazon", "visuels marketplace", "images de fiche produit", "fiche Etsy / Shopify") with generate_image, edit_image_precise and the marketplace-cards recipes. Not for ad creatives or hero banners (clapova-product-photoshoot).
 ---
 
 # Clapova : visuels marketplace
@@ -29,6 +29,16 @@ description: Use when a Clapova user wants marketplace listing visuals — main 
 ## 3. Livraison
 
 Liste étiquetée : « Image principale », « Infographie », « En situation »… Pas d'identifiants.
+
+## Pièges
+
+- Allégations inventées (certification, chiffre, ingrédient) : seulement les faits fournis.
+- Image principale avec texte, accessoire ou ombre dure : refus fréquent des plateformes.
+- Cohérence perdue : chaque secondaire part de l'image principale validée.
+
+## Critères de fin
+
+Lot complet selon le périmètre choisi, chaque visuel étiqueté, produit identique d'une image à l'autre, textes exacts, coût total annoncé. Une seule suite proposée.
 
 ## Écart
 

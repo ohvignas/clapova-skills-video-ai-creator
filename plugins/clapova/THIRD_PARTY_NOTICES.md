@@ -51,3 +51,18 @@ texte recopié), inference-sh/skills `storyboard-creation` (MIT d'après le
 README du dépôt, sans fichier LICENSE) et rainlib/ai-storyboard (GPL-3.0 :
 structure et idées seulement, aucun texte copié ni traduit). Voir la section
 « Crédits » du skill.
+
+## Skills ajoutés en 1.1.0
+
+`prompts-video`, `pub-produit-ugc`, `talking-head`, `test-accroches`,
+`sous-titres-styles`, `declinaison-formats` sont des textes originaux écrits
+pour les outils MCP de Clapova. Ils s'inspirent, comme idées de méthode
+uniquement (aucun texte recopié), de github.com/higgsfield-ai/skills (MIT,
+Copyright (c) 2026 Higgsfield AI : prompt vidéo de mouvement seul, test d'une
+accroche à la fois, barrières entre phases d'un explainer), des bonnes
+pratiques d'écriture de skills publiées par Anthropic (platform.claude.com,
+« Skill authoring best practices » : description déclencheuse, divulgation
+progressive, critères de fin) et du dépôt github.com/heygen-com/hyperframes
+(Apache-2.0 : principe d'une composition rendue de façon déterministe). Les
+dépôts remotion-dev/skills et travisvn/awesome-claude-skills n'ont pas de
+licence confirmée : idées seulement, rien n'est repris.
