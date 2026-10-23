@@ -11,7 +11,7 @@ Règle dure : **ne devine jamais le rendu ni l'énergie.** Une vidéo « réelle
 
 ## Boucle
 
-1. **Lire ce qui est déjà dit** : message, fichiers joints, Brand Kit (`get_brand_kit`), vidéo de référence (`clapova:recreer-depuis-reference` pour l'analyser). Remplis la fiche avec ce qui est certain ; marque le reste « ? ».
+1. **Lire ce qui est déjà dit** : message, fichiers joints, Brand Kit (`get_brand_kit`). Lien ou fichier de référence : analyse-le et regarde-le avec `clapova:toolbox-createur` (lecture de style en 6 lignes + images clés) avant toute question. Pas de référence : propose d'en donner une (« un TikTok ou Reel que tu aimes ? »), c'est le moyen le plus sûr de comprendre. Remplis la fiche avec ce qui est certain ; marque le reste « ? ».
 2. **Demander ce qui manque** avec `ask_storyboard_questions` : 3 à 5 questions, réponses toutes prêtes, une seule fois. Les questions 1 et 2 sont TOUJOURS posées sauf si l'utilisateur y a répondu en clair. Ordre :
    1. **Rendu** : images réelles ou IA réaliste ; réel + motion design (marketing) ; motion design pur ; animation 2D illustrée ; 3D produit ; face caméra.
    2. **Énergie** : calme et premium (plans de 2 à 3 s) ; dynamique réseaux sociaux (1 à 2 s, textes qui claquent) ; très nerveux (0,5 à 1 s, speed ramps, flashs).
