@@ -22,7 +22,8 @@ Le serveur MCP `clapova` agit dans le compte de l'utilisateur, avec son plan et 
 | Retouche d'une partie d'image | `clapova:image-edit` |
 | Choix de modèle, prix | `clapova:model-catalog` |
 | Mouvement de caméra, VFX, modèle de montage | `clapova:presets` |
-| Vidéo de plusieurs plans (storyboard d'abord) | `clapova:storyboard` |
+| Toute vidéo de plusieurs plans ou tout montage : D'ABORD le cadrage (fiche de direction validée) | `clapova:cadrage` |
+| Vidéo de plusieurs plans (après le cadrage) | `clapova:storyboard` |
 | « Refais / inspire-toi de cette vidéo » (YouTube, TikTok, fichier envoyé) | `clapova:recreer-depuis-reference` |
 | Pub produit en vidéo, UGC | `clapova:pub-produit-ugc` |
 | Personne qui parle face caméra | `clapova:talking-head` |

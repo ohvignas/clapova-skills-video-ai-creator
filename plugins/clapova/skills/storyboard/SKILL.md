@@ -14,7 +14,7 @@ Contraintes dures : 60 % au plus de plans générés ; plan moyen 3,5 s au plus 
 ## Boucle
 
 0. **Guide et solde** : `get_guide('storyboard')` (et `get_guide('motion')` avant le build), puis `get_credits`. Vidéo d'inspiration fournie : `clapova:recreer-depuis-reference` d'abord (`analyze_reference_video`), sa recette nourrit l'arc et le rythme.
-1. **Brief** (§1), via `ask_storyboard_questions` si des infos manquent.
+1. **Cadrage** : la fiche de direction de `clapova:cadrage` doit être validée AVANT cette étape (sinon charge `clapova:cadrage` et fais-la). Le brief (§1) en découle ; tout choix de rendu, rythme, typo ou source suit la fiche.
 2. **Découpage** : arc, beats, rythme, thème, personnage, plans (§2 à §6). Écris `storyboard.json` (dans le dossier de travail) et appelle `create_storyboard` avec les mêmes plans (§8) ; garde le `storyboardId` dans le JSON. `qualityIssues` dans le retour : corrige les deux côtés.
 3. **Relire** PASS/FAIL (§7), corriger.
 4. **Rendre la planche** : `node <skill>/planche/build.mjs storyboard.json --out planche-rendu`. Regarde `planche.png` (Read) avant de la montrer : cases lisibles, flèches au bon endroit, aucun encadré orange non voulu. Pas de PNG (pas de Playwright) : publie ou ouvre `planche.html`, autonome.

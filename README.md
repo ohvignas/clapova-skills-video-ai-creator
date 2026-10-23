@@ -43,7 +43,7 @@ CLAPOVA_TOKEN=clp_… node packages/cli/bin/clapova.mjs tools
 
 - **Commandes** : `/clapova:generer`, `/clapova:monter`, `/clapova:publier`, `/clapova:credits`, `/clapova:veille`.
 - **Agents** : `monteur-clapova`, `community-manager-clapova`.
-- **Skills** : `utiliser-clapova` (point d'entrée), `generate`, `prompts-video`, `image-edit`, `model-catalog`, `presets`, `monteur`, `motion-design`, `montage-recipes`, `sous-titres-styles`, `declinaison-formats`, `test-accroches`, `talking-head`, `pub-produit-ugc`, `storyboard`, `shorts-depuis-video-longue`, `continuer-video`, `personnages`, `product-photoshoot`, `marketplace-cards`, `youtube-thumbnail`, `video-explainer`, `brandkit`, `marque-depuis-site`, `publication-calendrier`, `statistiques`, `viralite`, `veille-concurrence`.
+- **Skills** : `utiliser-clapova` (point d'entrée), `cadrage` (obligatoire avant toute vidéo), `generate`, `prompts-video`, `image-edit`, `model-catalog`, `presets`, `monteur`, `motion-design`, `montage-recipes`, `sous-titres-styles`, `declinaison-formats`, `test-accroches`, `talking-head`, `pub-produit-ugc`, `storyboard`, `shorts-depuis-video-longue`, `continuer-video`, `personnages`, `product-photoshoot`, `marketplace-cards`, `youtube-thumbnail`, `video-explainer`, `brandkit`, `marque-depuis-site`, `publication-calendrier`, `statistiques`, `viralite`, `veille-concurrence`.
 - **Serveur MCP** : `clapova` (Streamable HTTP, OAuth 2.1). Ressources `clapova://models/catalog`, `clapova://recipes`, `clapova://brand-kit` ; prompts `monter_video`, `campagne_reseaux`, `photoshoot_produit`.
 
 ## Outils MCP
