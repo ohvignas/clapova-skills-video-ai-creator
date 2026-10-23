@@ -1,6 +1,6 @@
 # Catalogue de styles (vidéo courte marketing, 2026)
 
-12 styles qui marchent sur TikTok, Reels et Shorts. Chaque style a un **id stable** : c'est lui qu'on écrit dans les réponses de `ask_storyboard_questions`, dans la fiche de direction (`Références`) et dans `storyboard.json` (`direction.style`). Planche visuelle : `planche-styles.png` ; sous-ensemble (les 3 directions proposées) : `node build.mjs --ids a,b,c --out <dossier>`. Les données des vignettes sont dans `styles.json` (ajouter un style = une entrée + une fonction `ART` dans `build.mjs`).
+12 styles qui marchent sur TikTok, Reels et Shorts. Chaque style a un **id stable** : c'est lui qu'on écrit dans les réponses de `ask_storyboard_questions`, dans la fiche de direction (`Références`) et dans `storyboard.json` (`direction.style`). Planche visuelle : `planche-styles.png` ; sous-ensemble (les 3 directions proposées) : `node build.mjs --ids a,b,c --out <dossier>`. Les données des vignettes sont dans `styles.json` (ajouter un style = une entrée + une image IA 9:16 sans texte dans `images/<id>.jpg` + une fonction `ART` d’overlays dans `build.mjs`).
 
 Coût Clapova : **code** = motion et dessin en code, 0 crédit ; **rushes** = vidéos de l'utilisateur ; **IA** = génération (image → vidéo, 3D, voix) facturée ; **mixte** = un peu de tout. Constats communs 2026 : l'accroche se joue dans les 3 premières secondes, le contenu « fait au téléphone » bat souvent le très léché sur TikTok, le léché garde sa place sur Reels et pour le premium (sources en bas).
 
