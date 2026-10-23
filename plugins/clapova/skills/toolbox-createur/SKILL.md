@@ -11,10 +11,10 @@ But : comprendre ce que l'utilisateur veut en VOYANT ce qu'il montre, et vérifi
 
 | Besoin | Outil | Coût | Notes |
 |---|---|---|---|
-| Décortiquer une vidéo de référence (plans, caméra, texte, musique, rythme, CTA, palette, storyboard prêt) | `analyze_reference_video` | ≈ 1 crédit | `source` = lien YouTube public, `mediaId` ou URL https directe. 10 min max. |
+| Décortiquer une vidéo de référence (plans, caméra, texte, musique, rythme, CTA, palette, storyboard prêt) | `analyze_reference_video` | ≈ 1 crédit | `source` = lien YouTube public, `mediaId` ou URL https directe. 10 min max. Modèle léger : vérifie la vraisemblance (nombre et durée des plans, langue, format) avant de restituer ; il ne décrit pas les animations ni la typo. |
 | Lien TikTok / Instagram / fichier de l'utilisateur | `create_upload_link` puis `get_upload_status`, ensuite `analyze_reference_video` sur le `mediaId` | gratuit puis ≈ 1 | Ces liens ne s'importent pas tels quels ; demande le fichier (enregistrement d'écran accepté). |
-| Voir des images d'une vidéo | `extract_frames` (mode `sceneChanges` pour un plan par coupe, `everySeconds`, `timestamps`) | gratuit | 30 images max ; regarde-les avant d'en parler. |
-| Transcrire (script, voix, sous-titres) | `transcribe_media` | ≈ 1 crédit/min | 10 min max ; passe `language`. Relis les noms propres et mots clés (« chaud » lu « show ») et corrige avant usage. |
+| Voir des images d'une vidéo (exige un `mediaId` : un lien YouTube ne s'importe pas, demande le fichier) | `extract_frames` (mode `sceneChanges` pour un plan par coupe, `everySeconds`, `timestamps`) | gratuit | 30 images max ; regarde-les avant d'en parler. |
+| Transcrire (script, voix, sous-titres) | `transcribe_media` | ≈ 1 crédit/min | ne marche pas sur un lien YouTube (fichier requis) ; 10 min max ; passe `language`. Relis les noms propres et mots clés (« chaud » lu « show ») et corrige avant usage. |
 | Infos techniques | `get_media_info` | gratuit | durée, résolution, fps, audio. |
 | Lire une page (fiche produit, site, article) | `fetch_url` | gratuit | dès qu'un lien est donné. |
 | Chercher des exemples, tendances | `web_search` | 1 crédit | cite les URL. |
@@ -40,6 +40,7 @@ Annonce le coût en une ligne avant tout outil payant.
    Son        : musique 120 BPM, impacts sur les coupes, voix directe
    ```
    Puis : « C'est bien ça que tu veux ? Qu'est-ce que tu gardes, qu'est-ce que tu enlèves ? »
+   Si tu n'as PAS pu voir les images (seulement le JSON de l'analyse), dis-le clairement : « analysée mais pas vue », et demande le fichier pour confirmer.
 5. **Reporter** dans la fiche de direction de `clapova:cadrage` (Rendu, Énergie, Caméra, Motion, Son, Références). On s'inspire de la structure, jamais des images, sons, textes ou marques de la référence.
 
 ## Vérifier avant de montrer
