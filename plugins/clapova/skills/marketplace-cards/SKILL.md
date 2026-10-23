@@ -1,6 +1,6 @@
 ---
 name: marketplace-cards
-description: Use when a Clapova user wants e-commerce marketplace listing visuals — main image on white, secondary images (infographic, angles, detail, lifestyle, what's in the box), A+ content modules, or a full listing set ("fiche Amazon", "visuels marketplace", "images de fiche produit", "fiche Etsy / Shopify") with generate_image, edit_image_precise and the marketplace-cards recipes. Not for ad creatives or hero banners (clapova-product-photoshoot).
+description: Use when a Clapova user wants e-commerce marketplace listing visuals — main image on white, secondary images (infographic, angles, detail, lifestyle, what's in the box), A+ content modules, or a full listing set ("fiche Amazon", "visuels marketplace", "images de fiche produit", "fiche Etsy / Shopify") with generate_image, edit_image_precise and the marketplace-cards recipes. Not for ad creatives or hero banners (clapova:product-photoshoot).
 ---
 
 # Clapova : visuels marketplace

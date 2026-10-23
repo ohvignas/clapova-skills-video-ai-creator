@@ -72,8 +72,8 @@ Chaque outil indique son coût dans sa description. Les générations qui échou
 | `list_characters` | Lister les personnages | lecture |
 | `generate_with_character` | Image avec un personnage | crédits |
 | `generate_voice_with_character` | Voix d'un personnage | crédits |
-| `train_character` | Entraîner un personnage (LoRA) | lecture |
-| `swap_character_in_video` | Remplacer un personnage dans une vidéo | lecture |
+| `train_character` | Entraîner un personnage (LoRA) | crédits |
+| `swap_character_in_video` | Remplacer un personnage dans une vidéo | crédits |
 | `list_video_presets` | Presets vidéo | lecture |
 | `list_presets` | Presets caméra et VFX | lecture |
 | `get_creative_recipes` | Recettes de création | lecture |

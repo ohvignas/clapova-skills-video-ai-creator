@@ -1,6 +1,6 @@
 ---
 name: image-edit
-description: Use when a Clapova user wants to change PART of an existing image precisely ("retire la tasse", "remplace le ciel", "change la couleur du pull", "ajoute un texte sur la pancarte", "supprime l'objet", "agrandis l'image") with edit_image_precise or the /editeur page — zones in percent, per-zone instructions, reference images, model choice and plan limits, multi-pass, high resolution, credit cost. Not for a global restyle (generate_image with imageUrl, clapova-generate).
+description: Use when a Clapova user wants to change PART of an existing image precisely ("retire la tasse", "remplace le ciel", "change la couleur du pull", "ajoute un texte sur la pancarte", "supprime l'objet", "agrandis l'image") with edit_image_precise or the /editeur page — zones in percent, per-zone instructions, reference images, model choice and plan limits, multi-pass, high resolution, credit cost. Not for a global restyle (generate_image with imageUrl, clapova:generate).
 ---
 
 # Clapova : retouche d'image précise
