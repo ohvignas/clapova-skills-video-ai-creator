@@ -91,3 +91,23 @@ la licence MIT reproduit plus haut s'applique à ces reprises.
   fichiers woff2 issus de @fontsource, tous sous SIL Open Font License 1.1.
 - Le reste du moteur (sketch.js, scenes.js, generique.js, board.js, build.mjs, render.mjs) est
   écrit pour Clapova.
+
+## Famille montage-* / motion-*, controle-qualite, son-design, produit-coherent (2026-10)
+
+Ces skills reformulent des règles publiées par les projets suivants. Aucun code ni texte d'OpenMontage (AGPL-3.0), de remotion-dev/skills (Remotion License) ni d'imMamdouhaboammar/motion-graphics-skills (propriétaire) n'est repris.
+
+1. heygen-com/hyperframes — Apache-2.0 : formulations des règles craft, review, sound, captions, vertical, motion.
+2. Barty-Bart/motion-graphics — MIT © 2026 Bart : règles b-roll, passe son, interdits ; méthode carte « Vox » (@Voxyz_ai).
+3. JakeB-5/motion-graphic-skill — MIT © 2026 motion-graphic-skill contributors : critique D1–D11, ressorts nommés, `facts`.
+4. emilkowalski/skills — MIT © 2026 Emil Kowalski (animations.dev) : courbes, format Avant/Après/Pourquoi, cas limites des compteurs.
+5. lottiefiles/motion-design-skill — MIT © 2025 LottieFiles : tables de durée et de distance.
+6. kylezantos/design-motion-principles — MIT © 2026 Kyle Zantos : routeur, anti-checklist.
+7. iart-ai/motion-skills — MIT © 2026 iart.ai : b-roll A/B/C, beat-sync, logo, démo produit, livraison, sync-check.
+8. owl-listener/designer-skills — MIT © 2026 MC Dean : gabarit de frontmatter.
+9. greensock/gsap-skills — MIT © 2026 GreenSock : bonnes pratiques SplitText et timeline.
+10. haidrrrry/claude-remotion-skill — MIT © 2025 haidrrrry : logo sting, typographie héros.
+11. digitalsamba/claude-code-video-toolkit — MIT © 2024 Digital Samba : débit de voix off, sonie par scène.
+12. Tokens publics : Material 3 / androidx (Apache-2.0), IBM Carbon (Apache-2.0), Fluent 2 (MIT), Shopify Polaris (MIT), Uber baseweb (MIT).
+13. Outils cités par controle-qualite/scripts/controle_video.py (non embarqués) : PySceneDetect (BSD-3), librosa (ISC), RapidOCR (Apache-2.0), ffmpeg (LGPL/GPL selon build).
+
+Le texte complet des licences MIT et Apache-2.0 est celui publié dans chaque dépôt cité.

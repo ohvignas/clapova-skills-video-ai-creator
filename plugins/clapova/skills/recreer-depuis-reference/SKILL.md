@@ -30,13 +30,13 @@ Tu t'inspires de la STRUCTURE d'une vidéo, jamais de son contenu. La vidéo fin
 | Rythme | nombre de plans, durée moyenne, relance toutes les N s |
 | Plans | valeurs de plan, mouvements de caméra (`clapova:presets`) |
 | Texte à l'écran | quand, combien de mots, police et placement |
-| Sous-titres | look (`clapova:sous-titres-styles`), mots par page |
+| Sous-titres | look (`clapova:motion-sous-titres`), mots par page |
 | Son | genre et tempo de la musique, présence de voix, bruitages |
 | Fin | appel à l'action, durée de la dernière image |
 
 5. **Adapter, pas copier** : demande le sujet, le public et la marque de l'utilisateur (`get_brand_kit`). Écris une nouvelle accroche, un nouveau script, de nouveaux visuels qui respectent la recette (même nombre de plans, même rythme, même place du texte). Liste en deux lignes ce que tu NE reprends PAS. Le `storyboardDraft` est un point de départ : remplace chaque description, voix et texte par du contenu original.
 6. **Storyboard** : `clapova:storyboard` (`ask_storyboard_questions` si besoin, `create_storyboard`, `estimate_storyboard`, accord explicite, `approve_storyboard`, `build_from_storyboard`).
-7. **Montage et contrôle** : boucle de `clapova:monteur` (`get_timeline`, `apply_edit_plan`, `check_composition`, `render_preview_frames` regardée image par image, `review_montage` jusqu'à `stop:true`). Musique propre sur toute la durée (`generate_music` à la durée totale), voix off si la référence en a (`generate_voiceover`).
+7. **Montage et contrôle** : boucle de `clapova:montage` (`get_timeline`, `apply_edit_plan`, `check_composition`, `render_preview_frames` regardée image par image, `review_montage` jusqu'à `stop:true`). Musique propre sur toute la durée (`generate_music` à la durée totale), voix off si la référence en a (`generate_voiceover`).
 8. **Livrer** : export seulement sur accord (`export_video`, `get_render_status`), puis `videoUrl`, `studioUrl`, un court message de félicitations original avec un emoji ; `mark_as_reference` sur le montage réussi pour réutiliser la recette.
 
 ## Pièges

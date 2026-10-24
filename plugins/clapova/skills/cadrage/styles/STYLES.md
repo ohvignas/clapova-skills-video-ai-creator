@@ -7,8 +7,8 @@ Coût Clapova : **code** = motion et dessin en code, 0 crédit ; **rushes** = vi
 | id | Rendu | Plan moyen | Caméra | Motion / typo | Son | Quand l'utiliser | Fabrication Clapova | Modèle |
 |---|---|---|---|---|---|---|---|---|
 | `ugc-face-cam` | une personne parle au téléphone, lumière naturelle | 2–3 s, jump cuts | tenu main, face caméra | sous-titres mot à mot pop, 1 sticker | voix directe, musique basse | conversion, preuve sociale, TikTok | rushes de l'utilisateur, sinon personnage (`clapova:talking-head`) ; rushes | `ugc-ad` |
-| `reel-motion` | plans réels courts + graphismes marketing par-dessus | 1–2 s | push-in, macro, speed ramp | titres cinétiques gras, compteurs, soulignés, badges | musique 110–125 BPM, impacts légers | lancement, promo, chiffres à montrer | rushes ou image → vidéo depuis photo produit + motion code ; mixte | — (`montage-recipes`) |
-| `kinetic-type` | mots plein écran sur aplats, aucun plan filmé | 0,5–1,5 s | fausse caméra (zoom, slide) | typo grasse géante, 2–3 couleurs, coupe au temps | musique rythmée, voix optionnelle | message fort, manifeste, budget nul | 100 % `clapova:motion-design` ; code | — |
+| `reel-motion` | plans réels courts + graphismes marketing par-dessus | 1–2 s | push-in, macro, speed ramp | titres cinétiques gras, compteurs, soulignés, badges | musique 110–125 BPM, impacts légers | lancement, promo, chiffres à montrer | rushes ou image → vidéo depuis photo produit + motion code ; mixte | — (`clapova:montage`) |
+| `kinetic-type` | mots plein écran sur aplats, aucun plan filmé | 0,5–1,5 s | fausse caméra (zoom, slide) | typo grasse géante, 2–3 couleurs, coupe au temps | musique rythmée, voix optionnelle | message fort, manifeste, budget nul | 100 % `clapova:montage` ; code | — |
 | `hyper-motion` | plans spectaculaires, flashs, lignes de vitesse | 0,4–1 s | crash zoom, whip pan, FPV | textes très courts, glitch, flashs | musique seule, montée + drop | teaser, sortie, sport, tech | `generate_video` + presets `crash-zoom`, `whip-pan`, `speed-ramp` ; IA | `crash-zoom-teaser` |
 | `premium-apple` | produit seul sur fond uni, lumière douce | 2,5–3,5 s | push-in lent, orbit lent | une phrase sobre, typo fine, beaucoup de vide | piano / ambiant, peu de bruitages | produit haut de gamme, marque | image → vidéo depuis photo produit (`product-glow`, `push-in`) + code ; IA | `cinematic-product-demo` |
 | `produit-3d` | objet en 3D, matières, rotation | 2–3 s | orbit 360°, éclaté | étiquettes de fonctions, chiffres | électro propre | tech, cosmétique, objet à détailler | `generate_3d` / `turntable_3d` + code ; IA | `cinematic-product-demo` |
@@ -21,7 +21,7 @@ Coût Clapova : **code** = motion et dessin en code, 0 crédit ; **rushes** = vi
 
 Combinaisons fréquentes : `reel-motion` + `listicle` ; `ugc-face-cam` + `demo-app` ; `premium-apple` + `produit-3d`. On choisit **un** style dominant, le second ne sert qu'aux transitions ou à un beat.
 
-Hors catalogue (sur demande) : stop motion (photos + code à 12 i/s), animation 2D illustrée (dessin en code, `clapova:motion-design`), live action tourné.
+Hors catalogue (sur demande) : stop motion (photos + code à 12 i/s), animation 2D illustrée (dessin en code, `clapova:montage`), live action tourné.
 
 ## Sources
 

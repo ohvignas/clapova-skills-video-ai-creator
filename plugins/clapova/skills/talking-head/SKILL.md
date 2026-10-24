@@ -19,14 +19,14 @@ Deux voies. **A : les rushes de l'utilisateur** (recommandé, rendu le plus auth
 4. **Dérusher** : `analyze_rushes({projectId, minSilence?, keepSilence?, cutFillers:true, cutRepetitions:true})` (≈ 1 crédit/min), puis l'op `cut_ranges` ; garde 0,12 s avant et 0,18 s après chaque phrase.
 5. **Cadrer** : `frame_subject` détecte le visage et sert d'ancre au zoom (il ne recadre pas un rush 16:9 en 9:16 tout seul). Recette 16:9 vers 9:16 : projet en 9:16, clip posé, `frame_subject`, puis `add_effect{clipId, preset:"camera-ken-burns", params:{zoom:1.3, cibleX:<position horizontale du visage, 0 à 1>, cibleY:0.4}}` (valeurs de départ : zoom 1,15 à 1,4 selon la largeur du locuteur) ; ajuste `cibleX`/`cibleY` sur la planche jusqu'à ce que le visage soit centré et non coupé. Plusieurs interlocuteurs côte à côte : un seul tient en 9:16, garde le principal et dis-le. Cible : visage dans le tiers supérieur, yeux à 35 à 40 % de la hauteur, vérifié sur `render_preview_frames` (regarde la planche à 3 instants, pas de mesure automatique ; si l'outil renvoie `available:false`, dis-le). Plan large puis serré toutes les 4 à 6 s pour relancer (`add_effect` `camera-zoom-punch` de 6 à 10 %).
 6. **B-roll** : une image de couverture toutes les 4 à 6 s sur le nom ou le verbe de la phrase (`generate_broll` avec `dryRun:true`, ou la Bibliothèque), la voix reste celle du locuteur.
-7. **Sous-titres** : `add_captions` look `pop` ou `propre`, hors du visage (`clapova:sous-titres-styles`).
+7. **Sous-titres** : `add_captions` look `pop` ou `propre`, hors du visage (`clapova:motion-sous-titres`).
 
 ## Voie B : présentateur généré
 
 3. **Identité** : `list_characters` puis `create_character` (lien de confirmation, consentement) ; jamais une personne réelle autre que l'utilisateur ni une célébrité.
 4. **Voix** : `generate_voice_with_character` ou `generate_voiceover` (nombres en lettres). Une voix, un script, aucun chevauchement.
 5. **Plan test** : un seul plan (`generate_with_character`, `type:"video"`, coût annoncé ; teste d'abord en image si le visage est incertain), pose-le dans un projet et regarde `render_preview_frames` (visage et bouche) ou fais valider l'URL par l'utilisateur ; fidèle, alors la série (jamais plus de 10 s par clip, `continue_video` pour prolonger).
-6. Assemble voix et clips sur la timeline (`clapova:monteur`), `set_volume` du son natif à 0 si la voix de Clapova prime.
+6. Assemble voix et clips sur la timeline (`clapova:montage`), `set_volume` du son natif à 0 si la voix de Clapova prime.
 
 ## Son, contrôle, livraison
 
@@ -46,4 +46,4 @@ Deux voies. **A : les rushes de l'utilisateur** (recommandé, rendu le plus auth
 
 ## Critères de fin
 
-Script court validé, coupes propres, relance visuelle toutes les 4 à 6 s, visage net sur la planche, sous-titres fidèles, son contrôlé, `review_montage` à `stop:true`, lien final selon `clapova:monteur` (Livraison finale).
+Script court validé, coupes propres, relance visuelle toutes les 4 à 6 s, visage net sur la planche, sous-titres fidèles, son contrôlé, `review_montage` à `stop:true`, lien final selon `clapova:montage` (Livraison finale).
