@@ -1,6 +1,6 @@
 ---
 name: generate
-description: Use when a Clapova user asks to generate ONE image, video clip, voiceover, music track or sound ("génère une image", "anime cette photo", "fais une vidéo de…", "stylise cette image", "fais une voix off", "fais une musique", "continue la vidéo") through the Clapova MCP or Agent — routing to the right generate_* tool, automatic model choice, references, presets, credit cost, delivery with preview. Not for photoshoots, marketplace cards, thumbnails, explainers, brand systems, precise local retouching, multi-shot videos (use the matching clapova-* skill) nor video prompt tuning per model (clapova-prompts-video).
+description: Use when a Clapova user asks to generate ONE image, video clip, voiceover, music track or sound ("génère une image", "anime cette photo", "fais une vidéo de…", "stylise cette image", "fais une voix off", "fais une musique", "continue la vidéo") through the Clapova MCP or Agent — routing to the right generate_* tool, automatic model choice, references, presets, credit cost, delivery with preview. Not for photoshoots, marketplace cards, thumbnails, explainers, brand systems, precise local retouching, multi-shot videos (use the matching clapova:* skill) nor video prompt tuning per model (clapova:prompts-video).
 ---
 
 # Clapova : générer un média

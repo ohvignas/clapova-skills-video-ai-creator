@@ -1,6 +1,6 @@
 ---
 name: brandkit
-description: Use when a Clapova user wants a brand applied consistently to videos and visuals — palette, logo, typography, the "Brand Lock" fed to templates (brand colors, logo, fonts), branded social graphics, posters, mockups — or a new identity when explicitly asked ("charte", "kit de marque", "mes couleurs", "crée un logo", "logo vectoriel") with get_brand_kit, generate_vector_logo, vectorize_logo, export_brand_guidelines. To import a brand from a website use clapova-marque-depuis-site.
+description: Use when a Clapova user wants a brand applied consistently to videos and visuals — palette, logo, typography, the "Brand Lock" fed to templates (brand colors, logo, fonts), branded social graphics, posters, mockups — or a new identity when explicitly asked ("charte", "kit de marque", "mes couleurs", "crée un logo", "logo vectoriel") with get_brand_kit, generate_vector_logo, vectorize_logo, export_brand_guidelines. To import a brand from a website use clapova:marque-depuis-site.
 ---
 
 # Clapova : kit de marque

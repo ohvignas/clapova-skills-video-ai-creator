@@ -1,0 +1,139 @@
+{
+  "title": "Nova — gourde isotherme",
+  "subtitle": "Storyboard · pub sociale",
+  "version": "v1",
+  "format": {
+    "ratio": "9:16"
+  },
+  "style": "croquis code, 0 crédit",
+  "shots": [
+    {
+      "id": 1,
+      "duration": 2.5,
+      "title": "Café froid",
+      "tag": "Croquis",
+      "scene": "cafe-froid",
+      "params": {
+        "zoom": 1.45
+      },
+      "camera": {
+        "type": "push-in",
+        "zoom": 1.45,
+        "label": "Push-in lent ×1,45 sur la tasse"
+      },
+      "action": "Tasse immobile, surface figée, aucune vapeur. L'horloge insiste sur le temps.",
+      "text": {
+        "value": "Ton café refroidit ?",
+        "from": 0.2
+      },
+      "sound": "Tic-tac discret",
+      "transition": "Cut sec"
+    },
+    {
+      "id": 2,
+      "duration": 3.5,
+      "title": "La main attrape la gourde",
+      "tag": "Croquis",
+      "scene": "main-sac",
+      "params": {
+        "trackFrom": 34,
+        "trackTo": -34
+      },
+      "camera": {
+        "type": "track",
+        "dir": "left",
+        "label": "Travelling latéral droite → gauche, parallaxe du fond"
+      },
+      "action": "La main plonge dans le cabas, se referme sur la gourde et la sort.",
+      "sound": "Froissement de toile",
+      "transition": "Raccord mouvement (la gourde monte)"
+    },
+    {
+      "id": 3,
+      "duration": 4,
+      "title": "Ouverture, vapeur",
+      "tag": "Croquis",
+      "scene": "ouverture-vapeur",
+      "params": {
+        "spinFrom": -0.8,
+        "spinTo": 0.8
+      },
+      "camera": {
+        "type": "orbit",
+        "label": "Orbit 30° en contre-plongée"
+      },
+      "action": "Une main tient le corps, l'autre dévisse le bouchon ; la vapeur monte en rubans.",
+      "voice": {
+        "value": "Voici Nova.",
+        "from": 0.45
+      },
+      "sound": "Pop du bouchon + souffle",
+      "transition": "Fondu au bleu nuit (6 images)"
+    },
+    {
+      "id": 4,
+      "duration": 5,
+      "title": "12 h de chaud",
+      "tag": "Motion",
+      "scene": "compteur",
+      "params": {
+        "keys": [
+          [
+            0,
+            0
+          ],
+          [
+            0.7,
+            12
+          ]
+        ],
+        "unit": "h",
+        "label": "de chaud",
+        "sub": "double paroi inox · sans BPA"
+      },
+      "camera": {
+        "type": "static",
+        "label": "Fixe · compteur 0 → 12 h en ease-out (3,5 s)"
+      },
+      "action": "L'anneau orange se remplit, 12 graduations s'allument, puis le label monte.",
+      "voice": {
+        "value": "Douze heures de chaud.",
+        "from": 0.2
+      },
+      "text": {
+        "value": "12 h de chaud",
+        "inScene": true
+      },
+      "sound": "Ticks montants, un par heure",
+      "transition": "Cut"
+    },
+    {
+      "id": 5,
+      "duration": 5,
+      "title": "Packshot",
+      "tag": "Motion",
+      "scene": "packshot",
+      "params": {
+        "logo": "NOVA",
+        "url": "nova.fr",
+        "tagline": "Le chaud qui dure."
+      },
+      "camera": {
+        "type": "static",
+        "label": "Fixe · la gourde monte de 40 px, reflet balayé"
+      },
+      "action": "Logo révélé par masque gauche → droite, trait orange, puis URL.",
+      "voice": {
+        "value": "Nova. Le chaud qui dure.",
+        "from": 0.35
+      },
+      "text": {
+        "value": "nova.fr",
+        "inScene": true
+      },
+      "sound": "Note finale",
+      "transition": "Fin"
+    }
+  ],
+  "storyboardId": null
+}

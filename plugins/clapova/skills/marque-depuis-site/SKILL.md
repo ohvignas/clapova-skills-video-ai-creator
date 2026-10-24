@@ -1,6 +1,6 @@
 ---
 name: marque-depuis-site
-description: Use when a Clapova user wants to import their brand identity from a website URL (logos, colors, fonts, tone, audience, social links) into the Clapova brand kit — "importe ma marque depuis mon site", "récupère mes couleurs et mon logo", "charte depuis l'URL" — with import_brand_from_website then apply_brand_import after explicit approval. A YouTube channel or video as input is handled in the Entrées section. To design a new brand from scratch use clapova-brandkit.
+description: Use when a Clapova user wants to import their brand identity from a website URL (logos, colors, fonts, tone, audience, social links) into the Clapova brand kit — "importe ma marque depuis mon site", "récupère mes couleurs et mon logo", "charte depuis l'URL" — with import_brand_from_website then apply_brand_import after explicit approval. A YouTube channel or video as input is handled in the Entrées section. To design a new brand from scratch use clapova:brandkit.
 ---
 
 # Clapova : kit de marque depuis un site
