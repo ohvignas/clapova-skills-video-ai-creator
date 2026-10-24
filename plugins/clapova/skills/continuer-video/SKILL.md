@@ -1,6 +1,6 @@
 ---
 name: continuer-video
-description: Use when a Clapova user wants to extend, continue or prolong an existing video clip ("continue la vidéo", "la suite du plan", "prolonge ce plan", "fais durer plus longtemps", "plan suivant dans la même scène") with continue_video, which generates the next shot from the real last frame and places it right after the source clip. Not for a first clip from scratch (clapova-generate) nor a change of scene (new generate_video).
+description: Use when a Clapova user wants to extend, continue or prolong an existing video clip ("continue la vidéo", "la suite du plan", "prolonge ce plan", "fais durer plus longtemps", "plan suivant dans la même scène") with continue_video, which generates the next shot from the real last frame and places it right after the source clip. Not for a first clip from scratch (clapova:generate) nor a change of scene (new generate_video).
 ---
 
 # Clapova : continuer une vidéo

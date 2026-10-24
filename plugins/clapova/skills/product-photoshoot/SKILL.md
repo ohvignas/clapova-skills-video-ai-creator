@@ -1,6 +1,6 @@
 ---
 name: product-photoshoot
-description: Use when a Clapova user wants brand-quality product visuals from a product photo or description — packshot, lifestyle scene, hands close-up, Pinterest pin, hero banner, carousel, ad pack, virtual try-on, conceptual / levitating product, restyle of an existing image ("photo produit", "visuels pub", "bannière", "carrousel", "shooting produit") with generate_image and the product-shots recipes. Images only; for a product video ad use clapova-pub-produit-ugc.
+description: Use when a Clapova user wants brand-quality product visuals from a product photo or description — packshot, lifestyle scene, hands close-up, Pinterest pin, hero banner, carousel, ad pack, virtual try-on, conceptual / levitating product, restyle of an existing image ("photo produit", "visuels pub", "bannière", "carrousel", "shooting produit") with generate_image and the product-shots recipes. Images only; for a product video ad use clapova:pub-produit-ugc.
 ---
 
 # Clapova : shooting produit

@@ -1,6 +1,6 @@
 ---
 name: video-explainer
-description: Use when a Clapova user wants a complete narrated explainer video from a topic, story, article or document ("vidéo explicative", "explique en vidéo", "vidéo pédagogique", "raconte cette histoire en vidéo", "fais un explainer") — style key, fact check, script by blocks, voiceover first, one generated clip per block, assembly with the faceless-explainer template, frame check, music over the whole duration, final link. Not for product promos (clapova-storyboard) nor edits of existing footage (clapova-monteur).
+description: Use when a Clapova user wants a complete narrated explainer video from a topic, story, article or document ("vidéo explicative", "explique en vidéo", "vidéo pédagogique", "raconte cette histoire en vidéo", "fais un explainer") — style key, fact check, script by blocks, voiceover first, one generated clip per block, assembly with the faceless-explainer template, frame check, music over the whole duration, final link. Not for product promos (clapova:storyboard) nor edits of existing footage (clapova:monteur).
 ---
 
 # Clapova : vidéo explicative narrée

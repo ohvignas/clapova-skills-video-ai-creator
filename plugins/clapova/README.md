@@ -43,7 +43,7 @@ CLAPOVA_TOKEN=clp_… node packages/cli/bin/clapova.mjs tools
 
 - **Commandes** : `/clapova:generer`, `/clapova:monter`, `/clapova:publier`, `/clapova:credits`, `/clapova:veille`.
 - **Agents** : `monteur-clapova`, `community-manager-clapova`.
-- **Skills** : `utiliser-clapova` (point d'entrée), `generate`, `prompts-video`, `image-edit`, `model-catalog`, `presets`, `monteur`, `motion-design`, `montage-recipes`, `sous-titres-styles`, `declinaison-formats`, `test-accroches`, `talking-head`, `pub-produit-ugc`, `storyboard`, `shorts-depuis-video-longue`, `continuer-video`, `personnages`, `product-photoshoot`, `marketplace-cards`, `youtube-thumbnail`, `video-explainer`, `brandkit`, `marque-depuis-site`, `publication-calendrier`, `statistiques`, `viralite`, `veille-concurrence`.
+- **Skills** : `utiliser-clapova` (point d'entrée), `cadrage` (obligatoire avant toute vidéo), `toolbox-createur`, `generate`, `prompts-video`, `image-edit`, `model-catalog`, `presets`, `monteur`, `motion-design`, `montage-recipes`, `sous-titres-styles`, `declinaison-formats`, `test-accroches`, `talking-head`, `pub-produit-ugc`, `storyboard`, `shorts-depuis-video-longue`, `continuer-video`, `personnages`, `product-photoshoot`, `marketplace-cards`, `youtube-thumbnail`, `video-explainer`, `brandkit`, `marque-depuis-site`, `publication-calendrier`, `statistiques`, `viralite`, `veille-concurrence`.
 - **Serveur MCP** : `clapova` (Streamable HTTP, OAuth 2.1). Ressources `clapova://models/catalog`, `clapova://recipes`, `clapova://brand-kit` ; prompts `monter_video`, `campagne_reseaux`, `photoshoot_produit`.
 
 ## Outils MCP
@@ -72,8 +72,8 @@ Chaque outil indique son coût dans sa description. Les générations qui échou
 | `list_characters` | Lister les personnages | lecture |
 | `generate_with_character` | Image avec un personnage | crédits |
 | `generate_voice_with_character` | Voix d'un personnage | crédits |
-| `train_character` | Entraîner un personnage (LoRA) | lecture |
-| `swap_character_in_video` | Remplacer un personnage dans une vidéo | lecture |
+| `train_character` | Entraîner un personnage (LoRA) | crédits |
+| `swap_character_in_video` | Remplacer un personnage dans une vidéo | crédits |
 | `list_video_presets` | Presets vidéo | lecture |
 | `list_presets` | Presets caméra et VFX | lecture |
 | `get_creative_recipes` | Recettes de création | lecture |

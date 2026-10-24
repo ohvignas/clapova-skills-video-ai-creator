@@ -1,0 +1,160 @@
+{
+ "styles": [
+  {
+   "id": "ugc-face-cam",
+   "nom": "UGC face caméra",
+   "mots": [
+    "téléphone",
+    "authentique",
+    "sous-titres pop"
+   ],
+   "plan": "2–3 s",
+   "cout": "Rushes ou personnage IA",
+   "coutNiveau": "rushes",
+   "template": "ugc-ad"
+  },
+  {
+   "id": "reel-motion",
+   "nom": "Réel + motion marketing",
+   "mots": [
+    "plans réels",
+    "titres cinétiques",
+    "compteurs"
+   ],
+   "plan": "1–2 s",
+   "cout": "Rushes / image→vidéo + motion code",
+   "coutNiveau": "mixte",
+   "template": "—"
+  },
+  {
+   "id": "kinetic-type",
+   "nom": "Typo cinétique",
+   "mots": [
+    "mots plein écran",
+    "au beat",
+    "aplats couleur"
+   ],
+   "plan": "0,5–1,5 s",
+   "cout": "100 % code, 0 crédit",
+   "coutNiveau": "code",
+   "template": "—"
+  },
+  {
+   "id": "hyper-motion",
+   "nom": "Hyper-motion",
+   "mots": [
+    "speed ramps",
+    "crash zooms",
+    "flashs"
+   ],
+   "plan": "0,4–1 s",
+   "cout": "IA (presets caméra) + code",
+   "coutNiveau": "ia",
+   "template": "crash-zoom-teaser"
+  },
+  {
+   "id": "premium-apple",
+   "nom": "Premium épuré",
+   "mots": [
+    "fond uni",
+    "lumière douce",
+    "lent"
+   ],
+   "plan": "2,5–3,5 s",
+   "cout": "Image→vidéo produit + code",
+   "coutNiveau": "ia",
+   "template": "cinematic-product-demo"
+  },
+  {
+   "id": "produit-3d",
+   "nom": "Produit 3D",
+   "mots": [
+    "orbit",
+    "matières",
+    "packshot"
+   ],
+   "plan": "2–3 s",
+   "cout": "generate_3d / turntable_3d",
+   "coutNiveau": "ia",
+   "template": "cinematic-product-demo"
+  },
+  {
+   "id": "unboxing-asmr",
+   "nom": "Unboxing ASMR",
+   "mots": [
+    "mains",
+    "macro",
+    "sons nets"
+   ],
+   "plan": "1,5–2,5 s",
+   "cout": "Rushes (ou image→vidéo)",
+   "coutNiveau": "rushes",
+   "template": "unboxing"
+  },
+  {
+   "id": "avant-apres",
+   "nom": "Avant / après",
+   "mots": [
+    "split",
+    "contraste",
+    "preuve"
+   ],
+   "plan": "2 plans",
+   "cout": "2 rushes ou 2 images",
+   "coutNiveau": "mixte",
+   "template": "before-after"
+  },
+  {
+   "id": "listicle",
+   "nom": "Listicle / Top 3",
+   "mots": [
+    "chiffres",
+    "un point = un plan",
+    "promesse"
+   ],
+   "plan": "2–3 s",
+   "cout": "Code + b-roll",
+   "coutNiveau": "mixte",
+   "template": "listicle-top"
+  },
+  {
+   "id": "demo-app",
+   "nom": "Démo produit / app",
+   "mots": [
+    "capture réelle",
+    "zooms",
+    "curseur"
+   ],
+   "plan": "2–3 s",
+   "cout": "Captures + code, 0 crédit",
+   "coutNiveau": "code",
+   "template": "—"
+  },
+  {
+   "id": "faceless-explainer",
+   "nom": "Explainer sans visage",
+   "mots": [
+    "voix off",
+    "icônes",
+    "schémas"
+   ],
+   "plan": "2–4 s",
+   "cout": "Voix IA + motion code",
+   "coutNiveau": "code",
+   "template": "faceless-explainer"
+  },
+  {
+   "id": "pov-green-screen",
+   "nom": "POV / green screen",
+   "mots": [
+    "« POV : »",
+    "texte en haut",
+    "réaction"
+   ],
+   "plan": "2–3 s",
+   "cout": "Rushes + détourage",
+   "coutNiveau": "rushes",
+   "template": "—"
+  }
+ ]
+}

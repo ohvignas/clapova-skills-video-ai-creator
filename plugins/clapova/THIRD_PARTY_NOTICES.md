@@ -79,3 +79,15 @@ inspiration), trois palettes réellement différentes avant choix, tableau de
 cohérence de l'ensemble livré, vérification avant toute génération payante, et
 recette d'une vidéo de référence reprise sans copier son contenu. Le texte de
 la licence MIT reproduit plus haut s'applique à ces reprises.
+
+## clapova-storyboard : moteur de planche (`skills/storyboard/planche/`)
+
+- `lib/gsap.min.js` : GSAP 3.14.2, Copyright 2025 GreenSock (Webflow). Distribué sous la
+  « GSAP Standard No-Charge License » (https://gsap.com/standard-license) : gratuit, y compris en
+  usage commercial, depuis la reprise par Webflow (2024-2025). Restriction de cette licence : pas
+  d'usage dans un outil concurrent du constructeur visuel de Webflow. Utilisé seulement pour la
+  timeline de l'animatic optionnel ; la planche n'en dépend pas.
+- `fonts/` : Inter (Rasmus Andersson), Caveat (Impallari Type), JetBrains Mono (JetBrains),
+  fichiers woff2 issus de @fontsource, tous sous SIL Open Font License 1.1.
+- Le reste du moteur (sketch.js, scenes.js, generique.js, board.js, build.mjs, render.mjs) est
+  écrit pour Clapova.

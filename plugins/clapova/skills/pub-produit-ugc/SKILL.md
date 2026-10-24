@@ -1,6 +1,6 @@
 ---
 name: pub-produit-ugc
-description: Use when a Clapova user wants a product video ad or UGC-style ad ("fais une pub pour mon produit", "vidéo UGC", "pub TikTok / Reels pour ma boutique", "démo produit en vidéo", "unboxing") from a product photo, page or description — angle, hook, shot list, product-faithful clips, voiceover, captions, music over the whole duration, CTA, export and final link, using the ugc-ad / unboxing / cinematic-product-demo templates. For still images only use clapova-product-photoshoot.
+description: Use when a Clapova user wants a product video ad or UGC-style ad ("fais une pub pour mon produit", "vidéo UGC", "pub TikTok / Reels pour ma boutique", "démo produit en vidéo", "unboxing") from a product photo, page or description — angle, hook, shot list, product-faithful clips, voiceover, captions, music over the whole duration, CTA, export and final link, using the ugc-ad / unboxing / cinematic-product-demo templates. For still images only use clapova:product-photoshoot.
 ---
 
 # Clapova : publicité produit et UGC
