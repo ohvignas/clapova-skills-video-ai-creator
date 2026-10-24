@@ -1,0 +1,7 @@
+# Toutes optionnelles : sans elles, controle_video.py tourne en mode dégradé (ffmpeg seul).
+# Licences permissives uniquement. Ne jamais ajouter madmom (modèles NC), essentia (AGPL), aubio (GPL).
+scenedetect>=0.6        # BSD-3 : plans (detect-adaptive)
+opencv-python-headless  # Apache-2.0 : images, contraste
+rapidocr-onnxruntime    # Apache-2.0 : texte à l'écran
+librosa                 # ISC : BPM et temps
+soundfile               # BSD-3

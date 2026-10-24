@@ -1,6 +1,6 @@
 # Mouvements de caméra : presets et recettes
 
-Valeurs reprises de `docs/synthese-motion-design.md` §3.8, sauf mention « Clapova actuel » (règles déjà présentes dans les skills `talking-head` et `motion-design`).
+Valeurs reprises de `references/synthese-motion-design.md` (racine du plugin) §3.8, sauf mention « Clapova actuel » (règles déjà présentes dans les skills `talking-head` et `motion-design`).
 
 ## Presets disponibles (`add_effect{clipId|at, preset, params?}`)
 

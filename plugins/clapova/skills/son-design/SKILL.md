@@ -1,6 +1,6 @@
 ---
 name: son-design
-description: Use when il faut poser ou corriger le son d'une vidéo Clapova — « bruitages », « le son fait cheap », « ajoute une musique », « la musique couvre la voix », « mixe », « niveau sonore » : son provisoire en phase A, mix et sonie en phase B, mesure sur le fichier exporté. Not for le calage des coupes sur le BPM (clapova:montage-rythme) ni la voix off seule (clapova:monteur).
+description: Use when il faut poser ou corriger le son d'une vidéo Clapova — « bruitages », « le son fait cheap », « ajoute une musique », « la musique couvre la voix », « mixe », « niveau sonore » : son provisoire en phase A, mix et sonie en phase B, mesure sur le fichier exporté. Not for le calage des coupes sur le BPM (clapova:montage-rythme) ni la voix off seule (clapova:montage).
 ---
 
 # Clapova : son design
@@ -43,7 +43,7 @@ Sons de synthèse (bips générés par code) ; sons non CC0 sans licence vérifi
 
 ## Renvois
 
-`clapova:montage-rythme`, `clapova:finition` (export, `CREDITS.txt`), `clapova:controle-qualite`, `clapova:monteur` (pistes, voix off), routeur `clapova:montage`.
+`clapova:montage-rythme`, `clapova:finition` (export, `CREDITS.txt`), `clapova:controle-qualite`, `clapova:montage` (pistes, voix off), routeur `clapova:montage`.
 
 ## Sources
 

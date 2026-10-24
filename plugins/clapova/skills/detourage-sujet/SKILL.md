@@ -46,4 +46,4 @@ Texte sur le visage ; prompt vague (« thing », « it ») ; valider sur la seul
 
 ## Sources
 
-Synthèse §3.9, §4 (ligne 17), §6 ; `docs/recherche/rapport-ia-produit.md` §0.3 (SAM 2.1, Apache-2.0) ; méthode reformulée de Barty-Bart/motion-graphics `object-separation` (MIT © 2026 Bart), voir `THIRD_PARTY_NOTICES.md`.
+Synthèse §3.9, §4 (ligne 17), §6 ; `references/recherche/ (racine du plugin) rapport-ia-produit.md` §0.3 (SAM 2.1, Apache-2.0) ; méthode reformulée de Barty-Bart/motion-graphics `object-separation` (MIT © 2026 Bart), voir `THIRD_PARTY_NOTICES.md`.

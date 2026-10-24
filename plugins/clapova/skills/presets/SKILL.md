@@ -20,7 +20,7 @@ Ce skill est la source unique pour : les ids de presets vidéo, leur usage dans 
 | Caméra | `push-in`, `pull-out`, `crash-zoom`, `orbit`, `tracking`, `fpv-drone`, `drone-dive`, `aerial-reveal`, `whip-pan`, `dolly-zoom`, `oner`, `handheld`, `bullet-time`, `static` |
 | Effets | `slow-motion`, `speed-ramp`, `product-glow`, `neon`, `film-grain`, `particles`, `smoke`, `lens-flare`, `explosion`, `disintegration`, `on-fire`, `morph`, `levitation`, `time-freeze`, `portal`, `particle-rain`, `glitch`, `inflate` |
 
-Ces presets agissent sur la génération. Les mouvements caméra et transitions **dans le montage** (`add_effect`, `set_transition`) sont dans `clapova:motion-design`.
+Ces presets agissent sur la génération. Les mouvements caméra et transitions **dans le montage** (`add_effect`, `set_transition`) sont dans `clapova:montage`.
 
 ## Modèles de montage
 
@@ -36,11 +36,11 @@ Ces presets agissent sur la génération. Les mouvements caméra et transitions 
 | `listicle-top` | 9:16 | promesse chiffrée, un plan par point numéroté, CTA | push-in, whip-pan |
 
 - `list_templates`, puis `get_template_recipe({id})` : structure, champs, format, crédits estimés.
-- Médias déjà dans la bibliothèque : `apply_template({projectId, templateId, mediaIds, voiceoverMediaId?, musicMediaId?, texts?, brand?, captions?, style?, targetDuration?, brandLock?})` dans un projet vide. `captions` est vrai par défaut et la transcription est facturée (≈ 1 crédit/min) : annonce-le ou mets `false`. `style` (voir `clapova:montage-recipes`) et `targetDuration` (5 à 180 s) se choisissent selon la plateforme ; `texts` porte hook, cta, features, handle. Le kit de marque est appliqué automatiquement (`brandLock`, vrai par défaut) ; `apply_template` n'a pas de `logoUrl`.
+- Médias déjà dans la bibliothèque : `apply_template({projectId, templateId, mediaIds, voiceoverMediaId?, musicMediaId?, texts?, brand?, captions?, style?, targetDuration?, brandLock?})` dans un projet vide. `captions` est vrai par défaut et la transcription est facturée (≈ 1 crédit/min) : annonce-le ou mets `false`. `style` (voir `clapova:montage`) et `targetDuration` (5 à 180 s) se choisissent selon la plateforme ; `texts` porte hook, cta, features, handle. Le kit de marque est appliqué automatiquement (`brandLock`, vrai par défaut) ; `apply_template` n'a pas de `logoUrl`.
 - Médias par URL : `create_from_template({templateId, aspect?, media:[{url, kind}], voiceover?, music?, brand:{name, primary, background, text, logoUrl?}, texts?})` crée le projet (seul endroit où `logoUrl` passe).
-- Ensuite : contrôle et relecture selon `clapova:monteur`.
+- Ensuite : contrôle et relecture selon `clapova:montage`.
 
-Déroulé « fais-moi une pub UGC » : `get_credits` → `create_project({title, aspectRatio:"9:16"})` (projet vide, format fixé ici) → `list_presets` → générer 2 à 4 plans avec les presets de `byTemplate["ugc-ad"]` (`generate_video` avec `projectId`) → voix off `generate_voiceover` (voix française : `list_model_params` avec `language:"fr"`) → musique `generate_music` à la durée totale → `apply_template` → son léger (bruitages `volume` 0,18, `set_duck` niveau 0,5, musique à 0,5 sur toute la durée, `set_fades` de sortie 1 s) → `check_composition` → `render_preview_frames` regardée image par image → `review_montage` jusqu'à `stop:true` → export après accord. Détail de chaque étape : `clapova:monteur`. Générez seulement ce qui est demandé et annonce le coût avant (2 à 4 plans de 10 s + voix + musique : `estimate_plan`). Export : `export_video` est facturé selon durée, résolution et fps ; annonce-le avant.
+Déroulé « fais-moi une pub UGC » : `get_credits` → `create_project({title, aspectRatio:"9:16"})` (projet vide, format fixé ici) → `list_presets` → générer 2 à 4 plans avec les presets de `byTemplate["ugc-ad"]` (`generate_video` avec `projectId`) → voix off `generate_voiceover` (voix française : `list_model_params` avec `language:"fr"`) → musique `generate_music` à la durée totale → `apply_template` → son léger (bruitages `volume` 0,18, `set_duck` niveau 0,5, musique à 0,5 sur toute la durée, `set_fades` de sortie 1 s) → `check_composition` → `render_preview_frames` regardée image par image → `review_montage` jusqu'à `stop:true` → export après accord. Détail de chaque étape : `clapova:montage`. Générez seulement ce qui est demandé et annonce le coût avant (2 à 4 plans de 10 s + voix + musique : `estimate_plan`). Export : `export_video` est facturé selon durée, résolution et fps ; annonce-le avant.
 
 « Inspire-toi de cette vidéo » (lien YouTube, fichier envoyé) : charge `clapova:recreer-depuis-reference` : `analyze_reference_video` (lien YouTube ou URL https) ou `create_upload_link` (fichier), qui choisit le modèle le plus proche et les presets correspondants à partir de la recette de la référence. On reprend la structure, jamais la musique ni les images.
 
@@ -54,4 +54,4 @@ Déroulé « fais-moi une pub UGC » : `get_credits` → `create_project({title,
 
 ## Critères de fin
 
-Les plans générés portent chacun un seul mouvement de caméra, le modèle de montage est appliqué avec la marque (`brand`), `check_composition` est propre, la planche `render_preview_frames` est regardée, musique sur toute la durée. Musique : `generate_music` à la durée totale si le modèle n'en pose pas. Lien et félicitations à l'export : voir `clapova:monteur` (Livraison finale) ; sans export, termine par le lien du projet.
+Les plans générés portent chacun un seul mouvement de caméra, le modèle de montage est appliqué avec la marque (`brand`), `check_composition` est propre, la planche `render_preview_frames` est regardée, musique sur toute la durée. Musique : `generate_music` à la durée totale si le modèle n'en pose pas. Lien et félicitations à l'export : voir `clapova:montage` (Livraison finale) ; sans export, termine par le lien du projet.

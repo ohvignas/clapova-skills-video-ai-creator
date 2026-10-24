@@ -45,4 +45,4 @@ Texte → vidéo pour un produit de marque ; faire générer l'étiquette ou le 
 
 ## Sources
 
-Synthèse §3.11, §5.2 (S1, S9, S10) ; `docs/recherche/rapport-ia-produit.md` §0 et §5 ; `rapport-outils-controle.md` (seuils CLIP). Idées reformulées de ComfyUI-ProductLabelRefinement et WorkflowProduct (licences non lues : aucune reprise de texte ni de code).
+Synthèse §3.11, §5.2 (S1, S9, S10) ; `references/recherche/ (racine du plugin) rapport-ia-produit.md` §0 et §5 ; `rapport-outils-controle.md` (seuils CLIP). Idées reformulées de ComfyUI-ProductLabelRefinement et WorkflowProduct (licences non lues : aucune reprise de texte ni de code).

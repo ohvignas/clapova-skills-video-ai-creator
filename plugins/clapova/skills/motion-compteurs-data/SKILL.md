@@ -5,7 +5,7 @@ description: Use when a Clapova video shows a number, a counter, a stat or a cha
 
 # Clapova : compteurs et données
 
-Une idée : **un chiffre à l'écran est une preuve, donc il est sourcé, lisible et tenu.** Règles canoniques : `docs/synthese-motion-design.md` §3.5. Durées et courbes : `clapova:motion-tokens`. Tailles de texte : `clapova:motion-titres`.
+Une idée : **un chiffre à l'écran est une preuve, donc il est sourcé, lisible et tenu.** Règles canoniques : `references/synthese-motion-design.md` (racine du plugin) §3.5. Durées et courbes : `clapova:motion-tokens`. Tailles de texte : `clapova:motion-titres`.
 
 ## Avant tout : la table `facts`
 

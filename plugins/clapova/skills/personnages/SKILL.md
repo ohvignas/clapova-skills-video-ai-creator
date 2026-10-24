@@ -34,7 +34,7 @@ Adapté du workflow `higgsfield-soul-id` (github.com/higgsfield-ai/skills, MIT, 
 
 1. Génère **un seul plan test** en image (`generate_with_character`). Comparer à l'œil n'est pas possible en MCP seul (`extract_frames` et `list_references` ne renvoient que des URL) : donne les deux URL (résultat et référence) et demande à l'utilisateur de valider la ressemblance ; ou pose le plan dans un projet et regarde la planche `render_preview_frames`. Ne déclare jamais « fidèle » sans l'une de ces deux preuves.
 2. Fidèle : lance la série, en gardant la fiche personnage figée du storyboard et la même référence principale à chaque plan.
-3. Un plan dérive : régénère ce seul plan et remplace-le (`get_timeline` d'abord, puis `replace_media` dans `apply_edit_plan`), pas toute la série. Une fois la série montée, `review_montage` vérifie la cohérence entre plans ; livre ensuite avec le lien du projet (`clapova:monteur`).
+3. Un plan dérive : régénère ce seul plan et remplace-le (`get_timeline` d'abord, puis `replace_media` dans `apply_edit_plan`), pas toute la série. Une fois la série montée, `review_montage` vérifie la cohérence entre plans ; livre ensuite avec le lien du projet (`clapova:montage`).
 4. Choisis la finalité avant d'entraîner : photos fixes ou vidéo (un `train_character` pour l'usage dominant).
 
 ## Coûts et pièges

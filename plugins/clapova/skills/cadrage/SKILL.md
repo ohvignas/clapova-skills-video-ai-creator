@@ -1,6 +1,6 @@
 ---
 name: cadrage
-description: Use FIRST, before any storyboard, montage or multi-shot generation in Clapova ("fais-moi une vidéo", "une pub pour…", "un Reel / TikTok / Short", "monte mes rushes", "une vidéo comme celle-ci") — mandatory creative framing that asks the user what they really want (render: real / AI-realistic / 2D / 3D / motion / mixed, energy, goal, audience, platform, material, references) with ask_storyboard_questions, shows 3 styles from the catalogue as a visual board, and writes a one-page "fiche de direction" (brief créatif + note d'intention) that must be approved before clapova:storyboard or clapova:monteur. Not for a single image or clip (clapova:generate).
+description: Use FIRST, before any storyboard, montage or multi-shot generation in Clapova ("fais-moi une vidéo", "une pub pour…", "un Reel / TikTok / Short", "monte mes rushes", "une vidéo comme celle-ci") — mandatory creative framing that asks the user what they really want (render: real / AI-realistic / 2D / 3D / motion / mixed, energy, goal, audience, platform, material, references) with ask_storyboard_questions, shows 3 styles from the catalogue as a visual board, and writes a one-page "fiche de direction" (brief créatif + note d'intention) that must be approved before clapova:storyboard or clapova:montage. Not for a single image or clip (clapova:generate).
 ---
 
 # Clapova : cadrage créatif (méthode du directeur créatif)
@@ -74,7 +74,7 @@ La fiche validée va dans `storyboard.json` (`direction`, avec `direction.style`
 
 - `clapova:storyboard` : arc, rythme et cases suivent Énergie et Style (plan moyen de la fiche).
 - Réalisation : la colonne « Fabrication » de `STYLES.md` fixe la source de chaque plan (rushes, image → vidéo depuis photo produit, jamais texte → vidéo pour un produit de marque ; 3D ; code). Modèle indiqué : `get_template_recipe` puis `apply_template`.
-- `clapova:monteur` / `clapova:montage-recipes` / `clapova:motion-design` : typo, palette, transitions et son de la fiche.
+- `clapova:montage` / `clapova:montage` / `clapova:montage` : typo, palette, transitions et son de la fiche.
 
 Chaque étape cite la ligne de la fiche qui justifie son choix. Un écart à la fiche = demander, jamais trancher seul.
 

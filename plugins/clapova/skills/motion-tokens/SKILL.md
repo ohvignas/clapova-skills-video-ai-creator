@@ -5,7 +5,7 @@ description: Use when a Clapova motion piece needs timing values — « c'est tr
 
 # Clapova : tokens motion (durées, courbes, ressorts)
 
-Une idée : toutes les animations Clapova piochent dans **une seule table de valeurs nommées**. On n'invente pas une durée ni une courbe ; on cite un token. Source canonique : `docs/synthese-motion-design.md` §3.1. Phase A (motion design).
+Une idée : toutes les animations Clapova piochent dans **une seule table de valeurs nommées**. On n'invente pas une durée ni une courbe ; on cite un token. Source canonique : `references/synthese-motion-design.md` (racine du plugin) §3.1. Phase A (motion design).
 
 Tableau prêt à coller dans `create_motion_scene` : `references/tokens.md`. Anti-patterns à identifiant stable : `references/anti-patterns.md`.
 

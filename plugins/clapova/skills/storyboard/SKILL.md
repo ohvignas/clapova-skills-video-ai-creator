@@ -22,7 +22,7 @@ Contraintes dures : 60 % au plus de plans générés ; plan moyen 3,5 s au plus 
 6. **Itérer** (§9) autant de tours qu'il faut.
 7. **Valider** : `approve_storyboard` seulement après un oui explicite dans son message (recopie ses mots). Total au-delà de 50 crédits ou doublé depuis le dernier accord : redemande l'accord avec le nouveau chiffre.
 8. **Construire** : `build_from_storyboard`, ses `followUps`, puis `review_montage`. L'appel peut durer plusieurs minutes (il attend les générations vidéo) ; s'il expire, relance-le tel quel (même version : renvoie `built` sans rien refaire ; `rebuild:true` repose tout). Scène sans média : fond du Brand Kit, texte centré.
-9. **Vérifier et livrer** : `render_preview_frames`, planche regardée image par image, musique sur toute la durée, son léger (voir `clapova:monteur`). Après accord sur l'export : `export_video`, `get_render_status`, puis `videoUrl` et `studioUrl` avec un court message de félicitations.
+9. **Vérifier et livrer** : `render_preview_frames`, planche regardée image par image, musique sur toute la durée, son léger (voir `clapova:montage`). Après accord sur l'export : `export_video`, `get_render_status`, puis `videoUrl` et `studioUrl` avec un court message de félicitations.
 
 ## 1. Brief : seulement ce qui manque
 
@@ -56,7 +56,7 @@ Accroche de 5 s au plus, élément fort dès la première image. Logo après l'a
 
 ## 4. Les plans
 
-Pour chaque plan : `shotFunction` (hook, setting, action, detail, reveal, proof, cta), `framing` (jamais trois fois le même de suite), `angle`, `cameraMove`, `lighting`, `shotDescription` concret (« une barista d'environ 28 ans, tablier en jean », jamais « une femme »), `onScreenText` (6 mots max, zones sûres de `clapova:montage-recipes`), `voiceoverLine` (mots max = 2,3 x durée en s, chiffres compris ; l'écran ne répète pas la voix), `transition` (cut ; match_cut ; whip_pan ; fade ou dissolve pour changer de temps ou de lieu), `source`, `prompt`.
+Pour chaque plan : `shotFunction` (hook, setting, action, detail, reveal, proof, cta), `framing` (jamais trois fois le même de suite), `angle`, `cameraMove`, `lighting`, `shotDescription` concret (« une barista d'environ 28 ans, tablier en jean », jamais « une femme »), `onScreenText` (6 mots max, zones sûres de `clapova:montage`), `voiceoverLine` (mots max = 2,3 x durée en s, chiffres compris ; l'écran ne répète pas la voix), `transition` (cut ; match_cut ; whip_pan ; fade ou dissolve pour changer de temps ou de lieu), `source`, `prompt`.
 
 - **Source et budget** : video_gen, image_anime (depuis un visuel de référence, obligatoire dès que le produit apparaît), motion_design, screen_capture, stock. Un plan généré coûte un clip entier (environ 5 s) même coupé : sous 3 s, préfère stock ou motion. Schéma, texte lisible, interface, logo ou chiffre : jamais en génération.
 - **Prompts** : génération 60 à 110 mots en anglais (sujet, action, décor, cadrage, angle, un seul mouvement, lumière, chaîne thème, chaîne personnage, format), terminés par « no text, no logo » ; motion 30 à 60 mots ; stock et screen_capture 15 à 40 mots. Écran d'appareil généré : éteint ou flou, la vraie capture s'incruste au montage.
@@ -111,7 +111,7 @@ Pas de Node ni de fichiers : construis toi-même la planche en HTML (même mise 
 
 ## Outils Clapova
 
-`ask_storyboard_questions` (brief), `create_storyboard` / `update_storyboard` (plans), `estimate_storyboard` (coût et solde), `approve_storyboard` (après un oui), `storyboard_thumbnails` (sur demande, payant), `import_media` (captures), `generate_music` et `generate_voiceover` (après approbation seulement), `build_from_storyboard`, `review_montage`, `render_preview_frames`, `clapova:motion-design` (plans motion).
+`ask_storyboard_questions` (brief), `create_storyboard` / `update_storyboard` (plans), `estimate_storyboard` (coût et solde), `approve_storyboard` (après un oui), `storyboard_thumbnails` (sur demande, payant), `import_media` (captures), `generate_music` et `generate_voiceover` (après approbation seulement), `build_from_storyboard`, `review_montage`, `render_preview_frames`, `clapova:montage` (plans motion).
 
 ## Interdits
 

@@ -5,7 +5,7 @@ description: Use when a Clapova video needs a logo reveal, brand signals, an end
 
 # Clapova : logo et CTA
 
-Une idée : **la marque se reconnaît par des signaux intégrés à la scène ; le CTA arrive seul, dans la zone vitale, et il est tenu.** Règles canoniques : `docs/synthese-motion-design.md` §3.4, §3.6, §3.9. Courbes : `clapova:motion-tokens`.
+Une idée : **la marque se reconnaît par des signaux intégrés à la scène ; le CTA arrive seul, dans la zone vitale, et il est tenu.** Règles canoniques : `references/synthese-motion-design.md` (racine du plugin) §3.4, §3.6, §3.9. Courbes : `clapova:motion-tokens`.
 
 ## Logo
 

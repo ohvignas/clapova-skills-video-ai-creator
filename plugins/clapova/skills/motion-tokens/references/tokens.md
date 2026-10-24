@@ -1,6 +1,6 @@
 # Tokens motion Clapova : valeurs à coller
 
-Source canonique : `docs/synthese-motion-design.md` §3.1. Ne pas modifier une valeur ici sans modifier la synthèse.
+Source canonique : `references/synthese-motion-design.md` (racine du plugin) §3.1. Ne pas modifier une valeur ici sans modifier la synthèse.
 
 ## Durées (secondes)
 
@@ -41,7 +41,7 @@ CustomEase est la valeur de référence ; tous les plugins GSAP sont gratuits en
 ## Bloc prêt à coller (script d'une scène `create_motion_scene`)
 
 ```js
-// Tokens Clapova (docs/synthese-motion-design.md §3.1)
+// Tokens Clapova (`references/synthese-motion-design.md` (racine du plugin) §3.1)
 gsap.registerPlugin(CustomEase); // seulement si le moteur charge CustomEase
 const T = { micro: 0.15, fast: 0.25, base: 0.4, slow: 0.6, hero: 0.9, stagger: 0.06 };
 const E = {

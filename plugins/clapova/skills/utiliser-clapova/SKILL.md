@@ -29,11 +29,11 @@ Le serveur MCP `clapova` agit dans le compte de l'utilisateur, avec son plan et 
 | Pub produit en vidéo, UGC | `clapova:pub-produit-ugc` |
 | Personne qui parle face caméra | `clapova:talking-head` |
 | Tester plusieurs accroches | `clapova:test-accroches` |
-| Sous-titres stylés | `clapova:sous-titres-styles` |
+| Sous-titres stylés | `clapova:motion-sous-titres` |
 | Même vidéo en plusieurs formats | `clapova:declinaison-formats` |
 | Shorts depuis une vidéo longue | `clapova:shorts-depuis-video-longue` |
-| Monter, dérusher, exporter | `clapova:monteur` + `clapova:montage-recipes` |
-| Animer, titres, blocs motion, étalonnage | `clapova:motion-design` |
+| Monter, dérusher, exporter | `clapova:montage` + `clapova:montage` |
+| Animer, titres, blocs motion, étalonnage | `clapova:montage` |
 | Continuer un clip | `clapova:continuer-video` |
 | Personnage récurrent, swap | `clapova:personnages` |
 | Photo produit, fiche marketplace, miniature, explainer | `clapova:product-photoshoot`, `clapova:marketplace-cards`, `clapova:youtube-thumbnail`, `clapova:video-explainer` |
@@ -43,7 +43,7 @@ Le serveur MCP `clapova` agit dans le compte de l'utilisateur, avec son plan et 
 
 ## Règles
 
-- **Montage : charge `clapova:monteur` AVANT tout montage** (musique sur toute la durée, son léger, contrôle image par image, `review_montage`).
+- **Montage : charge `clapova:montage` AVANT tout montage** (musique sur toute la durée, son léger, contrôle image par image, `review_montage`).
 - Français, vouvoiement, réponses courtes, pas de JSON brut : lien ou aperçu du média et une ligne de résumé.
 - Ne génère que ce qui est demandé, jamais en boucle. Demande avant `export_video`, `publish_post`, `apply_brand_import`. Avant de livrer un montage : `check_composition` puis `render_preview_frames`, et regarde les images.
 - Série ou lot : au plus 16 générations par demande, `estimate_plan` et accord avant tout lot de plus de 3.
